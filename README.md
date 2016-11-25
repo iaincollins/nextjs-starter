@@ -10,12 +10,13 @@ Like all Next.js projects it features automatic pre-fetching of templates with a
 
 To get started in development mode, just clone the repository and run:
 
-  > npm install
-  > npm run dev
+    npm install
+    npm run dev
 
 ## Building and deploying
 
-If you wanted to run this site in production, you could use build and start:
+If you wanted to run this site in production, you should build and run it:
 
-  > npm run build
-  > npm start
+    npm install
+    npm run build
+    npm start
