@@ -1,0 +1,19 @@
+{
+  "name": "nextjs-starter",
+  "version": "1.0.0",
+  "description": "A starter Next.js project",
+  "main": "index.js",
+  "dependencies": {
+    "next": "*",
+    "react-redux": "^4.4.6",
+    "redux": "^3.6.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "author": "",
+  "license": "ISC"
+}
