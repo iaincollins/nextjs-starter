@@ -1,7 +1,7 @@
 /**
- * This is a very simple example of how to render data fetched asynchronously.
+ * This is a simple example of how to render data fetched asynchronously.
  * 
- * It does not illustrate practice and does not handle caching.
+ * It does not illustrate best practice and does not implement caching.
  */
 
 import React from 'react'
