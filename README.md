@@ -1,12 +1,12 @@
-# Next.js Starter
+# Next.js 2.0 Starter
 
 This is a starter Next.js 2.0 project that shows how to put together a simple website with server and client side rendering powered by Next.js, which uses React.
 
-Like all Next.js projects it features automatic pre-fetching of templates with a ServiceWorker, renders pages both client and server side and live reloading in development.
+Like all Next.js projects it features automatic pre-fetching of pages with a ServiceWorker, renders pages both client and server side and features live reloading in development.
 
-This example shows how to use header, footer and layout files, how to include CSS and JavaScript on specific pages, how to write code that does  asynchronous data fetching (including how to write different routines for client and server rendering, if you wish) as well as some more advanced usage.
+This starter project has practical examples with header, footer and layout files, shows how to include CSS and JavaScript on specific pages, how to write code that does asynchronous data fetching (including how to write different routines for client and server rendering, if you wish) as well as some more advanced usage.
 
-It includes new features exclusive to Next.js verion 2.0 like integration with the Express framework, which allows you to have custom route handling and other endpoints.
+It also shows how to use features new in Next.js version 2.0 like integration with the Express and custom route handling.
 
 ## Running locally
 
