@@ -2,8 +2,9 @@
  * Creating a page named _error.js lets you override HTTP error messages
  */
 
-import React from 'react'
 import Head from 'next/head'
+import Link from 'next/prefetch'
+import React from 'react'
 
 export default class Error extends React.Component {
   
@@ -28,13 +29,14 @@ export default class Error extends React.Component {
 
     var response
     switch (this.props.errorCode) {
-      case 200: // Also display a 404 if someone requests /_error :)
+      case 200: // Also display a 404 if someone requests /_error explicitly
       case 404:
         response = (
           <div>
             {css}
             <h1>Page Not Found</h1>
             <p>The page <strong>{ this.props.url.pathname }</strong> does not exist.</p>
+            <p><Link href="/">Home</Link></p>
           </div>
         )
         break

@@ -2,10 +2,10 @@
  * This shows how to add CSS styles and head elements to a specific page
  */
 
-import React from 'react'
-import Page from '../layouts/main'
 import Head from 'next/head'
 import css from 'next/css'
+import React from 'react'
+import Page from '../layouts/main'
 
 export default() => (
   <Page>
