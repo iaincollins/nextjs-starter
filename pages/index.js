@@ -19,16 +19,15 @@ export default() => (
       reloading in development.
     </p>
     <p>
-      This example shows how to use header, footer and layout files, how to
-      include CSS and JavaScript on specific pages, how to write code that does 
-      asynchronous data fetching (including how to write different routines for
-      client and server rendering, if you wish) as well as some more advanced
-      usage.
+      This starter project has practical examples wit header, footer and layout
+      files, shows how to include CSS and JavaScript on specific pages, how to
+      write code that does asynchronous data fetching (including how to write
+      different routines for client and server rendering, if you wish) as well
+      as some more advanced usage.
     </p>
     <p>
-      It includes new features exclusive to Next.js verion 2.0 like
-      integration with the Express framework, which allows you to have custom
-      route handling and other endpoints.
+      It also shows how to use features new in Next.js version 2.0 like
+      integration with the Express and custom route handling.
     </p>
     <h2>Examples</h2>
     <ul>
