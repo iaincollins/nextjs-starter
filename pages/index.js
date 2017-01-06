@@ -35,7 +35,7 @@ export default() => (
       <li><Link href="/css">Page specific styles</Link> - Page specific CSS and &lt;head&gt; tags</li>
       <li><Link href="/async">Async example</Link> - Show how to include data from an API or database</li>
       <li><Link href="/routing/?id=example" as="/route/example">Custom routing</Link> - Custom routing with Express</li>
-      <li><Link href="/auth/signin">Authentication</Link> - Authentication with Email, Facebook, Google and Twitter</li>
+      <li><Link href="/auth/signin">Authentication</Link> - Authentication example</li>
       <li><Link href="/clock">Clock</Link> - A more advanced example from the Zeit wiki </li>
     </ul>
     <p>

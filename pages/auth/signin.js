@@ -17,19 +17,23 @@ export default class extends React.Component {
     super(props)
     this.state = {
       _csrf: props._csrf,
-      email: 'me@iaincollins.com'
+      email: ''
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleEmailChange = this.handleEmailChange.bind(this)
   }
 
   handleEmailChange(event) {
-    this.state.email = event.target.value
+    this.state.email = event.target.value.trim()
     this.setState(this.state)
   }
   
   handleSubmit(event) {
     event.preventDefault()
+
+    // @TODO Highlight email field if left blank
+    if (this.state.email.trim() == '')
+      return false
 
     const _this = this
 

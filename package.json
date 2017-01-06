@@ -1,6 +1,6 @@
 {
   "name": "nextjs-starter",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "A starter Next.js project",
   "main": "index.js",
   "dependencies": {
@@ -10,6 +10,7 @@
     "lusca": "^1.4.1",
     "next": "^2.0.0-beta",
     "nodemailer": "^2.7.0",
+    "orm": "^3.2.3",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",
@@ -18,7 +19,9 @@
     "react-redux": "^4.4.6",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
-    "session-file-store": "^1.0.0"
+    "session-file-store": "^1.0.0",
+    "sqlite3": "^3.1.8",
+    "uuid": "^3.0.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
