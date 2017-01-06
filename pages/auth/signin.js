@@ -1,6 +1,5 @@
 import React from 'react'
 import Page from '../../layouts/main'
-import 'isomorphic-fetch'
 
 export default class extends React.Component {
   
@@ -9,10 +8,8 @@ export default class extends React.Component {
       // Being run on the server
       return { _csrf: req.connection._httpMessage.locals._csrf }
     } else {
-      // Being run in a browser
-      const res = await fetch('/auth/csrf')
-      const data = await res.json()
-      return { _csrf: data._csrf }
+      // Being run in the browser (will get CSRF token before submitting)
+      return { _csrf: '' }
     }
   }
 
@@ -20,7 +17,7 @@ export default class extends React.Component {
     super(props)
     this.state = {
       _csrf: props._csrf,
-      email: ''
+      email: 'me@iaincollins.com'
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleEmailChange = this.handleEmailChange.bind(this)
@@ -31,12 +28,40 @@ export default class extends React.Component {
     this.setState(this.state)
   }
   
-  async handleSubmit(event) {
-    // Before submitting always make sure we have the latest CSRF token
-    const csrfRes = await fetch('/auth/csrf')
-    const csrfData = await csrfRes.json()
-    this.state._csrf = csrfData._csrf
-    this.setState(this.state)
+  handleSubmit(event) {
+    event.preventDefault()
+
+    const _this = this
+
+    // Note: We use XMLHttpRequest here rather than fetch because fetch uses
+    // Service Workers and they cannot share cookies with the browser session
+    // yet (!) so if we tried to get or pass the CSRF token it would mismatch.
+
+    // Check we have the latest CSRF token before submitting the form
+    var xhr = new XMLHttpRequest()
+    xhr.open("GET", '/auth/csrf')
+    xhr.onreadystatechange = function() {
+      
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        const jsonResponse = JSON.parse(xhr.responseText);
+
+        _this.state._csrf = jsonResponse._csrf
+        _this.setState(_this.state)
+  
+        // Submit the form
+        xhr = new XMLHttpRequest()
+        xhr.open("POST", '/auth/signin', true)
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == 4 && xhr.status == 200)
+            _this.props.url.push("/auth/check-email")
+        }
+        xhr.send("_csrf="+encodeURIComponent(_this.state._csrf)+"&"
+                 +"email="+encodeURIComponent(_this.state.email))
+      }
+    
+    }
+    xhr.send()
   }
 
   render() {
@@ -47,7 +72,7 @@ export default class extends React.Component {
           <h2>Sign In</h2>
           <p>
             <label htmlFor="email">Email address</label><br/>
-            <input name="email" type="text" placeholder="j.smith@example.com" id="email" onChange={this.handleChange} />
+            <input name="email" type="text" placeholder="j.smith@example.com" id="email" value={this.state.email} onChange={this.handleEmailChange} />
           </p>
           <p>
             <button type="submit">Sign in</button>

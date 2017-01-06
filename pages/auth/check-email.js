@@ -7,7 +7,7 @@ export default class extends React.Component {
     return (
       <Page>
         <h2>Check Your Email</h2>
-        <p>You have been sent an email with a login link to verify your address</p>
+        <p>You have been sent an email with a login link to log in</p>
       </Page>
     )
   }

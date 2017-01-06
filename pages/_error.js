@@ -3,7 +3,7 @@
  */
 
 import Head from 'next/head'
-import Link from 'next/prefetch'
+import Link from 'next/link'
 import React from 'react'
 
 export default class Error extends React.Component {
