@@ -2,10 +2,11 @@
 
 const express = require('express')
 const next = require('next')
+const auth = require('./lib/auth')
 
 // Default when run with `npm start` is 'production' and default port is '80'
 // `npm run dev` defaults mode to 'development' & port to '3000'
-process.env.NODE_ENV = process.env.NODE_ENV || "production";
+process.env.NODE_ENV = process.env.NODE_ENV || "production"
 process.env.PORT = process.env.PORT || 80
 
 const app = next({
@@ -19,13 +20,16 @@ app.prepare()
 .then(() => {
   const server = express()
 
+  // Auth lib adds signin and signout routes under /auth
+  auth(app, server)
+  
   // Requests to '/route/{anything}' ared handled by the 'routing' page
   server.get('/route/:id', (req, res) => {
     return app.render(req, res, '/routing', req.params)
   })
   
   // Default catch-all handler
-  server.get('*', (req, res) => {
+  server.all('*', (req, res) => {
     return handle(req, res)
   })
 

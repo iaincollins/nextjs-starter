@@ -1,14 +1,23 @@
 {
   "name": "nextjs-starter",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A starter Next.js project",
   "main": "index.js",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "express-session": "^1.14.2",
+    "lusca": "^1.4.1",
     "next": "^2.0.0-beta",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "passport-local": "^1.0.0",
+    "passport-twitter": "^1.0.4",
     "react-redux": "^4.4.6",
     "redux": "^3.6.0",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "session-file-store": "^1.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

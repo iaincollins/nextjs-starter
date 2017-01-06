@@ -12,6 +12,8 @@ export default() => (
           color: #444;
           background-color: #eee;
           max-width: 950px;
+          font-size: 16px;
+          line-height: 18px;
         }
         hr {
           border: 0;
@@ -36,6 +38,21 @@ export default() => (
         }
         ul {
           list-style: square;
+        }
+        input {
+          font-size: 16px;
+          line-height: 18px;
+          border: 1px solid #222;
+          background: #fff;
+          padding: 10px 15px;
+        }
+        button {
+          font-size: 16px;
+          line-height: 18px;
+          border: 1px solid #222;
+          background: #222;
+          color: #fff;
+          padding: 10px 15px;
         }
       `}</style>
     </Head>

@@ -10,10 +10,10 @@ import AsyncData from '../lib/async-data'
 
 export default class extends React.Component {
   
-   static async getInitialProps({ req }) {
-     let asyncData = new AsyncData;
-     let posts = await asyncData.getData()
-     return { posts: posts }
+  static async getInitialProps({ req }) {
+    let asyncData = new AsyncData;
+    let posts = await asyncData.getData()
+    return { posts: posts }
   }
 
   render() {

@@ -11,6 +11,7 @@ export default() => (
   <Page>
     <Head>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>This page has a custom title</title>
     </Head>
     <h2>Page specific CSS and &lt;head&gt; tags</h2>
     <p>This is a mobile-ready page with inline CSS.</p>
