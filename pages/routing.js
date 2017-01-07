@@ -5,16 +5,21 @@
 import Link from 'next/prefetch'
 import React from 'react'
 import Page from '../layouts/main'
+import Session from '../components/session'
 
 export default class extends React.Component {
   
   static async getInitialProps({ query }) {
-    return { path: query.id }
+    const session = new Session(arguments)
+    return { 
+      session: await session.getSession(),
+      path: query.id
+    }
   }
 
   render() {
     return (
-      <Page>
+      <Page session={this.props.session}>
         <h2>Custom routing</h2>
         <p>
           You went to <strong>"/route/{ this.props.path }"</strong>

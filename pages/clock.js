@@ -10,7 +10,7 @@
 
 import React from 'react'
 import { Provider } from 'react-redux'
-import { reducer, initStore, startClock } from '../lib/clock-store'
+import { reducer, initStore, startClock } from '../components/clock-store'
 import Clock from '../components/Clock'
 
 export default class Counter extends React.Component {

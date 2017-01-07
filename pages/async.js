@@ -6,19 +6,26 @@
 
 import React from 'react'
 import Page from '../layouts/main'
-import AsyncData from '../lib/async-data'
+import AsyncData from '../components/async-data'
+import Session from '../components/session'
 
 export default class extends React.Component {
   
   static async getInitialProps({ req }) {
-    let asyncData = new AsyncData;
+    const session = new Session(arguments)
+    
+    let asyncData = new AsyncData
     let posts = await asyncData.getData()
-    return { posts: posts }
+
+    return {
+      session: await session.getSession(),
+      posts: posts
+    }
   }
 
   render() {
     return (
-      <Page>
+      <Page session={this.props.session}>
         <h2>Asynchronous data fetching</h2>
         <p>
           This example illustrates how write a simple class to fetch data

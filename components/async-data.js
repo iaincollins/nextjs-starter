@@ -11,16 +11,10 @@ import 'isomorphic-fetch'
 export default class AsyncData {
   
   async getData() {
-    if (typeof window === 'undefined') {
-      // Being run on the server
-    } else {
-      // Being run in a browser
-    }
-
     // This version of fetch runs in browsers as well as sever side
     let res = await fetch('https://jsonplaceholder.typicode.com/posts')
     let data = await res.json()
-    return data;
+    return data
   }
   
 }

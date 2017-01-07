@@ -1,22 +1,25 @@
 import React from 'react'
 import Page from '../../layouts/main'
+import Session from '../../components/session'
 
 export default class extends React.Component {
   
+  // Any page that needs to access a session needs to call it in
+  // getInitialProps() and export to any components that use it, like this.
+  //
+  // Note that the session is cached in the sessionStore and calling
+  // getSession() does not trigger a call to the server every time.
   static async getInitialProps({ req }) {
-    if (typeof window === 'undefined') {
-      // Being run on the server
-      return { _csrf: req.connection._httpMessage.locals._csrf }
-    } else {
-      // Being run in the browser (will get CSRF token before submitting)
-      return { _csrf: '' }
+    const session = new Session(arguments)
+    return {
+      session: await session.getSession(),
     }
   }
 
   constructor(props) {
     super(props)
     this.state = {
-      _csrf: props._csrf,
+      csrfToken: props.session.csrfToken,
       email: ''
     }
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -28,60 +31,71 @@ export default class extends React.Component {
     this.setState(this.state)
   }
   
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault()
 
     // @TODO Highlight email field if left blank
     if (this.state.email.trim() == '')
       return false
-
-    const _this = this
-
-    // Note: We use XMLHttpRequest here rather than fetch because fetch uses
-    // Service Workers and they cannot share cookies with the browser session
-    // yet (!) so if we tried to get or pass the CSRF token it would mismatch.
-
-    // Check we have the latest CSRF token before submitting the form
-    var xhr = new XMLHttpRequest()
-    xhr.open("GET", '/auth/csrf')
-    xhr.onreadystatechange = function() {
       
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        const jsonResponse = JSON.parse(xhr.responseText);
-
-        _this.state._csrf = jsonResponse._csrf
-        _this.setState(_this.state)
-  
-        // Submit the form
-        xhr = new XMLHttpRequest()
-        xhr.open("POST", '/auth/signin', true)
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState == 4 && xhr.status == 200)
-            _this.props.url.push("/auth/check-email")
-        }
-        xhr.send("_csrf="+encodeURIComponent(_this.state._csrf)+"&"
-                 +"email="+encodeURIComponent(_this.state.email))
-      }
-    
-    }
-    xhr.send()
+    const session = new Session()
+    await session.signin(this.state.email)
+    this.props.url.push("/auth/check-email")
   }
 
   render() {
-    return (
-      <Page>
-        <form id="signin" method="post" onSubmit={this.handleSubmit}>
-          <input name="_csrf" type="hidden" value={this.state._csrf} />
-          <h2>Sign In</h2>
-          <p>
-            <label htmlFor="email">Email address</label><br/>
-            <input name="email" type="text" placeholder="j.smith@example.com" id="email" value={this.state.email} onChange={this.handleEmailChange} />
-          </p>
-          <p>
-            <button type="submit">Sign in</button>
-          </p>
-        </form>
+    let signinForm = <div></div>
+    if (this.props.session.isLoggedIn == false) {
+      signinForm = 
+        <div>
+          <form id="signin" method="post" onSubmit={this.handleSubmit}>
+            <input name="_csrf" type="hidden" value={this.state.csrfToken} />
+            <h3>Sign in</h3>
+            <p>
+              <label htmlFor="email">Email address</label><br/>
+              <input name="email" type="text" placeholder="j.smith@example.com" id="email" value={this.state.email} onChange={this.handleEmailChange} />
+            </p>
+            <p>
+              <button type="submit">Sign in</button>
+            </p>
+          </form>
+        </div>
+    }
+  
+    return(
+      <Page session={this.props.session}>
+        <h2>Authentication</h2>
+        {signinForm}
+        <h3>How it works</h3>
+        <p>
+          This passwordless, email based authentication system is like the system
+          used by sites like Slack. One time use tokens are sent out via email
+          and recipients follow the links in the emails to sign in.
+        </p>
+        <p>
+          The login system works client and server side, with and without JavaScript.
+          Client sessions are cached using browsers native sessionStore Web Storage API.
+          Cross Site Request Forgery is added to all POST requests.
+        </p>
+        <p>
+          All pages in this demo call getSession() in their getInitialProps(), and export
+          the session to the layout, where the header and login menu inherit it from. The call
+          to getSession() only triggers an request to the server if the sessionStore is empty.
+        </p>
+        <p>
+          By default, user data is persisted on the server in SQL Lite, but this can be
+          easily changed to another database (MongoDB, MySQL, PostgreSQL, Amazon Redshift, etc…)
+          by customising the options passed to lib/auth.js.
+        </p>
+        <p>
+        For larger sites, a fully decoupled authentication system (running on a seperate backend) can be easier to scale and maintain,
+          but this example shows how you can add authentication to any Next.js 2.0 project.
+        </p>
+        <p>
+          Note: If you aren't receiving emails, try using another email address or
+          configuring the mail server option (some email providers block email from
+          unverified mail servers).
+        </p>
       </Page>
     )
   }

@@ -1,6 +1,6 @@
 {
   "name": "nextjs-starter",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "A starter Next.js project",
   "main": "index.js",
   "dependencies": {
@@ -11,11 +11,6 @@
     "next": "^2.0.0-beta",
     "nodemailer": "^2.7.0",
     "orm": "^3.2.3",
-    "passport": "^0.3.2",
-    "passport-facebook": "^2.1.1",
-    "passport-google-oauth": "^1.0.0",
-    "passport-local": "^1.0.0",
-    "passport-twitter": "^1.0.4",
     "react-redux": "^4.4.6",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
