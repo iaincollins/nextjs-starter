@@ -12,7 +12,7 @@ export default class extends React.Component {
   static async getInitialProps({ req }) {
     const session = new Session(arguments)
     return {
-      session: await session.getSession(),
+      session: await session.getSession()
     }
   }
 

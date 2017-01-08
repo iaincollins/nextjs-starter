@@ -15,29 +15,30 @@ const app = next({
 })
 
 const handle = app.getRequestHandler()
+let server
 
 app.prepare()
 .then(() => {
-  const server = express()
+  server = express()
 
-  // Auth lib adds signin and signout routes under /auth
-  // This configures auth routes for express and datastores for users & sessions
-  auth(app, server, {}, function() {
-  
-    // Requests to '/route/{anything}' ared handled by the 'routing' page
-    server.get('/route/:id', (req, res) => {
-      return app.render(req, res, '/routing', req.params)
-    })
-  
-    // Default catch-all handler
-    server.all('*', (req, res) => {
-      return handle(req, res)
-    })
+  // 'auth' configures auth routes for express + datastores for users & sessions
+  // NB: It returns a promise as we have to wait for datastores to be setup 
+  // and available before we can call listen()
+  return auth(app, server, {})
+})
+.then(() => {
+  // Requests to '/route/{anything}' ared handled by the 'routing' page
+  server.get('/route/:id', (req, res) => {
+    return app.render(req, res, '/routing', req.params)
+  })
 
-    server.listen(process.env.PORT, (err) => {
-      if (err) throw err
-      console.log('> Ready on http://localhost:'+process.env.PORT+" ["+process.env.NODE_ENV+"]")
-    })
-    
+  // Default catch-all handler
+  server.all('*', (req, res) => {
+    return handle(req, res)
+  })
+
+  server.listen(process.env.PORT, (err) => {
+    if (err) throw err
+    console.log('> Ready on http://localhost:'+process.env.PORT+" ["+process.env.NODE_ENV+"]")
   })
 })

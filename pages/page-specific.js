@@ -27,7 +27,7 @@ export default class extends React.Component {
         <h2>Page specific CSS and &lt;head&gt; tags</h2>
         <p>This is mobile-ready page has custom elements that are included on on this page and inline CSS.</p>
         <p className={style}>This text will change colour if you hover over it or resize the window.</p>
-        <p>Note: page specific CSS is currently in flux and will change before Next.js 2.0 is final.</p>
+        <p>Note: Page specific CSS is currently in flux and will change before Next.js 2.0 is final.</p>
       </Page>
     )
   }
