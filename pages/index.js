@@ -39,7 +39,7 @@ export default class extends React.Component {
         <p>
           There are practical examples with header, footer and layout files,
           how to add page-specific CSS and JavaScript and header elements,
-          how to write code that does asynchronous data fetching (including how
+          how to write code that does asynchronous data fetching, including how
           to write different logic for client and server rendering, as well
           as some more advanced usage, including email based authentication.
         </p>
