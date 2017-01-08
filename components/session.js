@@ -14,9 +14,9 @@ export default class Session {
          isLoggedIn: (props[0].req.session.user) ? true : false,
          csrfToken: props[0].req.connection._httpMessage.locals._csrf
         }
-      } else if (typeof sessionStorage !== 'undefined') {
+      } else {
         // If running on client, attempt to load session from sessionStorage
-        this._session = JSON.parse(sessionStorage.getItem('session'))
+        this._session = this._getSessionStore()
       }
     } catch (e) {
       // @TODO Handle if error reading from session storage or server state
@@ -27,16 +27,17 @@ export default class Session {
     return new Promise((resolve, reject) => {
       if (typeof window === 'undefined')
         return reject(Error('This method should only be called on the client'))
-        
+
       let xhr = new XMLHttpRequest()
       xhr.open("GET", '/auth/csrf', true)
       xhr.onreadystatechange = () => {
         if (xhr.readyState == 4) {
           if (xhr.status == 200) {
             const responseJson = JSON.parse(xhr.responseText)
+            
+            // Save changes to session
             this._session.csrfToken = responseJson.csrfToken
-            if (typeof sessionStorage !== 'undefined')
-              sessionStorage.setItem('session', JSON.stringify(this._session))
+            this._setSessionStore(this._session)
 
             resolve(this._session.csrfToken)
           } else {
@@ -57,8 +58,8 @@ export default class Session {
   async getSession(forceUpdate) {
     // If we have a populated session object already AND forceUpdate is not
     // set to true then return the session object we have in memory
-    if (Object.keys(this._session).length !== 0 && forceUpdate != true) {
-      return new Promise((resolve, reject) => {
+    if (this._session && Object.keys(this._session).length !== 0 && forceUpdate != true) {
+      return new Promise((resolve) => {
         resolve(this._session)
       })
     } else {
@@ -68,10 +69,12 @@ export default class Session {
         xhr.onreadystatechange = () => {
           if (xhr.readyState == 4) {
             if (xhr.status == 200) {
-              // Update session with session info and save to sessionStorage
+              // Update session with session info
               this._session = JSON.parse(xhr.responseText)
-              if (typeof sessionStorage !== 'undefined')
-                sessionStorage.setItem('session', JSON.stringify(this._session))
+              
+              // Save changes to session
+              this._setSessionStore(this._session)
+              
               resolve(this._session)
             } else {
               reject(Error('XMLHttpRequest failed: Unable to get session'))
@@ -89,15 +92,14 @@ export default class Session {
   async signin(email) {
     // Sign in to the server
     return new Promise(async (resolve, reject) => {
-      
       if (typeof window === 'undefined')
         return reject(Error('This method should only be called on the client'))
-      
-      // If we don't have a session in memory, read it in
-      if (Object.keys(this._session).length === 0)
-        this._session = await this.getSession()
+        
+      // Make sure we have session in memory
+      this._session = await this.getSession()
 
-      this._session.csrfToken = await this.getCsrfToken()
+      // Make sure we have the latest CSRF Token in our session
+      await this.getCsrfToken()
 
       let xhr = new XMLHttpRequest()
       xhr.open("POST", '/auth/signin', true)
@@ -123,20 +125,20 @@ export default class Session {
   async signout() {
     // Signout from the server
     return new Promise(async (resolve, reject) => {
-      
       if (typeof window === 'undefined')
         return reject(Error('This method should only be called on the client'))
       
-      // If we don't have a session in memory, read it in
-      if (Object.keys(this._session).length === 0)
-        this._session = await this.getSession()
+
+      // Make sure we have session in memory
+      this._session = await this.getSession()
 
       // Set isLoggedIn to false and destory user object
       this._session.csrfToken = await this.getCsrfToken()
       this._session.isLoggedIn = false
       delete this._session.user
-      if (typeof sessionStorage !== 'undefined')
-        sessionStorage.setItem('session', JSON.stringify(this._session))
+        
+      // Save changes to session
+      this._setSessionStore(this._session)
         
       let xhr = new XMLHttpRequest()
       xhr.open("POST", '/auth/signout', true)
@@ -154,4 +156,20 @@ export default class Session {
     })
   }
   
+  _getSessionStore() {
+    try {
+      return JSON.parse(sessionStorage.getItem('session'))
+    } catch (e) {
+      return {}
+    }
+  }
+  
+  _setSessionStore(session) {
+    try {
+      sessionStorage.setItem('session', JSON.stringify(session))
+      return true
+    } catch (e) {
+      return false
+    }
+  }
 }

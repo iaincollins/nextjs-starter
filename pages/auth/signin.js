@@ -37,10 +37,15 @@ export default class extends React.Component {
     // @TODO Highlight email field if left blank
     if (this.state.email.trim() == '')
       return false
-      
+
     const session = new Session()
-    await session.signin(this.state.email)
-    this.props.url.push("/auth/check-email")
+    session.signin(this.state.email)
+    .then(() => {
+      this.props.url.push("/auth/check-email")
+    })
+    .catch((err) => {
+      // @TODO Handle error
+    })
   }
 
   render() {
