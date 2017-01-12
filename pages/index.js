@@ -39,9 +39,14 @@ export default class extends React.Component {
         <p>
           There are practical examples with header, footer and layout files,
           how to add page-specific CSS and JavaScript and header elements,
-          how to write code that does asynchronous data fetching, including how
-          to write different logic for client and server rendering, as well
-          as some more advanced usage, including email based authentication.
+          how to write code that does asynchronous data fetching, how to write
+          different logic for fetching data on the client and server if you need
+          to, as well as some more advanced usage, including an email based 
+          authentication (with sessions and CSRF protection).
+        </p>
+        <p>
+          All examples work client and server site, with and without a
+          JavaScript capable browser.
         </p>
         <h2>Examples</h2>
         <ul>
