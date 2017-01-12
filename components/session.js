@@ -1,7 +1,10 @@
-// Note: We use XMLHttpRequest() here rather than fetch because fetch() uses
-// Service Workers and they cannot share cookies with the browser session
-// yet (!) so if we tried to get or pass the CSRF token it would mismatch.
-
+/**
+ * A class to handle signing in and out and caching session data in sessionStore
+ *
+ * Note: We use XMLHttpRequest() here rather than fetch because fetch() uses
+ * Service Workers and they cannot share cookies with the browser session
+ * yet (!) so if we tried to get or pass the CSRF token it would mismatch.
+ */
 export default class Session {
 
   constructor(props) {
@@ -127,7 +130,6 @@ export default class Session {
     return new Promise(async (resolve, reject) => {
       if (typeof window === 'undefined')
         return reject(Error('This method should only be called on the client'))
-      
 
       // Make sure we have session in memory
       this._session = await this.getSession()
@@ -156,7 +158,11 @@ export default class Session {
     })
   }
   
-  _getSessionStore() {
+  // sessionStorage is widely supported, but not always available (for example
+  // it can be restricted in private browsing mode). We handle that by just
+  // returning an empty session, forcing getSession() to perform an ajax request
+  // to get the session info each time it is called.
+    _getSessionStore() {
     try {
       return JSON.parse(sessionStorage.getItem('session'))
     } catch (e) {
@@ -172,4 +178,5 @@ export default class Session {
       return false
     }
   }
+  
 }

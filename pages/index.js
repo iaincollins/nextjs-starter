@@ -41,7 +41,7 @@ export default class extends React.Component {
           how to add page-specific CSS and JavaScript and header elements,
           how to write code that does asynchronous data fetching, how to write
           different logic for fetching data on the client and server if you need
-          to, as well as some more advanced usage, including an email based 
+          to, as well as some more advanced usage, including email based 
           authentication (with sessions and CSRF protection).
         </p>
         <p>

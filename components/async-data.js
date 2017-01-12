@@ -8,6 +8,7 @@
  */
 
 import 'isomorphic-fetch'
+
 export default class AsyncData {
   
   async getData() {
