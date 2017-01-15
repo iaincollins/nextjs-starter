@@ -83,6 +83,12 @@ export default class extends React.Component {
           Cross Site Request Forgery is added to all POST requests.
         </p>
         <p>
+          Note that session identifier (AKA session ID or session token) is stored in a
+          a cookie with the "HTTP Only" option set, and accessed only indirectly via
+          XMLHttpRequest() - and cannot be read directly via JavaScript, as protection
+          against Cross Site Scripting (XSS) attacks being used to hijack a session.
+        </p>
+        <p>
           All pages in this demo call getSession() in their getInitialProps(), and export
           the session to the layout, where the header and login menu inherit it from. The call
           to getSession() only triggers an request to the server if the sessionStore is empty.
