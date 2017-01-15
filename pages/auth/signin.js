@@ -79,11 +79,12 @@ export default class extends React.Component {
         </p>
         <p>
           The login system works client and server side, with and without JavaScript.
-          Client sessions are cached using browsers native sessionStore Web Storage API.
-          Cross Site Request Forgery is added to all POST requests.
+          Session identifiers are stored in HTTP Only cookies and client session
+          data is cached in a sessionStore using the Web Storage API. Cross Site
+          Request Forgery protection is added to all POST requests.
         </p>
         <p>
-          That session identifier (AKA session ID or session token) is stored in a
+          The session identifier (AKA session ID or session token) is stored in a
           cookie with the "HTTP Only" option set and is accessed only indirectly via
           XMLHttpRequest(). It cannot be read directly via JavaScript, as protection
           against Cross Site Scripting (XSS) attacks being used to hijack a session.
