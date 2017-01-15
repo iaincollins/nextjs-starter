@@ -24,6 +24,8 @@ To get started in development mode, just clone the repository and run:
 If you wanted to run this site in production run:
 
     npm install
+    npm build
     npm start
 
-NB: In this project 'npm start' is configured in package.json to also trigger 'next build' automatically (to ensure assets are pre-built); the build step can take a few seconds to complete.
+You should run the the build step again any time you make changes to pages or
+components.
