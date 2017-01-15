@@ -64,16 +64,12 @@ export default class Session {
     this._session = this._getSessionStore()
       
     if (this._session && Object.keys(this._session).length > 0 && forceUpdate !== true) {
-      console.log("Session object found")
-      console.log(this._session)
       // If we have a populated session object already AND forceUpdate is not
       // set to true then return the session data we have already
       return new Promise((resolve) => {
         resolve(this._session)
       })
     } else {
-      console.log("No session object found")
-      console.log(this._session)
       // If we don't have session data (or forceUpdate is true) then get it
       return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest()
