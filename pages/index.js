@@ -34,7 +34,7 @@ export default class extends React.Component {
           Like all Next.js projects it features automatic pre-fetching of templates
           with a ServiceWorker, renders pages both client and server side and live
           reloading in development. It also shows how to use features new in 
-          Next.js version 2.0 like integration with the Express and custom route handling.
+          Next.js version 2.0 like integration with Express for custom route handling.
         </p>
         <p>
           There are practical examples with header, footer and layout files,
