@@ -18,11 +18,11 @@ export default class Session {
          csrfToken: props[0].req.connection._httpMessage.locals._csrf
         }
       } else {
-        // If running on client, attempt to load session from sessionStorage
+        // If running on client, attempt to load session from localStorage
         this._session = this._getSessionStore()
       }
     } catch (e) {
-      // @TODO Handle if error reading from session storage or server state
+      // @TODO Handle if error reading from localStorage or server state
     }
   }
     
@@ -37,12 +37,7 @@ export default class Session {
         if (xhr.readyState == 4) {
           if (xhr.status == 200) {
             const responseJson = JSON.parse(xhr.responseText)
-            
-            // Save changes to session
-            this._session.csrfToken = responseJson.csrfToken
-            this._setSessionStore(this._session)
-
-            resolve(this._session.csrfToken)
+            resolve(responseJson.csrfToken)
           } else {
             reject(Error('Unexpected response when trying to get CSRF token'))
           }
@@ -59,13 +54,27 @@ export default class Session {
   // This allows us to use XMLHttpRequest when running on the client to fetch it
   // Note: We use XMLHttpRequest instead of fetch so auth cookies are passed
   async getSession(forceUpdate) {
-    // If we have a populated session object already AND forceUpdate is not
-    // set to true then return the session object we have in memory
-    if (this._session && Object.keys(this._session).length !== 0 && forceUpdate != true) {
+    // If running on the server, return session as will be loaded in constructor
+    if (typeof window === 'undefined')
+      return new Promise((resolve) => {
+        resolve(this._session)
+      })
+  
+    // Attempt to load session data from sessionStore on every call
+    this._session = this._getSessionStore()
+      
+    if (this._session && Object.keys(this._session).length > 0 && forceUpdate !== true) {
+      console.log("Session object found")
+      console.log(this._session)
+      // If we have a populated session object already AND forceUpdate is not
+      // set to true then return the session data we have already
       return new Promise((resolve) => {
         resolve(this._session)
       })
     } else {
+      console.log("No session object found")
+      console.log(this._session)
+      // If we don't have session data (or forceUpdate is true) then get it
       return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest()
         xhr.open("GET", '/auth/session', true)
@@ -102,7 +111,7 @@ export default class Session {
       this._session = await this.getSession()
 
       // Make sure we have the latest CSRF Token in our session
-      await this.getCsrfToken()
+      this._session.csrfToken = await this.getCsrfToken()
 
       let xhr = new XMLHttpRequest()
       xhr.open("POST", '/auth/signin', true)
@@ -158,13 +167,13 @@ export default class Session {
     })
   }
   
-  // sessionStorage is widely supported, but not always available (for example
+  // localStorage is widely supported, but not always available (for example
   // it can be restricted in private browsing mode). We handle that by just
   // returning an empty session, forcing getSession() to perform an ajax request
   // to get the session info each time it is called.
     _getSessionStore() {
     try {
-      return JSON.parse(sessionStorage.getItem('session'))
+      return JSON.parse(localStorage.getItem('session'))
     } catch (e) {
       return {}
     }
@@ -172,7 +181,7 @@ export default class Session {
   
   _setSessionStore(session) {
     try {
-      sessionStorage.setItem('session', JSON.stringify(session))
+      localStorage.setItem('session', JSON.stringify(session))
       return true
     } catch (e) {
       return false

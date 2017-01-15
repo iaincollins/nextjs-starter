@@ -7,7 +7,7 @@ export default class extends React.Component {
   // Any page that needs to access a session needs to call it in
   // getInitialProps() and export to any components that use it, like this.
   //
-  // Note that the session is cached in the sessionStore and calling
+  // Note that the session is cached in the web storage and calling
   // getSession() does not trigger a call to the server every time.
   static async getInitialProps({ req }) {
     const session = new Session(arguments)
@@ -80,8 +80,9 @@ export default class extends React.Component {
         <p>
           The login system works client and server side, with and without JavaScript.
           Session identifiers are stored in HTTP Only cookies and client session
-          data is cached in a sessionStore using the Web Storage API. Cross Site
-          Request Forgery protection is added to all POST requests.
+          data is cached using the Web Storage API (localStorage rather than 
+          sessionStorage so that it's available across tabs). 
+          Cross Site Request Forgery protection is added to all POST requests.
         </p>
         <p>
           The session identifier (AKA session ID or session token) is stored in a
@@ -92,7 +93,7 @@ export default class extends React.Component {
         <p>
           All pages in this demo call getSession() in their getInitialProps(), and export
           the session to the layout, where the header and login menu inherit it from. The call
-          to getSession() only triggers an request to the server if the sessionStore is empty.
+          to getSession() only triggers an request to the server if the local data store is empty.
         </p>
         <p>
           By default, user data is persisted on the server in SQL Lite, but this can be

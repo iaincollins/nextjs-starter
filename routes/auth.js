@@ -137,10 +137,10 @@ exports.configure = (app, server, options) => {
         user.save(function(err) {
           // if (err) throw err
           req.session.user = user
-          res.redirect(req.params.redirect || '/')
+          return res.redirect(path+'/valid')
         })
       } else {
-         res.redirect(path+'/invalid')
+         return res.redirect(path+'/invalid')
       }
     })
   })
