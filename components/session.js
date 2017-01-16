@@ -97,6 +97,11 @@ export default class Session {
     }
   }
 
+ setSession(session) {
+   this._session = session
+   return this._setSessionStore(session)
+ }
+    
   async signin(email) {
     // Sign in to the server
     return new Promise(async (resolve, reject) => {
