@@ -10,7 +10,7 @@ All examples work client and server site, with and without a JavaScript capable 
 
 ## Demo
 
-You can try it out at https://nextjs-starter-fbguvztvvm.now.sh 
+You can try it out at https://nextjs-starter-gjimnobcab.now.sh
 
 The demo is hosted on Next.js creators [Ziet's](https://zeit.co) cloud platform.
 
