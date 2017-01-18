@@ -1,36 +1,26 @@
 import Link from 'next/prefetch'
 import React from 'react'
-import Page from '../../layouts/main'
+import Page from '../../components/page'
+import Layout from '../../components/layout'
 import Session from '../../components/session'
 
-export default class extends React.Component {
-
-  static async getInitialProps({ req }) {
-    const session = new Session(arguments)
-    // Force the client to update locally stored session data by passing 'true'
-    // to getSession() to update the local storage
-    return {
-      session: await session.getSession(true)
-    }
-  }
-
+export default class extends Page {
 
   render() {
-    
-    // Save session (synchronously) so localStorage on client is updated
+    // Force the client to update session data by passing 'true' to getSession()
     const session = new Session()
-    session.setSession(this.props.session)
+    session.getSession(true)
 
-    // @TODO Check for redirect path pass in props and redirect to that
+    // @TODO Check for redirect path pass in props and redirect to that path
     this.props.url.push("/")
     
     return(
-      <Page session={this.props.session}>
+      <Layout session={this.props.session}>
         <div style={{textAlign: "center"}}>
           <p>You are now signed in.</p>
           <p><Link href="/">Continue</Link></p>
         </div>
-      </Page>
+      </Layout>
     )
   }
   

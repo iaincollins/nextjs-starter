@@ -5,27 +5,21 @@
  */
 
 import React from 'react'
-import Page from '../layouts/main'
+import Page from '../components/page'
+import Layout from '../components/layout'
 import AsyncData from '../components/async-data'
-import Session from '../components/session'
 
-export default class extends React.Component {
+export default class extends Page {
   
   static async getInitialProps({ req }) {
-    const session = new Session(arguments)
-    
-    let asyncData = new AsyncData
-    let posts = await asyncData.getData()
-
-    return {
-      session: await session.getSession(),
-      posts: posts
-    }
+    let props = await super.getInitialProps({ req })
+    props.posts = await AsyncData.getData()
+    return props
   }
 
   render() {
     return (
-      <Page session={this.props.session}>
+      <Layout session={this.props.session}>
         <h2>Asynchronous data fetching</h2>
         <p>
           This example illustrates how write a simple class to fetch data
@@ -47,7 +41,7 @@ export default class extends React.Component {
             </div>
           ))
         }
-      </Page>
+      </Layout>
     )
   }
   

@@ -9,9 +9,9 @@
 
 import 'isomorphic-fetch'
 
-export default class AsyncData {
+export default class {
   
-  async getData() {
+  static async getData() {
     // This version of fetch runs in browsers as well as sever side
     let res = await fetch('https://jsonplaceholder.typicode.com/posts')
     let data = await res.json()

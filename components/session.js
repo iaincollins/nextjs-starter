@@ -7,30 +7,34 @@
  */
 export default class Session {
 
-  constructor(props) {
+  constructor({req} = {}) {
     this._session = {}
+    
     try {
-      if (props) {
+      if (req) {
         // If running on server we can access the server side environment
         this._session = {
-         user: props[0].req.session.user || null,
-         isLoggedIn: (props[0].req.session.user) ? true : false,
-         csrfToken: props[0].req.connection._httpMessage.locals._csrf
+         isLoggedIn: (req.session.user) ? true : false,
+         csrfToken: req.connection._httpMessage.locals._csrf
         }
+        if (req.session.user)
+          this._session.user = req.session.user
       } else {
         // If running on client, attempt to load session from localStorage
         this._session = this._getSessionStore()
       }
     } catch (e) {
-      // @TODO Handle if error reading from localStorage or server state
+      // Handle if error reading from localStorage or server state is safe to
+      // ignore (will just cause session data to be fetched by ajax)
+      return
     }
   }
     
-  async getCsrfToken() {
+  static async getCsrfToken() {
     return new Promise((resolve, reject) => {
       if (typeof window === 'undefined')
         return reject(Error('This method should only be called on the client'))
-
+        
       let xhr = new XMLHttpRequest()
       xhr.open("GET", '/auth/csrf', true)
       xhr.onreadystatechange = () => {
@@ -97,22 +101,17 @@ export default class Session {
     }
   }
 
- setSession(session) {
-   this._session = session
-   return this._setSessionStore(session)
- }
-    
   async signin(email) {
     // Sign in to the server
     return new Promise(async (resolve, reject) => {
       if (typeof window === 'undefined')
         return reject(Error('This method should only be called on the client'))
-        
+
       // Make sure we have session in memory
       this._session = await this.getSession()
 
       // Make sure we have the latest CSRF Token in our session
-      this._session.csrfToken = await this.getCsrfToken()
+      this._session.csrfToken = await Session.getCsrfToken()
 
       let xhr = new XMLHttpRequest()
       xhr.open("POST", '/auth/signin', true)
@@ -120,14 +119,14 @@ export default class Session {
       xhr.onreadystatechange = () => {
         if (xhr.readyState == 4) {
           if (xhr.status == 200) {
-            resolve(true)
+            return resolve(true)
           } else {
-            reject(Error('XMLHttpRequest error: Error while attempting to signin'))
+            return reject(Error('XMLHttpRequest error: Error while attempting to signin'))
           }
         }
       }
       xhr.onerror = () => {
-        reject(Error('XMLHttpRequest error: Unable to signin'))
+        return reject(Error('XMLHttpRequest error: Unable to signin'))
       }
       xhr.send("_csrf="+encodeURIComponent(this._session.csrfToken)+"&"
                +"email="+encodeURIComponent(email))
@@ -145,7 +144,7 @@ export default class Session {
       this._session = await this.getSession()
 
       // Set isLoggedIn to false and destory user object
-      this._session.csrfToken = await this.getCsrfToken()
+      this._session.csrfToken = await Session.getCsrfToken()
       this._session.isLoggedIn = false
       delete this._session.user
         

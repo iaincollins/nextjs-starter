@@ -5,21 +5,14 @@
 import Head from 'next/head'
 import css from 'next/css'
 import React from 'react'
-import Page from '../layouts/main'
-import Session from '../components/session'
+import Page from '../components/page'
+import Layout from '../components/layout'
 
-export default class extends React.Component {
-  
-  static async getInitialProps({ req }) {
-    const session = new Session(arguments)
-    return {
-      session: await session.getSession()
-    }
-  }
+export default class extends Page {
   
   render() {
     return (
-      <Page session={this.props.session}>
+      <Layout session={this.props.session}>
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <title>This page has a custom title</title>
@@ -28,7 +21,7 @@ export default class extends React.Component {
         <p>This is mobile-ready page has custom elements that are included on on this page and inline CSS.</p>
         <p className={style}>This text will change colour if you hover over it or resize the window.</p>
         <p>Note: Page specific CSS is currently in flux and will change before Next.js 2.0 is final.</p>
-      </Page>
+      </Layout>
     )
   }
   

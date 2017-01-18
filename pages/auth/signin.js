@@ -1,25 +1,13 @@
 import React from 'react'
-import Page from '../../layouts/main'
+import Page from '../../components/page'
+import Layout from '../../components/layout'
 import Session from '../../components/session'
 
-export default class extends React.Component {
+export default class extends Page {
   
-  // Any page that needs to access a session needs to call it in
-  // getInitialProps() and export to any components that use it, like this.
-  //
-  // Note that the session is cached in the web storage and calling
-  // getSession() does not trigger a call to the server every time.
-  static async getInitialProps({ req }) {
-    const session = new Session(arguments)
-    return {
-      session: await session.getSession()
-    }
-  }
-
   constructor(props) {
     super(props)
     this.state = {
-      csrfToken: props.session.csrfToken,
       email: ''
     }
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -27,17 +15,12 @@ export default class extends React.Component {
   }
 
   handleEmailChange(event) {
-    this.state.email = event.target.value.trim()
-    this.setState(this.state)
+    this.setState({ email: event.target.value.trim() })
   }
   
   async handleSubmit(event) {
     event.preventDefault()
-
-    // @TODO Highlight email field if left blank
-    if (this.state.email.trim() == '')
-      return false
-
+    
     const session = new Session()
     session.signin(this.state.email)
     .then(() => {
@@ -54,21 +37,21 @@ export default class extends React.Component {
       signinForm = 
         <div>
           <form id="signin" method="post" onSubmit={this.handleSubmit}>
-            <input name="_csrf" type="hidden" value={this.state.csrfToken} />
+            <input name="_csrf" type="hidden" value={this.props.session.csrfToken} />
             <h3>Sign in</h3>
             <p>
               <label htmlFor="email">Email address</label><br/>
               <input name="email" type="text" placeholder="j.smith@example.com" id="email" value={this.state.email} onChange={this.handleEmailChange} />
             </p>
             <p>
-              <button type="submit">Sign in</button>
+              <button id="submitButton" type="submit">Sign in</button>
             </p>
           </form>
         </div>
     }
   
     return(
-      <Page session={this.props.session}>
+      <Layout session={this.props.session}>
         <h2>Authentication</h2>
         {signinForm}
         <h3>How it works</h3>
@@ -109,7 +92,7 @@ export default class extends React.Component {
           configuring the mail server option (some email providers block email from
           unverified mail servers).
         </p>
-      </Page>
+      </Layout>
     )
   }
   

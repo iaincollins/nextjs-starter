@@ -5,13 +5,6 @@ import Menu from './menu'
 
 export default class extends React.Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      session: props.session || null
-    }
-  }
-
   render() {
     return(
       <header>
@@ -60,15 +53,20 @@ export default class extends React.Component {
             button {
               font-size: 16px;
               line-height: 18px;
-              border: 1px solid #222;
-              background: #222;
+              border: none;
+              background-color: #444;
               color: #fff;
               padding: 10px 15px;
+            }
+            
+            button:disabled {
+              background-color: #666;
+              color: #ccc;
             }
           `}</style>
         </Head>
         <h1><Link href="/">Next.js 2.0 Starter Project</Link></h1>
-        <Menu session={this.state.session}/>
+        <Menu session={this.props.session}/>
         <hr/>
       </header>
     )

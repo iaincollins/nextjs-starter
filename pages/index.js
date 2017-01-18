@@ -4,26 +4,14 @@
 
 import Link from 'next/prefetch'
 import React from 'react'
-import Page from '../layouts/main'
-import Session from '../components/session'
+import Page from '../components/page'
+import Layout from '../components/layout'
 
-export default class extends React.Component {
-  
-  static async getInitialProps({ req }) {
-    const session = new Session(arguments)
-    return {
-      session: await session.getSession()
-    }
-  }
+export default class extends Page {
 
-  constructor(props) {
-    super(props)
-    this.state = props
-  }
-  
   render() {
     return(
-      <Page session={this.props.session}>
+      <Layout session={this.props.session}>
         <h2>About this project</h2>
         <p>
           This is a starter <a href="https://zeit.co/blog/next">Next.js 2.0</a> project
@@ -60,7 +48,8 @@ export default class extends React.Component {
         <p>
           If you want to see how custom 404, 500 and other HTTP errors are handled take a look at pages/_error.js
         </p>
-      </Page>
+      </Layout>
     )
   }
+  
 }
