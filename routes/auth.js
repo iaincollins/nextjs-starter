@@ -42,7 +42,7 @@ exports.configure = (app, server, options) => {
   const maxAge = (options.maxAge) ? options.maxAge : 3600000 * 24 * 7 * 4
 
   // URL of the server (e.g. "http://www.example.com"), autodetects if null
-  const serverUrl = (options.serverUrl) ? options.mailserver : null
+  const serverUrl = (options.serverUrl) ? options.serverUrl : null
 
   // Mailserver (defaults to sending from localhost)
   const mailserver = (options.mailserver) ? options.mailserver : null
