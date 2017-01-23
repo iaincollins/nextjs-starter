@@ -67,7 +67,7 @@ export default class Session {
     // Attempt to load session data from sessionStore on every call
     this._session = this._getSessionStore()
       
-    if (this._session && Object.keys(this._session).length > 0 && forceUpdate !== true) {
+    if (window.session && this._session && Object.keys(this._session).length > 0 && forceUpdate !== true) {
       // If we have a populated session object already AND forceUpdate is not
       // set to true then return the session data we have already
       return new Promise((resolve) => {
@@ -86,6 +86,9 @@ export default class Session {
               
               // Save changes to session
               this._setSessionStore(this._session)
+              
+              // Save session to window.session object
+              window.session = this._session
               
               resolve(this._session)
             } else {
