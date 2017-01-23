@@ -9,9 +9,9 @@ import Layout from '../components/layout'
 
 export default class extends Page {
 
-  static async getInitialProps({ req }) {
+  static async getInitialProps({ req, query }) {
     let props = await super.getInitialProps({ req })
-    props.path = req.path
+    props.path = "/route/"+query.id
     return props
   }
   
