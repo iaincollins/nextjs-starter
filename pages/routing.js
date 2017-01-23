@@ -9,12 +9,18 @@ import Layout from '../components/layout'
 
 export default class extends Page {
 
+  static async getInitialProps({ req }) {
+    let props = await super.getInitialProps({ req })
+    props.path = req.path
+    return props
+  }
+  
   render() {
     return (
       <Layout session={this.props.session}>
         <h2>Custom routing</h2>
         <p>
-          You went to <strong>"/route/{ this.props.path }"</strong>
+          You went to <strong>"{ this.props.path }"</strong>
         </p>
         <p>
           Take a look at the source of pages/routing.js and server.js to see how
