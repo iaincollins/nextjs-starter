@@ -1,9 +1,17 @@
 import Link from 'next/prefetch'
 import React from 'react'
+import Package from '../package.json'
 
 export default() => (
   <footer>
     <hr/>
-    <p><Link href="/">Home</Link> | &copy; {new Date().getYear() + 1900} | <Link href="https://github.com/iaincollins/nextjs-starter">View source on GitHub</Link></p>
+    <p>
+      <Link href="/"><a><strong>Home</strong></a></Link>
+      &nbsp;|&nbsp;
+      <Link href="https://github.com/iaincollins/nextjs-starter"><a>nextjs-starter {Package.version}</a></Link>
+      &nbsp;|&nbsp;
+      <Link href="https://github.com/zeit/next.js"><a>nextjs {Package.dependencies['next']}</a></Link>
+      &nbsp;| &copy; {new Date().getYear() + 1900}
+    </p>
   </footer>
 )

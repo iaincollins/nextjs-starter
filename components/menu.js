@@ -1,18 +1,15 @@
 import Link from 'next/prefetch'
 import React from 'react'
 import Session from './session'
+import Router from 'next/router'
 
 export default class extends React.Component {
 
   async handleSubmit(event) {
     event.preventDefault()
-    
     const session = new Session()
     await session.signout()
-    
-    // Redirect to homepage as we can't access the page's props.url from here
-    // NB: You could export it to this component from the page as the session is
-    window.location = "/"
+    Router.push("/")
   }
 
   render() {
@@ -32,7 +29,7 @@ export default class extends React.Component {
             </form>
           </div>
       } else if (session.isLoggedIn === false) {
-        loginMessage = <p>You are not logged in | <Link href="/auth/signin">Sign In</Link></p>
+        loginMessage = <p>You are not logged in | <Link href="/auth/signin"><a>Sign In</a></Link></p>
       }
     }
     

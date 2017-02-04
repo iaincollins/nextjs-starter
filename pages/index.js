@@ -36,17 +36,20 @@ export default class extends Page {
           All examples work client and server site, with and without a
           JavaScript capable browser.
         </p>
-        <h2>Examples</h2>
+        <h3>Examples</h3>
         <ul>
-          <li><Link href="/helloworld">HelloWorld</Link> - The simplest possible example</li>
-          <li><Link href="/page-specific">Page specific styles</Link> - Page specific CSS and &lt;head&gt; tags</li>
-          <li><Link href="/async">Async example</Link> - Show how to include data from an API or database</li>
-          <li><Link href="/routing/?id=example" as="/route/example">Custom routing</Link> - Custom routing with Express</li>
-          <li><Link href="/auth/signin">Authentication</Link> - An email based authentication example</li>
-          <li><Link href="/clock">Clock</Link> - A more advanced example from the Zeit wiki </li>
+          <li><Link href="/helloworld"><a>HelloWorld</a></Link> - The simplest possible example</li>
+          <li><Link href="/page-specific"><a>Page specific styles</a></Link> - Page specific CSS and &lt;head&gt; tags</li>
+          <li><Link href="/async"><a>Async example</a></Link> - Show how to include data from an API or database</li>
+          <li><Link href="/routing/?id=example" as="/route/example"><a>Custom routing</a></Link> - Custom routing with Express</li>
+          <li><Link href="/auth/signin"><a>Authentication</a></Link> - An email based authentication example</li>
+          <li><Link href="/clock"><a>Clock</a></Link> - A more advanced example from the Zeit wiki </li>
         </ul>
         <p>
           If you want to see how custom 404, 500 and other HTTP errors are handled take a look at pages/_error.js
+        </p>
+        <p>
+          You can find the source for this project on GitHub at <Link href="https://github.com/iaincollins/nextjs-starter"><a>https://github.com/iaincollins/nextjs-starter</a></Link>
         </p>
       </Layout>
     )

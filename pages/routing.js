@@ -27,8 +27,8 @@ export default class extends Page {
           to Link can be used with custom routes.
         </p>
         <ul>
-          <li><Link href="/routing/?id=example-one" as="/route/example-one">Example One</Link></li>
-          <li><Link href="/routing/?id=example-two" as="/route/example-two">Example Two</Link></li>
+          <li><Link href="/routing/?id=example-one" as="/route/example-one"><a>Example One</a></Link></li>
+          <li><Link href="/routing/?id=example-two" as="/route/example-two"><a>Example Two</a></Link></li>
         </ul>
       </Layout>
     )

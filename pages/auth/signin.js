@@ -60,12 +60,16 @@ export default class extends Page {
           used by sites like Slack. One time use tokens are sent out via email
           and recipients follow the links in the emails to sign in.
         </p>
+        <h3>Secure, universal (client+server) sessions</h3>
+        <p>
+          Cross Site Request Forgery (CSRF) protection is added to all POST requests to
+          protect against other sites triggering actions on behalf of users.
+        </p>
         <p>
           The login system works client and server side, with and without JavaScript.
           Session identifiers are stored in HTTP Only cookies and client session
-          data is cached using the Web Storage API (localStorage rather than 
-          sessionStorage so that it's available across tabs). 
-          Cross Site Request Forgery protection is added to all POST requests.
+          data is cached using the Web Storage API (using localStorage rather than 
+          sessionStorage so that data is shared across tabs). 
         </p>
         <p>
           The session identifier (AKA session ID or session token) is stored in a
@@ -78,19 +82,21 @@ export default class extends Page {
           the session to the layout, where the header and login menu inherit it from. The call
           to getSession() only triggers an request to the server if the local data store is empty.
         </p>
+        <h3>Extending the example</h3>
         <p>
           By default, user data is persisted on the server in SQL Lite, but this can be
           easily changed to another database (MongoDB, MySQL, PostgreSQL, Amazon Redshift, etc…)
           by customising the options passed to lib/auth.js.
         </p>
         <p>
-        For larger sites, a fully decoupled authentication system (running on a seperate backend) can be easier to scale and maintain,
-          but this example shows how you can add authentication to any Next.js 2.0 project.
+          For larger sites, a fully decoupled authentication system, running on a seperate backend,
+          can be easier to scale and maintain, but this example shows how you can add easily add
+          authentication to any Next.js 2.0 project.
         </p>
         <p>
-          Note: If you aren't receiving emails, try using another email address or
-          configuring the mail server option (some email providers block email from
-          unverified mail servers).
+          If you aren't receiving emails, try using another email address or
+          configuring the mail server option - some email providers block email from
+          unverified mail servers.
         </p>
       </Layout>
     )

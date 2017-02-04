@@ -36,7 +36,7 @@ export default class Error extends React.Component {
             {css}
             <h1>Page Not Found</h1>
             <p>The page <strong>{ this.props.url.pathname }</strong> does not exist.</p>
-            <p><Link href="/">Home</Link></p>
+            <p><Link href="/"><a>Home</a></Link></p>
           </div>
         )
         break

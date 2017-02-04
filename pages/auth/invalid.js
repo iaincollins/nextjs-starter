@@ -9,7 +9,7 @@ export default class extends Page {
       <Layout session={this.props.session}>
         <h2>Link expired</h2>
         <p>The link you tried to use to sign in is no longer valid.</p>
-        <p><Link href="/auth/signin">Request a new one to signin.</Link></p>
+        <p><Link href="/auth/signin"><a>Request a new one to signin.</a></Link></p>
       </Layout>
     )
   }

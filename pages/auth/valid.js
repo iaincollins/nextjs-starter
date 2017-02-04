@@ -18,7 +18,7 @@ export default class extends Page {
       <Layout session={this.props.session}>
         <div style={{textAlign: "center"}}>
           <p>You are now signed in.</p>
-          <p><Link href="/">Continue</Link></p>
+          <p><Link href="/"><a>Continue</a></Link></p>
         </div>
       </Layout>
     )
