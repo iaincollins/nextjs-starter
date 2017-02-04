@@ -14,10 +14,6 @@ You can try it out at https://nextjs-starter.now.sh
 
 The demo is hosted on Next.js creators [Zeit's](https://zeit.co) cloud platform.
 
-## Screenshot 
-
-<img width="1024" alt="Example screenshot showing what to expect" src="https://cloud.githubusercontent.com/assets/595695/21877741/1058e502-d885-11e6-91e9-51715b5ca1ab.png">
-
 ## Running locally in development mode
 
 To get started in development mode, just clone the repository and run:
