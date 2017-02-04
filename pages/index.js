@@ -30,7 +30,7 @@ export default class extends Page {
           how to write code that does asynchronous data fetching, how to write
           different logic for fetching data on the client and server if you need
           to, as well as some more advanced usage, including email based 
-          authentication (with sessions and CSRF protection).
+          authentication (with secure sessions, XSS and CSRF protection).
         </p>
         <p>
           All examples work client and server site, with and without a
