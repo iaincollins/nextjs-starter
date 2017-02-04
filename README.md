@@ -31,3 +31,10 @@ If you wanted to run this site in production run:
 
 You should run the the build step again any time you make changes to pages or
 components.
+
+## Deploying to the cloud
+
+To deploy on [Zeit's](https://zeit.co) cloud platform `now` just install it, clone this repository and run `now` in the working directory:
+
+    npm install -g now
+    now
