@@ -27,25 +27,34 @@ exports.configure = (app, server, options) => {
   const User = options.db.models.user
 
   // Base path for auth URLs
-  const path = (options.path) ? options.path : '/auth'
+  const path = options.path || '/auth'
 
   // Directory for auth pages
-  const pages = (options.pages) ? options.pages : 'auth'
+  const pages = options.pages || 'auth'
 
   // The secret is used to encrypt/decrypt sessions (you should pass your own!)
-  const secret = (options.secret) ? options.secret : 'AAAA-BBBB-CCCC-DDDD'
+  const secret = options.secret || 'AAAA-BBBB-CCCC-DDDD'
  
   // Configure session store (defaults to using file system)
-  const store = (options.store) ? options.store : new FileStore({ path: '/tmp/sessions', secret: secret })
+  const store = options.store || new FileStore({ path: '/tmp/sessions', secret: secret })
 
-  // Max cookie age (default is 4 weeks)
-  const maxAge = (options.maxAge) ? options.maxAge : 3600000 * 24 * 7 * 4
+  // Max session age in ms (default is 4 weeks)
+  // NB: With 'rolling: true' passed to session() the session expiry time will 
+  // be reset every time a user visits the site again before it expires.
+  const maxAge =  options.maxAge || 60000 * 60 * 24 * 7 * 4
+    
+  // How often the client should revalidate the session in ms (default 60s)
+  // Does not impact the session life on the server, but causes the client to
+  // always refetch session info after N seconds has elapsed since last checked.
+  // Sensible values are between 0 (always check the server) and a few minutes.
+  const clientMaxAge = options.clientMaxAge || 60000
 
-  // URL of the server (e.g. "http://www.example.com"), autodetects if null
-  const serverUrl = (options.serverUrl) ? options.serverUrl : null
+  // URL of the server (e.g. "http://www.example.com"). Used when sending 
+  // sign-in emails. Autodetects current server hostname / domain if null.
+  const serverUrl = options.serverUrl || null
 
-  // Mailserver (defaults to sending from localhost)
-  const mailserver = (options.mailserver) ? options.mailserver : null
+  // Mailserver (defaults to sending from localhost if null)
+  const mailserver = options.mailserver || null
 
   // Load body parser to handle POST requests
   server.use(bodyParser.json())
@@ -77,9 +86,12 @@ exports.configure = (app, server, options) => {
 
   // Return session info
   server.get(path+'/session', (req, res) => {
+    // @TODO Instead of storing the "user" object in the sesssion, we should
+    // really just store the User ID and fetch the User object.
     return res.json({ 
       user: req.session.user || null,
       isLoggedIn: (req.session.user) ? true : false,
+      clientMaxAge: clientMaxAge,
       csrfToken: res.locals._csrf
     })
   })

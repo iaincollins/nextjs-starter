@@ -36,10 +36,10 @@ app.prepare()
 
       // Define user object
       const User = db.define("user", {
-          name      : { type: "text" },
-          email     : { type: "text", unique: true },
-          token     : { type: "text" },
-          verified  : { type: "boolean", defaultValue: false }
+        name      : { type: "text" },
+        email     : { type: "text", unique: true },
+        token     : { type: "text" },
+        verified  : { type: "boolean", defaultValue: false }
       })
 
       // Create table

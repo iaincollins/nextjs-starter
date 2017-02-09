@@ -66,15 +66,18 @@ export default class Session {
   
     // Attempt to load session data from sessionStore on every call
     this._session = this._getSessionStore()
+    
+    //console.log("Time left till session expires in seconds: "+((this._session.expires - Date.now()) / 1000))
       
-    if (window.session && this._session && Object.keys(this._session).length > 0 && forceUpdate !== true) {
-      // If we have a populated session object already AND forceUpdate is not
-      // set to true then return the session data we have already
+    // If session data exists, has not expired AND forceUpdate is not set then
+    // return the stored session we already have.
+    if (this._session && Object.keys(this._session).length > 0 && this._session.expires > Date.now() && forceUpdate !== true) {
       return new Promise((resolve) => {
         resolve(this._session)
       })
     } else {
-      // If we don't have session data (or forceUpdate is true) then get it
+      // If we don't have session data, or it's expired, or forceUpdate is set
+      // to true then revalidate it by fetching it again from the server.
       return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest()
         xhr.open("GET", '/auth/session', true)
@@ -84,12 +87,13 @@ export default class Session {
               // Update session with session info
               this._session = JSON.parse(xhr.responseText)
               
+              // Set a value we will use to check this client should silently 
+              // revalidate based on the value of clientMaxAge set by the server
+              this._session.expires = Date.now() + this._session.clientMaxAge
+                       
               // Save changes to session
               this._setSessionStore(this._session)
-              
-              // Save session to window.session object
-              window.session = this._session
-              
+
               resolve(this._session)
             } else {
               reject(Error('XMLHttpRequest failed: Unable to get session'))
@@ -149,6 +153,7 @@ export default class Session {
       // Set isLoggedIn to false and destory user object
       this._session.csrfToken = await Session.getCsrfToken()
       this._session.isLoggedIn = false
+      this._session.expires = Date.now()
       delete this._session.user
         
       // Save changes to session

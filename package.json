@@ -1,6 +1,6 @@
 {
   "name": "nextjs-starter",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "description": "A starter Next.js project",
   "main": "index.js",
   "dependencies": {
