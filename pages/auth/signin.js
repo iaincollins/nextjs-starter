@@ -33,10 +33,10 @@ export default class extends Page {
 
   render() {
     let signinForm = <div></div>
-    if (this.props.session.isLoggedIn == false) {
+    if (!this.props.session.user) {
       signinForm = 
         <div>
-          <form id="signin" method="post" onSubmit={this.handleSubmit}>
+          <form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
             <input name="_csrf" type="hidden" value={this.props.session.csrfToken} />
             <h3>Sign in</h3>
             <p>

@@ -9,7 +9,9 @@ export default class extends React.Component {
     event.preventDefault()
     const session = new Session()
     await session.signout()
-    Router.push("/")
+    //Router.push("/")
+    // @FIXME Router not working reliably, so reverting back to window.location
+    window.location = "/"
   }
 
   render() {
@@ -17,20 +19,19 @@ export default class extends React.Component {
 
     let loginMessage = <p></p>
     
-    if (session !== null) {
-      if (session.isLoggedIn === true) {
-        loginMessage = <div>
-            <form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSubmit}>
-              <input name="_csrf" type="hidden" value={session.csrfToken} />
-              <span style={{ display: 'inline', marginRight: '10px'  }}>
-                You are logged in as <strong>{session.user.name || session.user.email}</strong>
-              </span>
-              <button style={{ display: 'inline', padding: '5px 10px' }} type="submit">Logout</button>
-            </form>
-          </div>
-      } else if (session.isLoggedIn === false) {
-        loginMessage = <p>You are not logged in | <Link href="/auth/signin"><a>Sign In</a></Link></p>
-      }
+    if (session.user) {
+      loginMessage =
+        <div>
+          <form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSubmit}>
+            <input name="_csrf" type="hidden" value={session.csrfToken} />
+            <span style={{ display: 'inline', marginRight: '10px'  }}>
+              You are logged in as <strong>{session.user.name || session.user.email}</strong>
+            </span>
+            <button style={{ display: 'inline', padding: '5px 10px' }} type="submit">Logout</button>
+          </form>
+        </div>
+    } else {
+      loginMessage = <p>You are not logged in | <Link href="/auth/signin"><a>Sign In</a></Link></p>
     }
     
     return(

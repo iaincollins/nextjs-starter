@@ -78,6 +78,23 @@ exports.configure = (app, server, options) => {
   server.use((req, res, next) => {
     csrf(req, res, next)
   })
+  
+  // Add User model to res.locals to expose it when rendering server side
+  server.use((req, res, next) => {
+    if (!req.session.user)
+      return next()
+    
+    // Populate res.locals with user data to expose it 
+    User.get(req.session.user, function(err, user) {
+      if (user) {
+        res.locals.user = { 
+          name: user.name,
+          email: user.email
+        }
+      }
+      next()
+    })
+  })
 
   // Add route to get CSRF token via AJAX
   server.get(path+'/csrf', (req, res) => {
@@ -86,25 +103,35 @@ exports.configure = (app, server, options) => {
 
   // Return session info
   server.get(path+'/session', (req, res) => {
-    // @TODO Instead of storing the "user" object in the sesssion, we should
-    // really just store the User ID and fetch the User object.
-    return res.json({ 
-      user: req.session.user || null,
-      isLoggedIn: (req.session.user) ? true : false,
-      clientMaxAge: clientMaxAge,
-      csrfToken: res.locals._csrf
-    })
+    if (req.session.user) {
+      User.get(req.session.user, function(err, user) {
+        // @TODO Handle errors
+        return res.json({
+          user: {
+            name: user.name,
+            email: user.email
+          },
+          clientMaxAge: clientMaxAge,
+          csrfToken: res.locals._csrf
+        })
+      })
+    } else {
+      return res.json({ 
+        clientMaxAge: clientMaxAge,
+        csrfToken: res.locals._csrf
+      })
+    }
   })
-
+  
   // On post request, redirect to page with instrutions to check email for link
-  server.post(path+'/signin', (req, res) => {
+  server.post(path+'/email/signin', (req, res) => {
     const email = req.body.email || null
 
     if (!email || email.trim() == '')
       return app.render(req, res, pages+'/signin', req.params)
     
     const token = uuid()
-    const verificationUrl = (serverUrl || "http://"+req.headers.host)+'/auth/signin/'+token
+    const verificationUrl = (serverUrl || "http://"+req.headers.host)+path+'/email/signin/'+token
 
     // Create verification token save it to database
     // @TODO Error handling (i.e. don't send email unless it worked)
@@ -112,11 +139,11 @@ exports.configure = (app, server, options) => {
       if (user) {
         user.token = token
         user.save(function(err) {
-          // if (err) throw err
+          if (err) throw err
         })
       } else {
         User.create({ email: email, token: token }, function(err) {
-          // if (err) throw err
+          if (err) throw err
         })
       }
     })
@@ -131,13 +158,16 @@ exports.configure = (app, server, options) => {
              verificationUrl+'\n\n'
     }, function(err) {
       // @TODO Handle errors
-      if (err) console.log("Error sending email", err)
-      return app.render(req, res, pages+'/check-email', req.params)
+      if (err) {
+        console.log("Generated sign in link "+verificationUrl+" for "+email)
+        console.log("Error sending email to "+email, err)
+      }
     })
   
+    return app.render(req, res, pages+'/check-email', req.params)
   })
 
-  server.get(path+'/signin/:token', (req, res) => {
+  server.get(path+'/email/signin/:token', (req, res) => {
     if (!req.params.token)
       return res.redirect(path+'/signin')
     
@@ -148,7 +178,8 @@ exports.configure = (app, server, options) => {
         user.verified = true
         user.save(function(err) {
           // if (err) throw err
-          req.session.user = user
+          // Associate the session with the account now they are signed in
+          req.session.user = user.id
           return res.redirect(path+'/valid')
         })
       } else {
@@ -158,9 +189,7 @@ exports.configure = (app, server, options) => {
   })
 
   server.post(path+'/signout', (req, res) => {
-    // Log the user out by setting isLoggedIn to false and removing user 
-    // object from the session
-    req.session.isLoggedIn = false
+    // Log user out by disassociating their account from the session
     if (req.session.user)
       delete req.session.user
     res.redirect('/')

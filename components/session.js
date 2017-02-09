@@ -9,19 +9,19 @@ export default class Session {
 
   constructor({req} = {}) {
     this._session = {}
-    
+    this._user = {}
     try {
       if (req) {
         // If running on server we can access the server side environment
         this._session = {
-         isLoggedIn: (req.session.user) ? true : false,
-         csrfToken: req.connection._httpMessage.locals._csrf
+          csrfToken: req.connection._httpMessage.locals._csrf
         }
+        // If the session is associated with a user add user object to session
         if (req.session.user)
-          this._session.user = req.session.user
+          this._session.user = req.connection._httpMessage.locals.user
       } else {
         // If running on client, attempt to load session from localStorage
-        this._session = this._getSessionStore()
+        this._session = this._getLocalStore('session')
       }
     } catch (e) {
       // Handle if error reading from localStorage or server state is safe to
@@ -59,19 +59,24 @@ export default class Session {
   // Note: We use XMLHttpRequest instead of fetch so auth cookies are passed
   async getSession(forceUpdate) {
     // If running on the server, return session as will be loaded in constructor
-    if (typeof window === 'undefined')
+    if (typeof window === 'undefined') {
       return new Promise((resolve) => {
         resolve(this._session)
       })
+    }
   
+    // If force update is set, clear data from store
+    if (forceUpdate === true)
+      this._removeLocalStore('session')
+    
     // Attempt to load session data from sessionStore on every call
-    this._session = this._getSessionStore()
+    this._session = this._getLocalStore('session')
     
     //console.log("Time left till session expires in seconds: "+((this._session.expires - Date.now()) / 1000))
       
     // If session data exists, has not expired AND forceUpdate is not set then
     // return the stored session we already have.
-    if (this._session && Object.keys(this._session).length > 0 && this._session.expires > Date.now() && forceUpdate !== true) {
+    if (this._session && Object.keys(this._session).length > 0 && this._session.expires && this._session.expires > Date.now()) {
       return new Promise((resolve) => {
         resolve(this._session)
       })
@@ -90,9 +95,9 @@ export default class Session {
               // Set a value we will use to check this client should silently 
               // revalidate based on the value of clientMaxAge set by the server
               this._session.expires = Date.now() + this._session.clientMaxAge
-                       
+
               // Save changes to session
-              this._setSessionStore(this._session)
+              this._saveLocalStore('session', this._session)
 
               resolve(this._session)
             } else {
@@ -121,7 +126,7 @@ export default class Session {
       this._session.csrfToken = await Session.getCsrfToken()
 
       let xhr = new XMLHttpRequest()
-      xhr.open("POST", '/auth/signin', true)
+      xhr.open("POST", '/auth/email/signin', true)
       xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
       xhr.onreadystatechange = () => {
         if (xhr.readyState == 4) {
@@ -146,25 +151,17 @@ export default class Session {
     return new Promise(async (resolve, reject) => {
       if (typeof window === 'undefined')
         return reject(Error('This method should only be called on the client'))
-
-      // Make sure we have session in memory
-      this._session = await this.getSession()
-
-      // Set isLoggedIn to false and destory user object
-      this._session.csrfToken = await Session.getCsrfToken()
-      this._session.isLoggedIn = false
-      this._session.expires = Date.now()
-      delete this._session.user
-        
-      // Save changes to session
-      this._setSessionStore(this._session)
         
       let xhr = new XMLHttpRequest()
       xhr.open("POST", '/auth/signout', true)
       xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-      xhr.onreadystatechange = () => {
+      xhr.onreadystatechange = async() => {
         if (xhr.readyState == 4) {
           // @TODO We aren't checking for success, just completion
+
+          // Update local session data
+          this._session = await this.getSession(true)
+          
           resolve(true)
         }
       }
@@ -175,21 +172,27 @@ export default class Session {
     })
   }
   
-  // localStorage is widely supported, but not always available (for example
-  // it can be restricted in private browsing mode). We handle that by just
-  // returning an empty session, forcing getSession() to perform an ajax request
-  // to get the session info each time it is called.
-    _getSessionStore() {
+  // The Web Storage API is widely supported, but not always available (e.g.
+  // it can be restricted in private browsing mode, triggering an exception).
+  // We handle that silently by just returning null here.
+  _getLocalStore(name) {
     try {
-      return JSON.parse(localStorage.getItem('session'))
+      return JSON.parse(localStorage.getItem(name))
     } catch (e) {
-      return {}
+      return null
     }
   }
-  
-  _setSessionStore(session) {
+  _saveLocalStore(name, data) {
     try {
-      localStorage.setItem('session', JSON.stringify(session))
+      localStorage.setItem(name, JSON.stringify(data))
+      return true
+    } catch (e) {
+      return false
+    }
+  }
+  _removeLocalStore(name) {
+    try {
+      localStorage.removeItem(name)
       return true
     } catch (e) {
       return false
