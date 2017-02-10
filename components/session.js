@@ -17,8 +17,8 @@ export default class Session {
           csrfToken: req.connection._httpMessage.locals._csrf
         }
         // If the session is associated with a user add user object to session
-        if (req.session.user)
-          this._session.user = req.connection._httpMessage.locals.user
+        if (req.user)
+          this._session.user = req.user
       } else {
         // If running on client, attempt to load session from localStorage
         this._session = this._getLocalStore('session')

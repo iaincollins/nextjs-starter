@@ -17,6 +17,7 @@ const FileStore = require('session-file-store')(session)
 const nodemailer = require('nodemailer')
 const csrf = require('lusca').csrf()
 const uuid = require('uuid/v4')
+const PassportConfig = require('./auth-passport')
 
 exports.configure = (app, server, options) => {
   if (!options) options = {}
@@ -79,23 +80,9 @@ exports.configure = (app, server, options) => {
     csrf(req, res, next)
   })
   
-  // Add User model to res.locals to expose it when rendering server side
-  server.use((req, res, next) => {
-    if (!req.session.user)
-      return next()
-    
-    // Populate res.locals with user data to expose it 
-    User.get(req.session.user, function(err, user) {
-      if (user) {
-        res.locals.user = { 
-          name: user.name,
-          email: user.email
-        }
-      }
-      next()
-    })
-  })
-
+  // With sessions connfigured (& before routes) we need to configure Passport
+  const passport = PassportConfig.configure(app, server, options)
+  
   // Add route to get CSRF token via AJAX
   server.get(path+'/csrf', (req, res) => {
     return res.json({ csrfToken: res.locals._csrf })
@@ -103,17 +90,14 @@ exports.configure = (app, server, options) => {
 
   // Return session info
   server.get(path+'/session', (req, res) => {
-    if (req.session.user) {
-      User.get(req.session.user, function(err, user) {
-        // @TODO Handle errors
-        return res.json({
-          user: {
-            name: user.name,
-            email: user.email
-          },
-          clientMaxAge: clientMaxAge,
-          csrfToken: res.locals._csrf
-        })
+    if (req.user) {
+      return res.json({
+        user: {
+          name: req.user.name,
+          email: req.user.email
+        },
+        clientMaxAge: clientMaxAge,
+        csrfToken: res.locals._csrf
       })
     } else {
       return res.json({ 
@@ -158,43 +142,47 @@ exports.configure = (app, server, options) => {
              verificationUrl+'\n\n'
     }, function(err) {
       // @TODO Handle errors
-      if (err) {
-        console.log("Generated sign in link "+verificationUrl+" for "+email)
-        console.log("Error sending email to "+email, err)
-      }
+      if (err) console.log("Error sending email to "+email, err)
     })
-  
+
+    //console.log("Generated sign in link "+verificationUrl+" for "+email)
+    
     return app.render(req, res, pages+'/check-email', req.params)
   })
 
-  server.get(path+'/email/signin/:token', (req, res) => {
+  server.get(path+'/email/signin/:token', (req, res, next) => {
     if (!req.params.token)
       return res.redirect(path+'/signin')
-    
+
+    // Look up user by token
     User.one({ token: req.params.token }, function(err, user) {
+      if (err) return res.redirect(path+'/invalid')
       if (user) {
         // Reset token and mark as verified
         user.token = null
         user.verified = true
         user.save(function(err) {
-          // if (err) throw err
-          // Associate the session with the account now they are signed in
-          req.session.user = user.id
-          return res.redirect(path+'/valid')
+          // @TODO Improve error handling
+          if (err) return res.redirect(path+'/invalid')
+          
+          // Having validated to the token, we log the user with Passport
+         req.logIn(user, function(err) {
+           if (err) return res.redirect(path+'/invalid')
+           return res.redirect(path+'/valid')
+         })
         })
       } else {
-         return res.redirect(path+'/invalid')
+        return res.redirect(path+'/invalid')
       }
     })
   })
 
   server.post(path+'/signout', (req, res) => {
     // Log user out by disassociating their account from the session
-    if (req.session.user)
-      delete req.session.user
+    req.logout()
     res.redirect('/')
   })
-
+  
 }
 
 // This method works better for URLs than the default RegEx.escape method
