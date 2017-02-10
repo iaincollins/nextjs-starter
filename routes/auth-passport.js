@@ -163,7 +163,7 @@ exports.configure = (app, server, options) => {
 
   // Add routes for provider
   providers.forEach(({ provider, scope }) => {
-    server.get(path+'/oauth/'+provider, passport.authenticate(provider, { scope: scope }));
+    server.get(path+'/oauth/'+provider, passport.authenticate(provider, { scope: scope }))
     server.get(path+'/oauth/'+provider+'/callback', passport.authenticate(provider, { failureRedirect: path+'/signin' }), function(req, res) {
       // Redirect to the sign in success, page which will force the client to update it's cache
       res.redirect(path+'/success')

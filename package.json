@@ -1,6 +1,6 @@
 {
   "name": "nextjs-starter",
-  "version": "2.5.2",
+  "version": "2.5.3",
   "description": "A starter Next.js project",
   "main": "index.js",
   "dependencies": {
@@ -11,6 +11,7 @@
     "lusca": "^1.4.1",
     "next": "^2.0.0-beta.23",
     "nodemailer": "^2.7.0",
+    "now-logs": "0.0.7",
     "orm": "^3.2.3",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",

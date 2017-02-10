@@ -1,5 +1,13 @@
 "use strict"
 
+// Default when run with `npm start` is 'production' and default port is '80'
+// `npm run dev` defaults mode to 'development' & port to '3000'
+process.env.NODE_ENV = process.env.NODE_ENV || "production"
+process.env.PORT = process.env.PORT || 80
+
+// now-logs allows remote debugging if deploying to now.sh
+if (process.env.APP_SECRET) require('now-logs')(process.env.APP_SECRET)
+
 // Load environment variables from .env file if present
 require('dotenv').load()
 
@@ -7,11 +15,6 @@ const express = require('express')
 const next = require('next')
 const auth = require('./routes/auth')
 const orm = require("orm")
-
-// Default when run with `npm start` is 'production' and default port is '80'
-// `npm run dev` defaults mode to 'development' & port to '3000'
-process.env.NODE_ENV = process.env.NODE_ENV || "production"
-process.env.PORT = process.env.PORT || 80
 
 // Configure a database to store user profiles and email sign in tokens
 // Database connection string for ORM (e.g. MongoDB/Amazon Redshift/SQL DB…)
