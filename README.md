@@ -1,12 +1,12 @@
 # Next.js 2.0 Starter Project
 
-This is a starter [Next.js 2.0](https://zeit.co/blog/next) project that shows how to put together a simple website with server and client side rendering powered by Next.js, which uses React.
+This is a starter [Next.js 2.0](https://zeit.co/blog/next) project that shows how to put together a website with server and client side rendering powered by Next.js, which uses React.
 
 Like all Next.js projects it features automatic pre-fetching of templates with a ServiceWorker, renders pages both client and server side and live reloading in development. It also shows how to use features new in Next.js version 2.0 like integration with Express for custom route handling.
 
 There are practical examples with header, footer and layout files, how to add page-specific CSS and JavaScript and header elements, how to write code that does asynchronous data fetching, how to write different logic for fetching data on the client and server if you need to.
 
-It includes session support (with CSRF and XSS protection), email based sign-in sytem and integrates wtih Passport to support sign in with Facebook, Google+ and Twitter accounts and other oAuth providers.
+It includes session support (with CSRF and XSS protection), email based sign-in sytem and integrates with Passport to support sign in with Facebook, Google+ and Twitter accounts and from other oAuth providers.
 
 All examples work client and server site, with and without a JavaScript capable browser.
 
