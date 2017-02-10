@@ -28,8 +28,12 @@ export default class extends Page {
           how to add page-specific CSS and JavaScript and header elements,
           how to write code that does asynchronous data fetching, how to write
           different logic for fetching data on the client and server if you need
-          to, as well as some more advanced usage, including email based 
-          authentication (with secure sessions, XSS and CSRF protection).
+          to.
+        </p>
+        <p>
+          It includes session support (with CSRF and XSS protection), email
+          based sign-in sytem and integrates wtih Passport to support sign in
+          with Facebook, Google+ and Twitter accounts and other oAuth providers.
         </p>
         <p>
           All examples work client and server site, with and without a
