@@ -1,6 +1,6 @@
 {
   "name": "nextjs-starter",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "description": "A starter Next.js project",
   "main": "index.js",
   "dependencies": {
@@ -28,6 +28,9 @@
     "dev": "NODE_ENV=development PORT=3000 node index.js",
     "build": "next build",
     "start": "node index.js"
+  },
+  "engines": {
+    "node": "6.x.x"
   },
   "author": "",
   "license": "ISC",
