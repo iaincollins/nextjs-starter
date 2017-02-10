@@ -5,7 +5,6 @@
   "main": "index.js",
   "dependencies": {
     "body-parser": "^1.15.2",
-    "cookie-parser": "^1.4.3",
     "dotenv": "^4.0.0",
     "express": "^4.14.0",
     "express-session": "^1.14.2",
@@ -14,6 +13,9 @@
     "nodemailer": "^2.7.0",
     "orm": "^3.2.3",
     "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "passport-twitter": "^1.0.4",
     "react-redux": "^4.4.6",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",

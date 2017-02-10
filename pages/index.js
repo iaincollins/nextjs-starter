@@ -1,7 +1,6 @@
 /**
  * The index page uses a layout page that pulls in header and footer components
  */
-
 import Link from 'next/prefetch'
 import React from 'react'
 import Page from '../components/page'

@@ -81,7 +81,7 @@ exports.configure = (app, server, options) => {
   })
   
   // With sessions connfigured (& before routes) we need to configure Passport
-  const passport = PassportConfig.configure(app, server, options)
+  const passport = PassportConfig.configure(app, server, { db: options.db, path: path })
   
   // Add route to get CSRF token via AJAX
   server.get(path+'/csrf', (req, res) => {
@@ -92,10 +92,7 @@ exports.configure = (app, server, options) => {
   server.get(path+'/session', (req, res) => {
     if (req.user) {
       return res.json({
-        user: {
-          name: req.user.name,
-          email: req.user.email
-        },
+        user: req.user,
         clientMaxAge: clientMaxAge,
         csrfToken: res.locals._csrf
       })
@@ -156,23 +153,23 @@ exports.configure = (app, server, options) => {
 
     // Look up user by token
     User.one({ token: req.params.token }, function(err, user) {
-      if (err) return res.redirect(path+'/invalid')
+      if (err) return res.redirect(path+'/error')
       if (user) {
         // Reset token and mark as verified
         user.token = null
         user.verified = true
         user.save(function(err) {
           // @TODO Improve error handling
-          if (err) return res.redirect(path+'/invalid')
+          if (err) return res.redirect(path+'/error')
           
           // Having validated to the token, we log the user with Passport
          req.logIn(user, function(err) {
-           if (err) return res.redirect(path+'/invalid')
-           return res.redirect(path+'/valid')
+           if (err) return res.redirect(path+'/error')
+           return res.redirect(path+'/success')
          })
         })
       } else {
-        return res.redirect(path+'/invalid')
+        return res.redirect(path+'/error')
       }
     })
   })

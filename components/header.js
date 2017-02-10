@@ -58,15 +58,25 @@ export default class extends React.Component {
           button {
             font-size: 16px;
             line-height: 18px;
-            border: none;
+            border: 2px solid #444;
             background-color: #444;
             color: #fff;
             padding: 10px 15px;
+            cursor: pointer;
           }
-          
           button:disabled {
             background-color: #666;
             color: #ccc;
+            cursor: default;
+          }
+          .button {
+            font-size: 16px;
+            line-height: 18px;
+            border: 2px solid #444;
+            background-color: #fff;
+            color: #444;
+            padding: 10px 15px;
+            text-decoration: none;
           }
         `}</style>
         </Head>

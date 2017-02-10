@@ -36,9 +36,10 @@ export default class extends Page {
     if (!this.props.session.user) {
       signinForm = 
         <div>
+          <h2>Sign in</h2>
           <form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
             <input name="_csrf" type="hidden" value={this.props.session.csrfToken} />
-            <h3>Sign in</h3>
+            <h3>Sign in with email</h3>
             <p>
               <label htmlFor="email">Email address</label><br/>
               <input name="email" type="text" placeholder="j.smith@example.com" id="email" value={this.state.email} onChange={this.handleEmailChange} />
@@ -47,42 +48,35 @@ export default class extends Page {
               <button id="submitButton" type="submit">Sign in</button>
             </p>
           </form>
+          <h3>Sign in with oAuth</h3>
+          <p>
+            <a className="button" href="/auth/oauth/facebook">Sign in with Facebook</a>
+            &nbsp;
+            <a className="button" href="/auth/oauth/google">Sign in with Google</a>
+            &nbsp;
+            <a className="button" href="/auth/oauth/twitter">Sign in with Twitter</a>
+          </p>
         </div>
     }
   
     return(
       <Layout session={this.props.session}>
-        <h2>Authentication</h2>
         {signinForm}
-        <h3>How it works</h3>
+        <h2>How it works</h2>
         <p>
-          This passwordless, email based authentication system is like the system
-          used by sites like Slack. One time use tokens are sent out via email
+          This passwordless, email based authentication system implmented is similar 
+           to the one used by sites like Slack. One time use tokens are sent out via email
           and recipients follow the links in the emails to sign in.
         </p>
-        <h3>Secure, universal (client+server) sessions</h3>
         <p>
-          Cross Site Request Forgery (CSRF) protection is added to all POST requests to
-          protect against other sites triggering actions on behalf of users.
+          The project includes Cross Site Request Forgery (CSRF) protection on all post 
+          requests, and only stores session tokes in HTTP Only cookies as protection 
+          against Cross Site Scripting (XSS) attacks.
         </p>
         <p>
-          The login system works client and server side, with and without JavaScript.
-          Session identifiers are stored in HTTP Only cookies and client session
-          data is cached using the Web Storage API (using localStorage rather than 
-          sessionStorage so that data is shared across tabs). 
+        This project also uses Passport so you can sign in with Facebook, Google, Twitter (or other oAuth providers).
         </p>
-        <p>
-          The session identifier (AKA session ID or session token) is stored in a
-          cookie with the "HTTP Only" option set and is accessed only indirectly via
-          XMLHttpRequest(). It cannot be read directly via JavaScript, as protection
-          against Cross Site Scripting (XSS) attacks being used to hijack a session.
-        </p>
-        <p>
-          All pages in this demo call getSession() in their getInitialProps(), and export
-          the session to the layout, where the header and login menu inherit it from. The call
-          to getSession() only triggers an request to the server if the local data store is empty.
-        </p>
-        <h3>Extending the example</h3>
+        <h3>More information</h3>
         <p>
           By default, user data is persisted on the server in SQL Lite, but this can be
           easily changed to another database (MongoDB, MySQL, PostgreSQL, Amazon Redshift, etc…)
@@ -92,6 +86,9 @@ export default class extends Page {
           For larger sites, a fully decoupled authentication system, running on a seperate backend,
           can be easier to scale and maintain, but this example shows how you can add easily add
           authentication to any Next.js 2.0 project.
+        </p>
+        <p>
+          To use the oAuth sign in options, you will need to create your own account with each provider and configure each one for your site. See <a href="https://github.com/iaincollins/nextjs-starter/blob/master/AUTHENTICATION.md">AUTHENTICATION.md</a> for a step-by-step guide.
         </p>
         <p>
           If you aren't receiving emails, try using another email address or

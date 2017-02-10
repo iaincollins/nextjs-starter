@@ -1,5 +1,8 @@
 "use strict"
 
+// Load environment variables from .env file if present
+require('dotenv').load()
+
 const express = require('express')
 const next = require('next')
 const auth = require('./routes/auth')
@@ -12,8 +15,8 @@ process.env.PORT = process.env.PORT || 80
 
 // Configure a database to store user profiles and email sign in tokens
 // Database connection string for ORM (e.g. MongoDB/Amazon Redshift/SQL DB…)
-// By default it uses SQL Lite to create a DB in /tmp/website.db
-process.env.DB = process.env.DB || "sqlite:///tmp/website.db"
+// By default it uses SQL Lite to create a DB in /tmp/nextjs-starter.db
+process.env.DB = process.env.DB || "sqlite:///tmp/nextjs-starter.db"
 
 const app = next({
   dir: '.', 
@@ -36,10 +39,13 @@ app.prepare()
 
       // Define user object
       const User = db.define("user", {
-        name          : { type: "text" },
-        email         : { type: "text", unique: true },
-        token         : { type: "text", unique: true },
-        verified      : { type: "boolean", defaultValue: false }
+        name      : { type: "text" },
+        email     : { type: "text", unique: true },
+        token     : { type: "text", unique: true },
+        verified  : { type: "boolean", defaultValue: false },
+        facebook  : { type: "text" },
+        google    : { type: "text" },
+        twitter   : { type: "text" }
       })
 
       // Create table
