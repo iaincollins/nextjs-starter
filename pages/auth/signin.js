@@ -36,7 +36,6 @@ export default class extends Page {
     if (!this.props.session.user) {
       signinForm = 
         <div>
-          <h2>Sign in</h2>
           <form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
             <input name="_csrf" type="hidden" value={this.props.session.csrfToken} />
             <h3>Sign in with email</h3>
@@ -50,37 +49,36 @@ export default class extends Page {
           </form>
           <h3>Sign in with oAuth</h3>
           <p>
-            <a className="button" href="/auth/oauth/facebook">Sign in with Facebook</a>
-            &nbsp;
-            <a className="button" href="/auth/oauth/google">Sign in with Google</a>
-            &nbsp;
-            <a className="button" href="/auth/oauth/twitter">Sign in with Twitter</a>
+            <a className="button button-oauth button-facebook" href="/auth/oauth/facebook">Sign in with Facebook</a>
+            <a className="button button-oauth button-google" href="/auth/oauth/google">Sign in with Google</a>
+            <a className="button button-oauth button-twitter" href="/auth/oauth/twitter">Sign in with Twitter</a>
           </p>
         </div>
     }
   
     return(
       <Layout session={this.props.session}>
+        <h2>Authentication</h2>
         {signinForm}
-        <h2>How it works</h2>
+        <h3>How it works</h3>
         <p>
-          This passwordless, email based authentication system implmented is similar 
-           to the one used by sites like Slack. One time use tokens are sent out via email
+          The passwordless, email based authentication system implmented in this example is similar 
+          to the one used by sites like Slack. One time use tokens are sent out via email
           and recipients follow the links in the emails to sign in.
         </p>
         <p>
           The project includes Cross Site Request Forgery (CSRF) protection on all post 
-          requests, and only stores session tokes in HTTP Only cookies as protection 
+          requests and only stores session tokes in HTTP Only cookies as protection 
           against Cross Site Scripting (XSS) attacks.
         </p>
         <p>
-        This project also uses Passport so you can sign in with Facebook, Google, Twitter (or other oAuth providers).
+          This project integrates with Passport to support signing in with Facebook, Google, Twitter and other sites that support oAuth.
         </p>
-        <h3>More information</h3>
+        <h3>Exending this example</h3>
         <p>
-          By default, user data is persisted on the server in SQL Lite, but this can be
-          easily changed to another database (MongoDB, MySQL, PostgreSQL, Amazon Redshift, etc…)
-          by customising the options passed to lib/auth.js.
+          By default, user data is persisted on the server in SQL Lite as this requires no configuration,
+          but this can be easily changed to another database - including MongoDB, MySQL, PostgreSQL, Amazon Redshift and others -
+          by setting the DB_CONNECTION_STRING environment variable accordingly.
         </p>
         <p>
           For larger sites, a fully decoupled authentication system, running on a seperate backend,
@@ -88,10 +86,11 @@ export default class extends Page {
           authentication to any Next.js 2.0 project.
         </p>
         <p>
-          To use the oAuth sign in options, you will need to create your own account with each provider and configure each one for your site. See <a href="https://github.com/iaincollins/nextjs-starter/blob/master/AUTHENTICATION.md">AUTHENTICATION.md</a> for a step-by-step guide.
+          To use the oAuth sign in options, you will need to create your own account with each provider and configure each one for your site. 
+          This can be a slightly cumbersome process that is hard to debug. See <a href="https://github.com/iaincollins/nextjs-starter/blob/master/AUTHENTICATION.md">AUTHENTICATION.md</a> for a step-by-step guide.
         </p>
         <p>
-          If you aren't receiving emails, try using another email address or
+          If you aren't receiving emails when trying to sign in via email, try using another email address or
           configuring the mail server option - some email providers block email from
           unverified mail servers.
         </p>

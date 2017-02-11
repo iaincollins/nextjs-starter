@@ -6,9 +6,9 @@ Like all Next.js projects it features automatic pre-fetching of templates with a
 
 There are practical examples with header, footer and layout files, how to add page-specific CSS and JavaScript and header elements, how to write code that does asynchronous data fetching, how to write different logic for fetching data on the client and server if you need to.
 
-It includes session support (with CSRF and XSS protection), email based sign-in sytem and integrates with Passport to support sign in with Facebook, Google+ and Twitter accounts and from other oAuth providers.
+It includes session support (with CSRF and XSS protection), email based sign-in sytem and integrates with Passport to support signing in with Facebook, Google, Twitter and other sites that support oAuth.
 
-All examples work client and server site, with and without a JavaScript capable browser.
+All functionality works both client and server site - including without JavaScript support in the browser.
 
 ## Demo
 
@@ -40,3 +40,7 @@ To deploy on [Zeit's](https://zeit.co) cloud platform `now` just install it, clo
 
     npm install -g now
     now
+
+If you configure a .env file (see [.env.default](https://github.com/iaincollins/nextjs-starter/blob/master/.env.default) for an example of the options supported) `now` will include it when deploying if you use the -E option to deploy:
+
+    now -E

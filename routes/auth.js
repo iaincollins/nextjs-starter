@@ -34,7 +34,7 @@ exports.configure = (app, server, options) => {
   const pages = options.pages || 'auth'
 
   // The secret is used to encrypt/decrypt sessions (you should pass your own!)
-  const secret = options.secret || 'AAAA-BBBB-CCCC-DDDD'
+  const secret = options.secret || 'change-me'
  
   // Configure session store (defaults to using file system)
   const store = options.store || new FileStore({ path: '/tmp/sessions', secret: secret })

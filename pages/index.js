@@ -32,24 +32,31 @@ export default class extends Page {
         </p>
         <p>
           It includes session support (with CSRF and XSS protection), email
-          based sign-in sytem and integrates with Passport to support sign in
-          with Facebook, Google+ and Twitter accounts and from other oAuth providers.
+          based sign-in sytem and integrates with Passport to support signing in
+          with Facebook, Google, Twitter and other sites that support oAuth.
         </p>
         <p>
-          All examples work client and server site, with and without a
-          JavaScript capable browser.
+          All functionality works both client and server site - including
+          without JavaScript support in the browser.
         </p>
         <h3>Examples</h3>
         <ul>
           <li><Link href="/helloworld"><a>HelloWorld</a></Link> - The simplest possible example</li>
           <li><Link href="/page-specific"><a>Page specific styles</a></Link> - Page specific CSS and &lt;head&gt; tags</li>
           <li><Link href="/async"><a>Async example</a></Link> - Show how to include data from an API or database</li>
-          <li><Link href="/routing/?id=example" as="/route/example"><a>Custom routing</a></Link> - Custom routing with Express</li>
-          <li><Link href="/auth/signin"><a>Authentication</a></Link> - An email based authentication example</li>
-          <li><Link href="/clock"><a>Clock</a></Link> - A more advanced example from the Zeit wiki </li>
+          <li><Link href="/routing/?id=example" as="/route/example"><a>Custom routing</a></Link> - Handling custom routes with Express</li>
+          <li><Link href="/auth/signin"><a>Authentication</a></Link> - Authentication via email and Facebook, Google+ and Twitter</li>
+          <li><Link href="/clock"><a>Clock</a></Link> - A more advanced example from the Zeit wiki (this demo is slightly outdated)</li>
         </ul>
         <p>
           If you want to see how custom 404, 500 and other HTTP errors are handled take a look at pages/_error.js
+        </p>
+        <h3>Configuration</h3>
+        <p>
+          For information on how to build and deploy see <a href="https://github.com/iaincollins/nextjs-starter/blob/master/README.md">README.md</a>
+        </p>
+        <p>
+          For tips on configuring authentication see <a href="https://github.com/iaincollins/nextjs-starter/blob/master/AUTHENTICATION.md">AUTHENTICATION.md</a>
         </p>
         <p>
           You can find the source for this project on GitHub at <Link href="https://github.com/iaincollins/nextjs-starter"><a>https://github.com/iaincollins/nextjs-starter</a></Link>

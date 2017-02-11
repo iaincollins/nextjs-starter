@@ -8,12 +8,11 @@ import Page from '../components/page'
 import Layout from '../components/layout'
 
 export default class extends Page {
-  
+
   render() {
     return (
       <Layout session={this.props.session}>
         <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
           <title>This page has a custom title</title>
         </Head>
         <style jsx>{`
@@ -33,7 +32,7 @@ export default class extends Page {
           }
         `}</style>
         <h2>Page specific CSS and &lt;head&gt; tags</h2>
-        <p>This is mobile-ready page has custom elements that are included on on this page and inline CSS.</p>
+        <p>This page has custom elements that are included on on this page and inline CSS.</p>
         <p className="styled-text">This text will change colour if you hover over it or resize the window.</p>
         <p style={{ color: 'white', backgroundColor: 'purple'}}>This text is styled using inline styling.</p>
         <p>CSS defined using JSX as in this example <a href="https://github.com/zeit/next.js/#css">scopes the styling to this component</a>.</p>
