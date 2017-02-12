@@ -1,9 +1,5 @@
 $background-color: #fff;
 $text-color: #444;
-$header-background-color: #444;
-$header-text-color: #eee;
-$menubar-background-color: #333;
-$menubar-text-color: #eee;
 
 body {
   margin: 0px 0px;
@@ -97,13 +93,7 @@ button:disabled {
 }
 .menubar {
   text-align: right;
-  background-color: $menubar-background-color;
-  padding: 1px 20px;
-}
-.menubar button,
-.menubar p,
-.menubar a {
-  color: $menubar-text-color;
+  padding: 0px 20px;
 }
 .menubar .home {
   float: left;
@@ -116,12 +106,7 @@ button:disabled {
   text-decoration: underline;
 }
 .header {
-  background-color: $header-background-color;
-  padding: 20px;
-}
-.header h1,
-.header h1 a {
-  color: $header-text-color;
+  padding: 20px 20px 0 20px;
 }
 .container {
   padding: 0 20px;

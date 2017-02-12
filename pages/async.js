@@ -50,9 +50,7 @@ export default class extends Page {
           asynchronously (e.g. from an API or a database).
         </p>
         <p>
-          The data below is JSON fetched from <a href="https://jsonplaceholder.typicode.com/">jsonplaceholder.typicode.com</a>
-          with <a href="https://github.com/matthew-andrews/isomorphic-fetch">isomorphic-fetch</a> which runs on both the client
-          and server.
+          The data below is JSON fetched from <a href="https://jsonplaceholder.typicode.com/">jsonplaceholder.typicode.com</a> with <a href="https://github.com/matthew-andrews/isomorphic-fetch">isomorphic-fetch</a>.
         </p>
         <p>
           When rendering on the server, this page will not be rendered until it

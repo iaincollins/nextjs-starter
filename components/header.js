@@ -2,7 +2,7 @@
 import Head from 'next/head'
 import Link from 'next/prefetch'
 import React from 'react'
-import stylesheet from '../static/css/main.scss'
+import stylesheet from '../css/main.scss'
 import Menu from './menu'
 
 export default class extends React.Component {
@@ -24,6 +24,7 @@ export default class extends React.Component {
         <Menu session={this.props.session}/>
         <div className="header">
           <h1><Link href="/"><a>Next.js 2.0 Starter Project</a></Link></h1>
+          <hr/>
         </div>
       </header>
     )
