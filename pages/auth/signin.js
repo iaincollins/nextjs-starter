@@ -64,19 +64,18 @@ export default class extends Page {
         {signinForm}
         <h3>How it works</h3>
         <p>
-          The passwordless, email based authentication system implmented in this example is similar
-          to the one used by sites like Slack. One time use tokens are sent out via email
-          and recipients follow the links in the emails to sign in.
+          This project includes a passwordless, email based authentication system, that uses 
+          one time use tokens sent out via email. Recipients follow the links in the emails to sign in.
         </p>
         <p>
-          The project includes Cross Site Request Forgery (CSRF) protection on all post
-          requests and only stores session tokes in HTTP Only cookies as protection
-          against Cross Site Scripting (XSS) attacks.
+          Cross Site Request Forgery (CSRF) protection is added to all post requests,
+          session data on the server is encrypted and and session tokens are only stored HTTP Only cookies
+          on the client as protection against Cross Site Scripting (XSS) attacks.
         </p>
         <p>
-          This project integrates with Passport to support signing in with Facebook, Google, Twitter and other sites that support oAuth.
+          This project also integrates with Passport to allow signing in with Facebook, Google, Twitter and other sites that support oAuth.
         </p>
-        <h3>Exending this example</h3>
+        <h3>Exending the authentication system</h3>
         <p>
           By default, user data is persisted on the server in SQL Lite as this requires no configuration,
           but this can be easily changed to another database - including MongoDB, MySQL, PostgreSQL, Amazon Redshift and others
