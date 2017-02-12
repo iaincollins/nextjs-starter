@@ -1,7 +1,6 @@
 /**
  * This shows how to add CSS styles and head elements to a specific page
  */
-
 import Head from 'next/head'
 import React from 'react'
 import Page from '../components/page'
@@ -34,10 +33,10 @@ export default class extends Page {
         <h2>Page specific CSS and &lt;head&gt; tags</h2>
         <p>This page has custom elements that are included on on this page and inline CSS.</p>
         <p className="styled-text">This text will change colour if you hover over it or resize the window.</p>
-        <p style={{ color: 'white', backgroundColor: 'purple'}}>This text is styled using inline styling.</p>
+        <p style={{color: 'white', backgroundColor: 'purple'}}>This text is styled using inline styling.</p>
         <p>CSS defined using JSX as in this example <a href="https://github.com/zeit/next.js/#css">scopes the styling to this component</a>.</p>
       </Layout>
     )
   }
-  
+
 }

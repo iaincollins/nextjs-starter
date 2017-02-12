@@ -44,3 +44,17 @@ To deploy on [Zeit's](https://zeit.co) cloud platform `now` just install it, clo
 If you configure a .env file (see [.env.default](https://github.com/iaincollins/nextjs-starter/blob/master/.env.default) for an example of the options supported) `now` will include it when deploying if you use the -E option to deploy:
 
     now -E
+
+## Running tests
+
+Style formatting is enforced with the JavaScript style linter [xo](https://github.com/sindresorhus/xo) which is invoked when running `npm test`.
+
+Reflecting how most examples of Next.js are written, in  `package.json` we have configured 'xo' to tell it this project uses spaces (not tabs) in both JavaScript and JSX and to not use semicolons.
+
+xo needs to be installed globally:
+
+  install -g xo
+
+You can check linting by running `xo` or by running `npm test`.
+
+Note: There are currently no application specific tests, beyond style checking.

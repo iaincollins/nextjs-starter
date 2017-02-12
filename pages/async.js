@@ -1,27 +1,29 @@
+/* global window */
 /**
  * This is a simple example of how to render data fetched asynchronously.
- * 
+ *
  * It does not illustrate best practice and does not implement caching.
  */
-
 import React from 'react'
 import Page from '../components/page'
 import Layout from '../components/layout'
 import AsyncData from '../components/async-data'
 
 export default class extends Page {
-  
-  static async getInitialProps({ req }) {
+
+  /* eslint no-undefined: "error" */
+  static async getInitialProps({req}) {
     // Inherit standard props from the Page (i.e. with session data)
-    let props = await super.getInitialProps({ req })
-    
+    let props = await super.getInitialProps({req})
+
     // If running on server, perform Async call
-    if (typeof window === 'undefined')
+    if (typeof window === 'undefined') {
       props.posts = await AsyncData.getData()
+    }
 
     return props
   }
-  
+
   // Set posts on page load (only if prop is populated, i.e. running on server)
   constructor(props) {
     super(props)
@@ -35,7 +37,7 @@ export default class extends Page {
   // then load the data fetched via an async call in when we have it.
   async componentDidMount() {
     this.setState({
-      posts:  await AsyncData.getData()
+      posts: await AsyncData.getData()
     })
   }
 
@@ -76,5 +78,5 @@ export default class extends Page {
       </Layout>
     )
   }
-  
+
 }

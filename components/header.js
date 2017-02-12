@@ -5,11 +5,17 @@ import Menu from './menu'
 
 export default class extends React.Component {
 
+  static propTypes() {
+    return {
+      session: React.PropTypes.object.isRequired
+    }
+  }
+
   render() {
-    return(
+    return (
       <header>
         <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta name="viewport" content="width=device-width, initial-scale=1"/>
           <style>{`
             body {
               margin: 20px 40px;
@@ -109,5 +115,5 @@ export default class extends React.Component {
       </header>
     )
   }
-  
+
 }

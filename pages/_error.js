@@ -1,19 +1,25 @@
 /**
  * Creating a page named _error.js lets you override HTTP error messages
  */
-
 import Head from 'next/head'
 import Link from 'next/link'
 import React from 'react'
 
 export default class Error extends React.Component {
-  
-  static getInitialProps ({ res, xhr }) {
-    const errorCode = res ? res.statusCode : xhr.status
-    return { errorCode }
+
+  static propTypes() {
+    return {
+      errorCode: React.PropTypes.number.isRequired,
+      url: React.PropTypes.string.isRequired
+    }
   }
 
-  render () {
+  static getInitialProps({res, xhr}) {
+    const errorCode = res ? res.statusCode : xhr.status
+    return {errorCode}
+  }
+
+  render() {
     const css = (
       <Head>
         <style>{`
@@ -61,8 +67,8 @@ export default class Error extends React.Component {
           </div>
         )
     }
-    
+
     return response
-    
   }
+
 }

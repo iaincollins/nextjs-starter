@@ -1,28 +1,31 @@
 /**
  * Confgiure Passport Strategies
  */
-"use strict"
+'use strict'
 
 const passport = require('passport')
 
 exports.configure = (app, server, options) => {
-  if (!options) options = {}
-  
-  if (!options.db || !options.db.models || !options.db.models.user)
-    throw new Error("Database with user model is a required option!")
+  if (!options) {
+    options = {}
+  }
+
+  if (!options.db || !options.db.models || !options.db.models.user) {
+    throw new Error('Database with user model is a required option!')
+  }
 
   const User = options.db.models.user
 
   // Base path for auth URLs
   const path = options.path || '/auth'
-        
+
   // Tell Passport how to seralize/deseralize user accounts
-  passport.serializeUser(function(user, done) {
+  passport.serializeUser(function (user, done) {
     done(null, user.id)
   })
 
-  passport.deserializeUser(function(id, done) {
-    User.get(id, function(err, user) { 
+  passport.deserializeUser(function (id, done) {
+    User.get(id, function (err, user) {
       // Note: We don't return all user profile fields to the client, just ones
       // that are whitelisted here to limit the amount of users' data we expose.
       done(err, {
@@ -37,12 +40,11 @@ exports.configure = (app, server, options) => {
 
   // IMPORTANT! If you add a provider, be sure to add a property to the User
   // model with the name of the provider or you won't be able to log in!
-  
+
   if (process.env.FACEBOOK_ID && process.env.FACEBOOK_SECRET) {
     providers.push({
-      name: 'Facebook',
       provider: 'facebook',
-      strategy: require('passport-facebook').Strategy,
+      Strategy: require('passport-facebook').Strategy,
       strategyOptions: {
         clientID: process.env.FACEBOOK_ID,
         clientSecret: process.env.FACEBOOK_SECRET
@@ -60,9 +62,8 @@ exports.configure = (app, server, options) => {
 
   if (process.env.GOOGLE_ID && process.env.GOOGLE_SECRET) {
     providers.push({
-      name: 'Google',
       provider: 'google',
-      strategy: require('passport-google-oauth').OAuth2Strategy,
+      Strategy: require('passport-google-oauth').OAuth2Strategy,
       strategyOptions: {
         clientID: process.env.GOOGLE_ID,
         clientSecret: process.env.GOOGLE_SECRET
@@ -77,12 +78,11 @@ exports.configure = (app, server, options) => {
       }
     })
   }
-  
+
   if (process.env.TWITTER_KEY && process.env.TWITTER_SECRET) {
     providers.push({
-      name: 'Twitter',
       provider: 'twitter',
-      strategy: require('passport-twitter').Strategy,
+      Strategy: require('passport-twitter').Strategy,
       strategyOptions: {
         consumerKey: process.env.TWITTER_KEY,
         consumerSecret: process.env.TWITTER_SECRET
@@ -92,59 +92,76 @@ exports.configure = (app, server, options) => {
         return {
           id: profile.id,
           name: profile.displayName,
-          email: profile.username+'@twitter'
+          email: profile.username + '@twitter'
         }
       }
     })
   }
-  
+
   // Define a Passport strategy for provider
-  providers.forEach(({ name, provider, strategy, strategyOptions, scope, getUserFromProfile }) => {
-    
-    
-    strategyOptions.callbackURL = path+'/oauth/'+provider+'/callback'
+  providers.forEach(({provider, Strategy, strategyOptions, getUserFromProfile}) => {
+    strategyOptions.callbackURL = path + '/oauth/' + provider + '/callback'
     strategyOptions.passReqToCallback = true
-    
-    passport.use(new strategy(strategyOptions, (req, accessToken, refreshToken, profile, done) => {
+
+    passport.use(new Strategy(strategyOptions, (req, accessToken, refreshToken, profile, done) => {
       try {
-        // Normalise the provider specific profile into a User object 
+        // Normalise the provider specific profile into a User object
         profile = getUserFromProfile(profile)
 
-        User.one({ [provider]: profile.id }, function(err, user) {
-          if (err) return done(err)
+        User.one({[provider]: profile.id}, function (err, user) {
+          if (err) {
+            return done(err)
+          }
+
           if (req.user) {
             // User is already logged in
-    
-            if (user) {
-              // User is logged in already (shouldn't happen)
-              if (req.user.id === user.id) done(null, user)
-              // Provider account is already linked to another account
-              if (req.user.id !== user.id) if (user) return done(new Error("This account is already associated with another login."))
-            } else {
-              // No account associated with login, save user details
-              User.get(req.user.id, function(err, user) {
-                if (err) return done(err)
+
+            // If oAuth account not linked just link it and continue
+            if (!user) {
+              return User.get(req.user.id, function (err, user) {
+                if (err) {
+                  return done(err)
+                }
                 user.name = user.name || profile.name
                 user[provider] = profile.id
-                user.save(function(err) { done(err, user) })
+                user.save(function (err) {
+                  return done(err, user)
+                })
               })
             }
 
+            // If oAuth account already linked to the current user just continue
+            if (req.user.id === user.id) {
+              return done(null, user)
+            }
+
+            // If the oAuth account is already linked to another account, error
+            if (req.user.id !== user.id) {
+              return done(new Error('This account is already associated with another login.'))
+            }
           } else {
             // User is not currently logged in
 
             // If account already exists, can just log in
-            if (user) return done(null, user)
-    
+            if (user) {
+              return done(null, user)
+            }
+
             // If they don't have account for ID, check to see if one exists
             // that matches the email address associated with their acccount
-            User.one({ email: profile.email }, function(err, user) {
-              if (err) return done(err)
-              if (user) return done(new Error("There is already an account associated with the same email address."))
-        
+            return User.one({email: profile.email}, function (err, user) {
+              if (err) {
+                return done(err)
+              }
+              if (user) {
+                return done(new Error('There is already an account associated with the same email address.'))
+              }
+
               // If account does not exist, create one
-              User.create({ name: profile.name, email: profile.email, [provider]: profile.id }, function(err, user) {
-                if (err) return done(err)
+              User.create({name: profile.name, email: profile.email, [provider]: profile.id}, function (err, user) {
+                if (err) {
+                  return done(err)
+                }
                 return done(null, user)
               })
             })
@@ -154,7 +171,6 @@ exports.configure = (app, server, options) => {
         done(err)
       }
     }))
-
   })
 
   // Initialise Passport
@@ -162,18 +178,18 @@ exports.configure = (app, server, options) => {
   server.use(passport.session())
 
   // Add routes for provider
-  providers.forEach(({ provider, scope }) => {
-    server.get(path+'/oauth/'+provider, passport.authenticate(provider, { scope: scope }))
-    server.get(path+'/oauth/'+provider+'/callback', passport.authenticate(provider, { failureRedirect: path+'/signin' }), function(req, res) {
+  providers.forEach(({provider, scope}) => {
+    server.get(path + '/oauth/' + provider, passport.authenticate(provider, {scope: scope}))
+    server.get(path + '/oauth/' + provider + '/callback', passport.authenticate(provider, {failureRedirect: path + '/signin'}), function (req, res) {
       // Redirect to the sign in success, page which will force the client to update it's cache
-      res.redirect(path+'/success')
+      res.redirect(path + '/success')
     })
   })
-  
+
   // A catch all for providers that are not configured
-  server.get(path+'/oauth/:provider', function(req, res) {
-    res.redirect(path+'/not-configured')
+  server.get(path + '/oauth/:provider', function (req, res) {
+    res.redirect(path + '/not-configured')
   })
-    
+
   return passport
 }

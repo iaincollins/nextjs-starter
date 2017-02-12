@@ -9,18 +9,18 @@ import Layout from '../components/layout'
 
 export default class extends Page {
 
-  static async getInitialProps({ req, query }) {
-    let props = await super.getInitialProps({ req })
-    props.path = "/route/"+query.id
+  static async getInitialProps({req, query}) {
+    let props = await super.getInitialProps({req})
+    props.path = '/route/' + query.id
     return props
   }
-  
+
   render() {
     return (
       <Layout session={this.props.session}>
         <h2>Custom routing</h2>
         <p>
-          You went to <strong>"{ this.props.path }"</strong>
+          You went to <strong>&quot;{ this.props.path }&quot;</strong>
         </p>
         <p>
           Take a look at the source of pages/routing.js and server.js to see how
@@ -33,4 +33,5 @@ export default class extends Page {
       </Layout>
     )
   }
+
 }

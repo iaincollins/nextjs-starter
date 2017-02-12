@@ -1,13 +1,17 @@
 {
   "name": "nextjs-starter",
-  "version": "2.5.6",
+  "version": "2.5.7",
   "description": "A starter Next.js project",
+  "author": "Iain Collins <me@iaincollins.com>",
+  "license": "ISC",
+  "repository": "https://github.com/iaincollins/nextjs-starter.git",
   "main": "index.js",
   "dependencies": {
     "body-parser": "^1.15.2",
     "dotenv": "^4.0.0",
     "express": "^4.14.0",
     "express-session": "^1.14.2",
+    "isomorphic-fetch": "^2.2.1",
     "lusca": "^1.4.1",
     "next": "^2.0.0-beta.23",
     "nodemailer": "^2.7.0",
@@ -17,6 +21,7 @@
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",
     "passport-twitter": "^1.0.4",
+    "react": "^15.4.2",
     "react-redux": "^4.4.6",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
@@ -24,8 +29,16 @@
     "sqlite3": "^3.1.8",
     "uuid": "^3.0.1"
   },
+  "devDependencies": {
+    "eslint": "^3.15.0",
+    "eslint-config-xo": "^0.17.0",
+    "eslint-config-xo-react": "^0.10.0",
+    "eslint-config-xo-space": "^0.15.0",
+    "eslint-plugin-react": "^6.9.0",
+    "xo": "^0.17.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "xo",
     "dev": "NODE_ENV=development PORT=3000 node index.js",
     "build": "next build",
     "start": "node index.js"
@@ -33,7 +46,12 @@
   "engines": {
     "node": "7.x.x"
   },
-  "author": "",
-  "license": "ISC",
-  "repository": "https://github.com/iaincollins/nextjs-starter.git"
+  "xo": {
+    "space:": 2,
+    "semicolon": false,
+    "extends": [
+      "xo-space",
+      "xo-react/space"
+    ]
+  }
 }

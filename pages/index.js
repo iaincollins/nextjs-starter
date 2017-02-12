@@ -9,18 +9,18 @@ import Layout from '../components/layout'
 export default class extends Page {
 
   render() {
-    return(
+    return (
       <Layout session={this.props.session}>
         <h2>About this project</h2>
         <p>
           This is a starter <a href="https://zeit.co/blog/next">Next.js 2.0</a> project
-          that shows how to put together a simple website with server and client 
+          that shows how to put together a simple website with server and client
           side rendering powered by Next.js, which uses React.
         </p>
         <p>
           Like all Next.js projects it features automatic pre-fetching of templates
           with a ServiceWorker, renders pages both client and server side and live
-          reloading in development. It also shows how to use features new in 
+          reloading in development. It also shows how to use features new in
           Next.js version 2.0 like integration with Express for custom route handling.
         </p>
         <p>
@@ -64,5 +64,5 @@ export default class extends Page {
       </Layout>
     )
   }
-  
+
 }
