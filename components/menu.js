@@ -24,15 +24,15 @@ export default class extends React.Component {
   render() {
     const session = this.props.session || null
 
-    let loginMessage = <p><Link href="/"><a className="home"><strong>Home</strong></a></Link> You are not logged in. <Link href="/auth/signin"><a>Sign In</a></Link></p>
+    let loginMessage = <p><Link href="/"><a className="home">Home</a></Link> You are not logged in. <Link href="/auth/signin"><a>Sign in</a></Link></p>
 
     if (session.user) {
       loginMessage = (
         <form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSubmit}>
           <input name="_csrf" type="hidden" value={session.csrfToken}/>
           <p>
-            <Link href="/"><a className="home"><strong>Home</strong></a></Link>Logged in as <strong>{session.user.name || session.user.email}</strong>
-            <button type="submit">Logout</button>
+            <Link href="/"><a className="home">Home</a></Link>Logged in as <strong>{session.user.name || session.user.email}</strong>
+            <button type="submit">Sign out</button>
           </p>
         </form>
       )
