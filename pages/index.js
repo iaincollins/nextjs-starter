@@ -42,8 +42,8 @@ export default class extends Page {
         <h3>Examples</h3>
         <ul>
           <li><Link href="/helloworld"><a>HelloWorld</a></Link> - The simplest possible example</li>
-          <li><Link href="/page-specific"><a>Page specific styles</a></Link> - Page specific CSS and &lt;head&gt; tags</li>
-          <li><Link href="/async"><a>Async example</a></Link> - Show how to include data from an API or database</li>
+          <li><Link href="/css"><a>CSS &amp; SCSS</a></Link> - Live CSS/SCSS reloading and page specific CSS and &lt;head&gt; tags</li>
+          <li><Link href="/async"><a>Asynchronous data fetching</a></Link> - How to include data from an API or database</li>
           <li><Link href="/routing/?id=example" as="/route/example"><a>Custom routing</a></Link> - Handling custom routes with Express</li>
           <li><Link href="/auth/signin"><a>Authentication</a></Link> - Authentication via email and Facebook, Google+ and Twitter</li>
           <li><Link href="/clock"><a>Clock</a></Link> - A more advanced example from the Zeit wiki (this demo is slightly outdated)</li>

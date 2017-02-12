@@ -1,12 +1,13 @@
 {
   "name": "nextjs-starter",
-  "version": "2.5.8",
+  "version": "2.5.9",
   "description": "A starter Next.js project",
   "author": "Iain Collins <me@iaincollins.com>",
   "license": "ISC",
   "repository": "https://github.com/iaincollins/nextjs-starter.git",
   "main": "index.js",
   "dependencies": {
+    "babel-plugin-wrap-in-js": "^1.1.1",
     "body-parser": "^1.15.2",
     "dotenv": "^4.0.0",
     "express": "^4.14.0",
@@ -14,6 +15,7 @@
     "isomorphic-fetch": "^2.2.1",
     "lusca": "^1.4.1",
     "next": "^2.0.0-beta.23",
+    "node-sass": "^4.5.0",
     "nodemailer": "^2.7.0",
     "now-logs": "0.0.7",
     "orm": "^3.2.3",
@@ -21,10 +23,12 @@
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",
     "passport-twitter": "^1.0.4",
+    "raw-loader": "^0.5.1",
     "react": "^15.4.2",
     "react-redux": "^4.4.6",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
+    "sass-loader": "^5.0.1",
     "session-file-store": "^1.0.0",
     "sqlite3": "^3.1.8",
     "uuid": "^3.0.1"
@@ -52,6 +56,9 @@
     "extends": [
       "xo-space",
       "xo-react/space"
+    ],
+    "ignores": [
+      "next.config.js"
     ]
   }
 }

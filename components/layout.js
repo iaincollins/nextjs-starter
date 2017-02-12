@@ -14,8 +14,10 @@ export default class extends React.Component {
   render() {
     return (
       <div>
-        <Header session={this.props.session || null}/>
-        { this.props.children }
+        <Header session={this.props.session}/>
+        <div className="container">
+          { this.props.children }
+        </div>
         <Footer/>
       </div>
     )

@@ -50,15 +50,14 @@ export default class extends Page {
           asynchronously (e.g. from an API or a database).
         </p>
         <p>
-          The data below is JSON fetched from <a href="https://jsonplaceholder.typicode.com/">jsonplaceholder.typicode.com</a> and renders both client and server side, using <a href="https://github.com/matthew-andrews/isomorphic-fetch">isomorphic-fetch</a>.
+          The data below is JSON fetched from <a href="https://jsonplaceholder.typicode.com/">jsonplaceholder.typicode.com</a>
+          with <a href="https://github.com/matthew-andrews/isomorphic-fetch">isomorphic-fetch</a> which runs on both the client
+          and server.
         </p>
         <p>
           When rendering on the server, this page will not be rendered until it
-          has fetched the remote data.
-        </p>
-        <p>
-          When rendering on the client, it will load the page without the remote
-          data then update the page state and re-render when it has it.
+          has fetched the remote data. When rendering on the client, it will load
+          the page without the remote data then update the page state and re-render when it has it.
         </p>
         <p>
           Note: You could just use the same async call in getInitialProps() on
