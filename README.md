@@ -1,3 +1,4 @@
+[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 # Next.js 2.0 Starter Project
 
 This is a starter [Next.js 2.0](https://zeit.co/blog/next) project that shows how to put together a website with server and client side rendering powered by Next.js, which uses React.
