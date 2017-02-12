@@ -64,7 +64,7 @@ export default class extends Page {
         {signinForm}
         <h3>How it works</h3>
         <p>
-          This project includes a passwordless, email based authentication system, that uses 
+          This project includes a passwordless, email based authentication system, that uses
           one time use tokens sent out via email. Recipients follow the links in the emails to sign in.
         </p>
         <p>
