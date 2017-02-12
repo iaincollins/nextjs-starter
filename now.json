@@ -1,7 +1,4 @@
 {
   "name": "nextjs-starter",
-  "alias": "nextjs-starter.now.sh",
-  "files": [
-    ".env"
-  ]
+  "alias": "nextjs-starter.now.sh"
 }
