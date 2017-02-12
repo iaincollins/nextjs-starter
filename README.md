@@ -53,7 +53,7 @@ Reflecting how most examples of Next.js are written, in  `package.json` we have 
 
 xo needs to be installed globally:
 
-  install -g xo
+    install -g xo
 
 You can check linting by running `xo` or by running `npm test`.
 
