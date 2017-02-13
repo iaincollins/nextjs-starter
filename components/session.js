@@ -6,6 +6,14 @@
  * Service Workers and they cannot share cookies with the browser session
  * yet (!) so if we tried to get or pass the CSRF token it would mismatch.
  */
+import Promise from 'promise-polyfill'
+
+// Add Promise polyfill if Pomises are not supported natively
+// i.e. Internet Explorer and Opera Mini
+if (typeof window !== 'undefined' && !window.Promise) {
+  window.Promise = Promise
+}
+
 export default class Session {
 
   constructor({req} = {}) {
