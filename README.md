@@ -11,6 +11,8 @@ It includes session support (with CSRF and XSS protection), email based sign-in 
 
 All functionality works both client and server site - including without JavaScript support in the browser.
 
+*Note: Some of the features in this release may not be compatible with Internet Explorer (but do work with Chrome, Firefox and Safari). Internet Explorer specific issues will be addressed when Next.js 2.0 is final, but pull requests in the interim are welcome.*
+
 ## Demo
 
 You can try it out at https://nextjs-starter.now.sh
@@ -35,7 +37,7 @@ If you wanted to run this site in production run:
 You should run the the build step again any time you make changes to pages or
 components.
 
-## Deploying to the cloud
+## Deploying to the cloud with now.sh
 
 To deploy on [Zeit's](https://zeit.co) cloud platform `now` just install it, clone this repository and run `now` in the working directory:
 
