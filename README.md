@@ -11,8 +11,6 @@ It includes session support (with CSRF and XSS protection), email based sign-in 
 
 All functionality works both client and server site - including without JavaScript support in the browser.
 
-*Note: Some of the features in this release may not be compatible with Internet Explorer (but do work with Chrome, Firefox and Safari). Internet Explorer specific issues will be addressed when Next.js 2.0 is final, but pull requests in the interim are welcome.*
-
 ## Demo
 
 You can try it out at https://nextjs-starter.now.sh
