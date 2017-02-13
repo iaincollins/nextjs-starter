@@ -75,8 +75,10 @@ app.prepare()
 })
 .then(db => {
   // Once DB is available, setup sessions and routes for authentication
-  auth.configure(app, server, {
-    db: db,
+  auth.configure({
+    app: app,
+    server: server,
+    user: db.models.user,
     secret: process.env.SESSION_SECRET
   })
 
@@ -105,4 +107,8 @@ app.prepare()
     }
     console.log('> Ready on http://localhost:' + process.env.PORT + ' [' + process.env.NODE_ENV + ']')
   })
+})
+.catch(err => {
+  console.log('An error occurred, unable to start the server')
+  console.log(err)
 })

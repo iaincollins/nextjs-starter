@@ -17,48 +17,47 @@ const FileStore = require('session-file-store')(session)
 const nodemailer = require('nodemailer')
 const csrf = require('lusca').csrf()
 const uuid = require('uuid/v4')
-const passport = require('./passport')
+const passportStrategies = require('./passport-strategies')
 
-exports.configure = (app, server, options) => {
-  if (!options) {
-    options = {}
+exports.configure = ({
+    app = null, // Next.js App
+    server = null, // Express Server
+    user: User = null, // User model
+    // URL base path for authentication routes
+    path = '/auth',
+    // Directory in ./pages/ where auth pages can be found
+    pages = 'auth',
+    // Secret used to encrypt session data on the server
+    secret = 'change-me',
+    // Sessions store for express-session (defaults to /tmp/sessions file store)
+    store = new FileStore({path: '/tmp/sessions', secret: secret}),
+    // Max session age in ms (default is 4 weeks)
+    // NB: With 'rolling: true' passed to session() the session expiry time will
+    // be reset every time a user visits the site again before it expires.
+    maxAge = 60000 * 60 * 24 * 7 * 4,
+    // How often the client should revalidate the session in ms (default 60s)
+    // Does not impact the session life on the server, but causes the client to
+    // always refetch session info after N seconds has elapsed since last
+    // checked. Sensible values are between 0 (always check the server) and a
+    // few minutes.
+    clientMaxAge = 60000,
+    // URL of the server (e.g. 'http://www.example.com'). Used when sending
+    // sign in links in emails. Autodetects to hostname if null.
+    serverUrl = null,
+    // Mailserver configuration for nodemailer (defaults to localhost if null)
+    mailserver = null
+  } = {}) => {
+  if (app === null) {
+    throw new Error('app option must be a next server instance')
   }
 
-  if (!options.db || !options.db.models || !options.db.models.user) {
-    throw new Error('Database with user model is a required option!')
+  if (server === null) {
+    throw new Error('server option must be an express server instance')
   }
 
-  const User = options.db.models.user
-
-  // Base path for auth URLs
-  const path = options.path || '/auth'
-
-  // Directory for auth pages
-  const pages = options.pages || 'auth'
-
-  // The secret is used to encrypt/decrypt sessions (you should pass your own!)
-  const secret = options.secret || 'change-me'
-
-  // Configure session store (defaults to using file system)
-  const store = options.store || new FileStore({path: '/tmp/sessions', secret: secret})
-
-  // Max session age in ms (default is 4 weeks)
-  // NB: With 'rolling: true' passed to session() the session expiry time will
-  // be reset every time a user visits the site again before it expires.
-  const maxAge = options.maxAge || 60000 * 60 * 24 * 7 * 4
-
-  // How often the client should revalidate the session in ms (default 60s)
-  // Does not impact the session life on the server, but causes the client to
-  // always refetch session info after N seconds has elapsed since last checked.
-  // Sensible values are between 0 (always check the server) and a few minutes.
-  const clientMaxAge = options.clientMaxAge || 60000
-
-  // URL of the server (e.g. 'http://www.example.com'). Used when sending
-  // sign-in emails. Autodetects current server hostname / domain if null.
-  const serverUrl = options.serverUrl || null
-
-  // Mailserver (defaults to sending from localhost if null)
-  const mailserver = options.mailserver || null
+  if (User === null) {
+    throw new Error('user option must be a User model')
+  }
 
   // Load body parser to handle POST requests
   server.use(bodyParser.json())
@@ -84,7 +83,12 @@ exports.configure = (app, server, options) => {
   })
 
   // With sessions connfigured (& before routes) we need to configure Passport
-  passport.configure(app, server, {db: options.db, path: path})
+  // and trigger passport.initialize() before we add any routes
+  passportStrategies.configure({
+    app: app,
+    server: server,
+    user: User
+  })
 
   // Add route to get CSRF token via AJAX
   server.get(path + '/csrf', (req, res) => {

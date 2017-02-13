@@ -1,23 +1,27 @@
 /**
- * Confgiure Passport Strategies
+ * Configure Passport Strategies
  */
 'use strict'
 
 const passport = require('passport')
 
-exports.configure = (app, server, options) => {
-  if (!options) {
-    options = {}
+exports.configure = ({
+    app = null, // Next.js App
+    server = null, // Express Server
+    user: User = null, // User model
+    path = '/auth' // URL base path for authentication routes
+  } = {}) => {
+  if (app === null) {
+    throw new Error('app option must be a next server instance')
   }
 
-  if (!options.db || !options.db.models || !options.db.models.user) {
-    throw new Error('Database with user model is a required option!')
+  if (server === null) {
+    throw new Error('server option must be an express server instance')
   }
 
-  const User = options.db.models.user
-
-  // Base path for auth URLs
-  const path = options.path || '/auth'
+  if (User === null) {
+    throw new Error('user option must be a User model')
+  }
 
   // Tell Passport how to seralize/deseralize user accounts
   passport.serializeUser(function (user, done) {
@@ -154,7 +158,6 @@ exports.configure = (app, server, options) => {
               if (err) {
                 return done(err)
               }
-              
               // If we already have an account associated with that email address in the databases, the user
               // should sign in with that account instead (to prevent them creating two accounts by mistake)
               // Note: Automatically linking them here could expose a potential security exploit allowing someone
