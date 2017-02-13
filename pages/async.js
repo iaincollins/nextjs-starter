@@ -42,6 +42,11 @@ export default class extends Page {
   }
 
   render() {
+    let loadingMessage
+    if (this.state.posts.length === 0) {
+      loadingMessage = <p><i>Loading content from jsonplaceholder.typicode.com…</i></p>
+    }
+
     return (
       <Layout session={this.props.session}>
         <h2>Asynchronous data fetching</h2>
@@ -64,6 +69,7 @@ export default class extends Page {
           when navigating to this page from another link on the site.
         </p>
         <hr/>
+        {loadingMessage}
         {
           this.state.posts.map((post, i) => (
             <div key={i}>
