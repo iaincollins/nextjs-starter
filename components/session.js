@@ -1,24 +1,18 @@
 /* global window */
+/* global XMLHttpRequest */
 /**
  * A class to handle signing in and out and caching session data in sessionStore
  *
- * Note: We usewindow.XMLHttpRequest() here rather than fetch because fetch() uses
+ * Note: We useXMLHttpRequest() here rather than fetch because fetch() uses
  * Service Workers and they cannot share cookies with the browser session
  * yet (!) so if we tried to get or pass the CSRF token it would mismatch.
  */
 import Promise from 'promise-polyfill'
 
-// Add Promise polyfill if Pomises are not supported natively
-// i.e. Internet Explorer and Opera Mini
-if (typeof window !== 'undefined' && !window.Promise) {
-  window.Promise = Promise
-}
-
 export default class Session {
 
   constructor({req} = {}) {
     this._session = {}
-    this._user = {}
     try {
       if (req) {
         // If running on server we can access the server side environment
@@ -46,7 +40,7 @@ export default class Session {
         return reject(Error('This method should only be called on the client'))
       }
 
-      let xhr = new window.XMLHttpRequest()
+      let xhr = new XMLHttpRequest()
       xhr.open('GET', '/auth/csrf', true)
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
@@ -95,7 +89,7 @@ export default class Session {
     // If we don't have session data, or it's expired, or forceUpdate is set
     // to true then revalidate it by fetching it again from the server.
     return new Promise((resolve, reject) => {
-      let xhr = new window.XMLHttpRequest()
+      let xhr = new XMLHttpRequest()
       xhr.open('GET', '/auth/session', true)
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
@@ -136,7 +130,7 @@ export default class Session {
       // Make sure we have the latest CSRF Token in our session
       this._session.csrfToken = await Session.getCsrfToken()
 
-      let xhr = new window.XMLHttpRequest()
+      let xhr = new XMLHttpRequest()
       xhr.open('POST', '/auth/email/signin', true)
       xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
       xhr.onreadystatechange = () => {
@@ -163,10 +157,10 @@ export default class Session {
         return reject(Error('This method should only be called on the client'))
       }
 
-      let xhr = new window.XMLHttpRequest()
+      let xhr = new XMLHttpRequest()
       xhr.open('POST', '/auth/signout', true)
       xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
-      xhr.onreadystatechange = async() => {
+      xhr.onreadystatechange = async () => {
         if (xhr.readyState === 4) {
           // @TODO We aren't checking for success, just completion
 
