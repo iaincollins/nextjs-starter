@@ -127,6 +127,9 @@ exports.configure = ({
                 if (err) {
                   return done(err)
                 }
+                if (!user) {
+                  return done(new Error('Could not find current user in database.'))
+                }
                 user.name = user.name || profile.name
                 user[provider] = profile.id
                 user.save(function (err) {
