@@ -1,5 +1,11 @@
 'use strict'
 
+const express = require('express')
+const next = require('next')
+const orm = require('orm')
+const sass = require('node-sass')
+const auth = require('./routes/auth')
+
 // Load environment variables from .env file if present
 require('dotenv').load()
 
@@ -20,11 +26,6 @@ process.env.DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING || 'sqlite:/
 
 // Secret used to encrypt session data stored on the server
 process.env.SESSION_SECRET = process.env.SESSION_SECRET || 'change-me'
-
-const express = require('express')
-const next = require('next')
-const orm = require('orm')
-const auth = require('./routes/auth')
 
 const app = next({
   dir: '.',
@@ -80,6 +81,16 @@ app.prepare()
     server: server,
     user: db.models.user,
     secret: process.env.SESSION_SECRET
+  })
+
+  // Add route to serve compiled SCSS from /assets/{build id}/main.css
+  // Note: This is is only used in production, in development it is inlined
+  const sassResult = sass.renderSync({file: './css/main.scss'})
+  server.get('/assets/:id/main.css', (req, res) => {
+    res.setHeader('Content-Type', 'text/css')
+    res.setHeader('Cache-Control', 'public, max-age=2592000')
+    res.setHeader('Expires', new Date(Date.now() + 2592000000).toUTCString())
+    res.send(sassResult.css)
   })
 
   // A simple example of a custom route
