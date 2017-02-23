@@ -1,6 +1,6 @@
 {
   "name": "nextjs-starter",
-  "version": "2.5.18",
+  "version": "2.5.19",
   "description": "A starter Next.js project with email and oAuth authentication",
   "author": "Iain Collins <me@iaincollins.com>",
   "license": "ISC",
@@ -23,7 +23,6 @@
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",
     "passport-twitter": "^1.0.4",
-    "promise-polyfill": "^6.0.2",
     "raw-loader": "^0.5.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",

@@ -7,7 +7,6 @@
  * Service Workers and they cannot share cookies with the browser session
  * yet (!) so if we tried to get or pass the CSRF token it would mismatch.
  */
-import Promise from 'promise-polyfill'
 
 export default class Session {
 

@@ -30,6 +30,7 @@ export default class extends React.Component {
       <header>
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1"/>
+          <script src="https://cdn.polyfill.io/v2/polyfill.min.js"/>
           {stylesheet}
         </Head>
         <Menu session={this.props.session}/>
