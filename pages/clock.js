@@ -8,6 +8,11 @@
  * - components/clock-store.js
  * - next-redux-wrapper
  */
+// @FIXME The clock demo works locally, but cannot be deployed to now.sh!
+// There is something going wrong while building on now.sh :-(
+// I have removed next-redux-wrapper from package.json for now.
+// See https://github.com/iaincollins/nextjs-starter/pull/14
+/*
 import React from 'react'
 import withRedux from 'next-redux-wrapper'
 import { initStore, startClock } from '../components/clock-store'
@@ -45,3 +50,4 @@ class Counter extends React.Component {
 }
 
 export default withRedux(initStore, state => state)(Counter)
+*/

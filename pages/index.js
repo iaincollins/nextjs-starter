@@ -46,7 +46,9 @@ export default class extends Page {
           <li><Link href="/async"><a>Asynchronous data fetching</a></Link> - How to include data from an API or database</li>
           <li><Link href="/routing/?id=example" as="/route/example"><a>Custom routing</a></Link> - Handling custom routes with Express</li>
           <li><Link href="/auth/signin"><a>Authentication</a></Link> - Authentication via email and Facebook, Google+ and Twitter</li>
+          {/*
           <li><Link href="/clock"><a>Clock</a></Link> - A more advanced example from the Zeit wiki (this demo is slightly outdated)</li>
+          */}
         </ul>
         <p>
           If you want to see how custom 404, 500 and other HTTP errors are handled take a look at pages/_error.js
