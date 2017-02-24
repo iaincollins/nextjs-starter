@@ -1,6 +1,6 @@
 {
   "name": "nextjs-starter",
-  "version": "2.5.19",
+  "version": "2.5.20",
   "description": "A starter Next.js project with email and oAuth authentication",
   "author": "Iain Collins <me@iaincollins.com>",
   "license": "ISC",
