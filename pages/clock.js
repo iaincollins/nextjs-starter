@@ -5,49 +5,43 @@
  * The clock demo is comprised of
  * - pages/clock.js
  * - components/clock.js
- * - lib/clock-store.js
+ * - components/clock-store.js
+ * - next-redux-wrapper
  */
 import React from 'react'
-import {Provider} from 'react-redux'
-import {reducer, initStore, startClock} from '../components/clock-store'
+import withRedux from 'next-redux-wrapper'
+import { initStore, startClock } from '../components/clock-store'
 import Clock from '../components/clock'
 
-export default class Counter extends React.Component {
+class Counter extends React.Component {
 
   // propTypes() is checked by 'xo' linter
-  static propTypes() {
+  static propTypes () {
     return {
-      initialState: React.PropTypes.object.isRequired,
       isServer: React.PropTypes.boolean.isRequired
     }
   }
 
-  static getInitialProps({req}) {
-    const isServer = Boolean(req)
-    const store = initStore(reducer, null, isServer)
-    store.dispatch({type: 'TICK', ts: Date.now()})
-    return {initialState: store.getState(), isServer}
+  static getInitialProps ({ store, isServer }) {
+    store.dispatch({ type: 'TICK', light: !isServer, ts: Date.now() })
+    return { isServer }
   }
 
-  constructor(props) {
-    super(props)
-    this.store = initStore(reducer, props.initialState, props.isServer)
+  componentDidMount () {
+    this.timer = this.props.dispatch(startClock())
   }
 
-  componentDidMount() {
-    this.timer = this.store.dispatch(startClock())
-  }
-
-  componentWillUnmount() {
+  componentWillUnmount () {
     clearInterval(this.timer)
   }
 
-  render() {
+  render () {
+    const { lastUpdate, light } = this.props
     return (
-      <Provider store={this.store}>
-        <Clock/>
-      </Provider>
+      <Clock lastUpdate={lastUpdate} light={light} />
     )
   }
 
 }
+
+export default withRedux(initStore, state => state)(Counter)
