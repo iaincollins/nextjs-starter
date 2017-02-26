@@ -1,8 +1,10 @@
-const format = t => `${pad(t.getUTCHours())}:${pad(t.getUTCMinutes())}:${pad(t.getUTCSeconds())}`
+import React from 'react'
 
 const pad = n => n < 10 ? `0${n}` : n
 
-export default ({ lastUpdate, light }) => {
+const format = t => `${pad(t.getUTCHours())}:${pad(t.getUTCMinutes())}:${pad(t.getUTCSeconds())}`
+
+export default ({lastUpdate, light}) => {
   return (
     <div className={light ? 'light' : ''}>
       {format(new Date(lastUpdate))}
