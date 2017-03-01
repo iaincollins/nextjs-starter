@@ -1,4 +1,4 @@
-import Link from 'next/prefetch'
+import Link from 'next/link'
 import React from 'react'
 import Package from '../package'
 
@@ -7,7 +7,7 @@ export default() => (
     <div className="container">
       <hr/>
       <p>
-        <Link href="/"><a><strong>Home</strong></a></Link>
+        <Link prefetch href="/"><a><strong>Home</strong></a></Link>
         &nbsp;|&nbsp;
         <Link href="https://github.com/iaincollins/nextjs-starter"><a>nextjs-starter {Package.version}</a></Link>
         &nbsp;|&nbsp;

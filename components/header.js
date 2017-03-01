@@ -1,6 +1,6 @@
 /* eslint-disable react/no-danger */
 import Head from 'next/head'
-import Link from 'next/prefetch'
+import Link from 'next/link'
 import React from 'react'
 import inlineCSS from '../css/main.scss'
 import Package from '../package'
@@ -35,7 +35,7 @@ export default class extends React.Component {
         </Head>
         <Menu session={this.props.session}/>
         <div className="header">
-          <h1><Link href="/"><a>Next.js 2.0 Starter Project</a></Link></h1>
+          <h1><Link prefetch href="/"><a>Next.js 2.0 Starter Project</a></Link></h1>
           <hr/>
         </div>
       </header>

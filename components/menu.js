@@ -1,5 +1,5 @@
 /* global window */
-import Link from 'next/prefetch'
+import Link from 'next/link'
 import React from 'react'
 import Session from './session'
 
@@ -24,14 +24,14 @@ export default class extends React.Component {
   render() {
     const session = this.props.session || null
 
-    let loginMessage = <p><Link href="/"><a className="home">Home</a></Link> You are not logged in. <Link href="/auth/signin"><a>Sign in</a></Link></p>
+    let loginMessage = <p><Link prefetch href="/"><a className="home">Home</a></Link> You are not logged in. <Link prefetch href="/auth/signin"><a>Sign in</a></Link></p>
 
     if (session.user) {
       loginMessage = (
         <form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSubmit}>
           <input name="_csrf" type="hidden" value={session.csrfToken}/>
           <p>
-            <Link href="/"><a className="home">Home</a></Link>Logged in as <strong>{session.user.name || session.user.email}</strong>
+            <Link prefetch href="/"><a className="home">Home</a></Link>Logged in as <strong>{session.user.name || session.user.email}</strong>
             <button type="submit">Sign out</button>
           </p>
         </form>
