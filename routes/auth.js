@@ -133,6 +133,13 @@ exports.configure = ({
           if (err) {
             throw err
           }
+          
+          sendVerificationEmail({
+            mailserver: mailserver,
+            fromEmail: 'noreply@' + req.headers.host.split(':')[0],
+            toEmail: email,
+            url: verificationUrl
+          })
         })
       } else {
         User.create({email: email, token: token}, function (err) {
@@ -140,19 +147,11 @@ exports.configure = ({
             throw err
           }
 
-          nodemailer
-          .createTransport(mailserver)
-          .sendMail({
-            to: email,
-            from: 'noreply@' + req.headers.host.split(':')[0],
-            subject: 'Sign in link',
-            text: 'Use the link below to sign in:\n\n' + verificationUrl + '\n\n'
-          }, function (err) {
-            // @TODO Handle errors
-            if (err) {
-              console.log('Generated sign in link ' + verificationUrl + ' for ' + email)
-              console.log('Error sending email to ' + email, err)
-            }
+          sendVerificationEmail({
+            mailserver: mailserver,
+            fromEmail: 'noreply@' + req.headers.host.split(':')[0],
+            toEmail: email,
+            url: verificationUrl
           })
         })
       }
@@ -199,4 +198,22 @@ exports.configure = ({
     req.logout()
     res.redirect('/')
   })
+}
+
+// @TODO Argument validation
+function sendVerificationEmail({mailserver, fromEmail, toEmail, url}) {
+  nodemailer
+  .createTransport(mailserver)
+  .sendMail({
+    to: toEmail,
+    from: fromEmail,
+    subject: 'Sign in link',
+    text: 'Use the link below to sign in:\n\n' + url + '\n\n'
+  }, function (err) {
+    // @TODO Handle errors
+    if (err) {
+      console.log('Error sending email to ' + toEmail, err)
+    }
+  })
+  //console.log('Generated sign in link ' + url + ' for ' + toEmail)
 }
