@@ -1,7 +1,7 @@
 /**
  * Add routes for authentication
  *
- * Also sets up dependancies for authentication:
+ * Also sets up dependencies for authentication:
  * - Adds sessions support to Express (with HTTP only cookies for security)
  * - Configures session store (defaults to a flat file store in /tmp/sessions)
  * - Adds protection for Cross Site Request Forgery attacks to all POST requests
