@@ -50,19 +50,9 @@ export default class extends Page {
         linkWithTwitter = <p>✔ <strong>Linked with Twitter</strong></p>
       }
 
-      // Twitter is a special case as it hasn't historically exposed users
-      // email addresses (though this is a new option Twitter are rolling out).
-      // So we assign them a temporary faux email address '{username}@twitter'
-      // until they are signed in and can add their real email address.
-      let signedInAs = <p>You are signed in as <strong>{this.props.session.user.email}</strong>.</p>
-      if (this.props.session.user.email.match(/.*@twitter$/)) {
-        signedInAs = <p>You are signed in with <strong>Twitter</strong>.</p>
-      }
-
       signinForm = (
         <div>
           <h3>You are signed in</h3>
-          {signedInAs}
           <p>You can link your account to your other accounts so you can sign in with them too.</p>
           <p>
             {linkWithFacebook}
