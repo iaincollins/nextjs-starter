@@ -8,7 +8,7 @@ export default class extends Page {
     return (
       <Layout session={this.props.session}>
         <h2>Unable to sign in</h2>
-        <p>The link you tried to use to sign in was no not valid.</p>
+        <p>The link you tried to use to sign in was not valid.</p>
         <p><Link href="/auth/signin"><a>Request a new sign in link.</a></Link></p>
       </Layout>
     )
