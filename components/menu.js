@@ -31,7 +31,7 @@ export default class extends React.Component {
         <form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSubmit}>
           <input name="_csrf" type="hidden" value={session.csrfToken}/>
           <p>
-            <Link prefetch href="/"><a className="home">Home</a></Link>Logged in as <strong>{session.user.name || session.user.email}</strong>
+            <Link prefetch href="/"><a className="home">Home</a></Link>Logged in as <strong><Link prefetch href="/auth/signin"><a>{session.user.name || session.user.email}</a></Link></strong>
             <button type="submit">Sign out</button>
           </p>
         </form>
