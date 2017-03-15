@@ -133,7 +133,7 @@ exports.configure = ({
           if (err) {
             throw err
           }
-          
+
           sendVerificationEmail({
             mailserver: mailserver,
             fromEmail: 'noreply@' + req.headers.host.split(':')[0],
@@ -215,5 +215,5 @@ function sendVerificationEmail({mailserver, fromEmail, toEmail, url}) {
       console.log('Error sending email to ' + toEmail, err)
     }
   })
-  //console.log('Generated sign in link ' + url + ' for ' + toEmail)
+  // console.log('Generated sign in link ' + url + ' for ' + toEmail)
 }

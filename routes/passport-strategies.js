@@ -36,9 +36,9 @@ exports.configure = ({
         id: user.id,
         name: user.name,
         email: user.email,
-        facebook: (user.facebook) ? true : false,
-        google: (user.google) ? true : false,
-        twitter: (user.twitter) ? true : false
+        facebook: Boolean(user.facebook),
+        google: Boolean(user.google),
+        twitter: Boolean(user.twitter)
       })
     })
   })
@@ -197,7 +197,8 @@ exports.configure = ({
   // Add routes for provider
   providers.forEach(({provider, scope}) => {
     server.get(path + '/oauth/' + provider, passport.authenticate(provider, {scope: scope}))
-    server.get(path + '/oauth/' + provider + '/callback', passport.authenticate(provider, {
+    server.get(path + '/oauth/' + provider + '/callback', passport.authenticate(provider,
+      {
         successRedirect: path + '/success',
         failureRedirect: path + '/error/oauth'
       })

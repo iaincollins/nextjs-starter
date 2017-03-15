@@ -34,34 +34,12 @@ export default class extends Page {
 
   render() {
     let signinForm = <div/>
-    if (!this.props.session.user) {
-      signinForm = (
-        <div>
-          <form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
-            <input name="_csrf" type="hidden" value={this.props.session.csrfToken}/>
-            <h3>Sign in with email</h3>
-            <p>
-              <label htmlFor="email">Email address</label><br/>
-              <input name="email" type="text" placeholder="j.smith@example.com" id="email" value={this.state.email} onChange={this.handleEmailChange}/>
-            </p>
-            <p>
-              <button id="submitButton" type="submit">Sign in</button>
-            </p>
-          </form>
-          <h3>Sign in with oAuth</h3>
-          <p>
-            <a className="button button-oauth button-facebook" href="/auth/oauth/facebook">Sign in with Facebook</a>
-            <a className="button button-oauth button-google" href="/auth/oauth/google">Sign in with Google</a>
-            <a className="button button-oauth button-twitter" href="/auth/oauth/twitter">Sign in with Twitter</a>
-          </p>
-        </div>
-      )
-    } else {
+    if (this.props.session.user) {
       let linkWithFacebook = <a className="button button-oauth button-facebook" href="/auth/oauth/facebook">Link with Facebook</a>
       if (this.props.session.user.facebook) {
         linkWithFacebook = <p>✔ <strong>Linked with Facebook</strong></p>
       }
-      
+
       let linkWithGoogle = <a className="button button-oauth button-google" href="/auth/oauth/google">Link with Google</a>
       if (this.props.session.user.google) {
         linkWithGoogle = <p>✔ <strong>Linked with Google</strong></p>
@@ -71,10 +49,10 @@ export default class extends Page {
       if (this.props.session.user.twitter) {
         linkWithTwitter = <p>✔ <strong>Linked with Twitter</strong></p>
       }
-      
-      // Twitter is a special case as it hasn't historically exposed users 
+
+      // Twitter is a special case as it hasn't historically exposed users
       // email addresses (though this is a new option Twitter are rolling out).
-      // So we assign them a temporary faux email address '{username}@twitter' 
+      // So we assign them a temporary faux email address '{username}@twitter'
       // until they are signed in and can add their real email address.
       let signedInAs = <p>You are signed in as <strong>{this.props.session.user.email}</strong>.</p>
       if (this.props.session.user.email.match(/.*@twitter$/)) {
@@ -97,6 +75,28 @@ export default class extends Page {
               but those features aren&#39;t implemented in this project. Unlinking an account is as simple
               as just deleting the oauth key from the user in your database.
             </i>
+          </p>
+        </div>
+      )
+    } else {
+      signinForm = (
+        <div>
+          <form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
+            <input name="_csrf" type="hidden" value={this.props.session.csrfToken}/>
+            <h3>Sign in with email</h3>
+            <p>
+              <label htmlFor="email">Email address</label><br/>
+              <input name="email" type="text" placeholder="j.smith@example.com" id="email" value={this.state.email} onChange={this.handleEmailChange}/>
+            </p>
+            <p>
+              <button id="submitButton" type="submit">Sign in</button>
+            </p>
+          </form>
+          <h3>Sign in with oAuth</h3>
+          <p>
+            <a className="button button-oauth button-facebook" href="/auth/oauth/facebook">Sign in with Facebook</a>
+            <a className="button button-oauth button-google" href="/auth/oauth/google">Sign in with Google</a>
+            <a className="button button-oauth button-twitter" href="/auth/oauth/twitter">Sign in with Twitter</a>
           </p>
         </div>
       )
