@@ -38,6 +38,10 @@ h3 {
 ul {
   list-style: square;
 }
+form {
+  margin: 0;
+  padding: 0;
+}
 input {
   font-size: 16px;
   line-height: 18px;
@@ -71,9 +75,11 @@ button:disabled {
 .button-oauth {
   display: block;
   width: 100%;
+  padding: 10px 0;
   max-width: 300px;
   margin-bottom: 10px;
   text-align: center;
+  margin-bottom: 15px;
 }
 .button-facebook {
   border-color: #3B5998;

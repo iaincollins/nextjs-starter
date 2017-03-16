@@ -5,6 +5,15 @@ import Session from '../../components/session'
 
 export default class extends Page {
 
+  static async getInitialProps({req}) {
+    // On the sign in page we always force get the latest session data from the
+    // server by passing 'true' to getSession. This page is the destination
+    // page after logging or linking/unlinking accounts so avoids any weird
+    // edge cases.
+    const session = new Session({req})
+    return {session: await session.getSession(true)}
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -35,35 +44,38 @@ export default class extends Page {
   render() {
     let signinForm = <div/>
     if (this.props.session.user) {
-      let linkWithFacebook = <a className="button button-oauth button-facebook" href="/auth/oauth/facebook">Link with Facebook</a>
+      let linkWithFacebook = <p><a className="button button-oauth button-facebook" href="/auth/oauth/facebook">Link with Facebook</a></p>
       if (this.props.session.user.facebook) {
-        linkWithFacebook = <p>✔ <strong>Linked with Facebook</strong></p>
+        linkWithFacebook = <form action="/auth/oauth/facebook/unlink" method="post"><input name="_csrf" type="hidden" value={this.props.session.csrfToken}/><button className="button button-oauth" type="submit">Unlink from Facebook</button></form>
       }
 
-      let linkWithGoogle = <a className="button button-oauth button-google" href="/auth/oauth/google">Link with Google</a>
+      let linkWithGoogle = <p><a className="button button-oauth button-google" href="/auth/oauth/google">Link with Google</a></p>
       if (this.props.session.user.google) {
-        linkWithGoogle = <p>✔ <strong>Linked with Google</strong></p>
+        linkWithGoogle = <form action="/auth/oauth/google/unlink" method="post"><input name="_csrf" type="hidden" value={this.props.session.csrfToken}/><button className="button button-oauth" type="submit">Unlink from Google</button></form>
       }
 
-      let linkWithTwitter = <a className="button button-oauth button-twitter" href="/auth/oauth/twitter">Link with Twitter</a>
+      let linkWithTwitter = <p><a className="button button-oauth button-twitter" href="/auth/oauth/twitter">Link with Twitter</a></p>
       if (this.props.session.user.twitter) {
-        linkWithTwitter = <p>✔ <strong>Linked with Twitter</strong></p>
+        linkWithTwitter = <form action="/auth/oauth/twitter/unlink" method="post"><input name="_csrf" type="hidden" value={this.props.session.csrfToken}/><button className="button button-oauth" type="submit">Unlink from Twitter</button></form>
       }
 
       signinForm = (
         <div>
           <h3>You are signed in</h3>
+          <p>Name: <strong>{this.props.session.user.name}</strong></p>
+          <p>Email address: <strong>{this.props.session.user.email}</strong></p>
+          <p>Email verified: <strong>{(this.props.session.user.verified) ? 'Yes' : 'No'}</strong></p>
           <p>You can link your account to your other accounts so you can sign in with them too.</p>
-          <p>
-            {linkWithFacebook}
-            {linkWithGoogle}
-            {linkWithTwitter}
-          </p>
+          {linkWithFacebook}
+          {linkWithGoogle}
+          {linkWithTwitter}
           <p>
             <i>
-              Note: When signed in, you should able unlink accounts and to change your name and email address,
-              but those features aren&#39;t implemented in this project. Unlinking an account is as simple
-              as just deleting the oauth key from the user in your database.
+              Note: When signed in you should be able to change your name and email address and delete your account
+              but those features aren&#39;t implemented in this example project. If you sign in with a service that
+              doesn&#39;t provide  an email address (like Twitter) you will be assigned a placeholder email address
+              (e.g. twitter-15403657@localhost.localdomain) until you supply a real one. Email addresses can be
+              verified by signing in with them (the verified status should reset to false if the email address is changed).
             </i>
           </p>
         </div>
@@ -109,7 +121,7 @@ export default class extends Page {
         <p>
           This project also integrates with Passport to allow signing in with Facebook, Google, Twitter and other sites that support oAuth.
         </p>
-        <h3>Exending the authentication system</h3>
+        <h3>Extending the authentication system</h3>
         <p>
           By default, user data is persisted on the server in SQL Lite as this requires no configuration,
           but this can be easily changed to another database - including MongoDB, MySQL, PostgreSQL, Amazon Redshift and others

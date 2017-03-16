@@ -184,7 +184,7 @@ exports.configure = ({
             if (err) {
               return res.redirect(path + '/error/email')
             }
-            return res.redirect(path + '/success')
+            return res.redirect(path + '/signin?action=signin_email')
           })
         })
       } else {

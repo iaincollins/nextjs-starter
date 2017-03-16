@@ -36,6 +36,7 @@ exports.configure = ({
         id: user.id,
         name: user.name,
         email: user.email,
+        verified: user.verified,
         facebook: Boolean(user.facebook),
         google: Boolean(user.google),
         twitter: Boolean(user.twitter)
@@ -86,6 +87,7 @@ exports.configure = ({
     })
   }
 
+  // Note: Twitter doesn't expose emails by default so we create a placeholder
   if (process.env.TWITTER_KEY && process.env.TWITTER_SECRET) {
     providers.push({
       provider: 'twitter',
@@ -99,7 +101,7 @@ exports.configure = ({
         return {
           id: profile.id,
           name: profile.displayName,
-          email: profile.username + '@twitter'
+          email: 'twitter-' + profile.id + '@localhost.localdomain'
         }
       }
     })
@@ -108,8 +110,6 @@ exports.configure = ({
   // Define a Passport strategy for provider
   providers.forEach(({provider, Strategy, strategyOptions, getUserFromProfile}) => {
     strategyOptions.callbackURL = path + '/oauth/' + provider + '/callback'
-    strategyOptions.successRedirect = path + '/success'
-    strategyOptions.failureRedirect = path + '/error/oauth'
     strategyOptions.passReqToCallback = true
 
     passport.use(new Strategy(strategyOptions, (req, accessToken, refreshToken, profile, next) => {
@@ -135,15 +135,28 @@ exports.configure = ({
                 if (!user) {
                   return next(new Error('Could not find current user in database.'))
                 }
+                // If we don't have a name for the user, grab the one from oAuth
                 user.name = user.name || profile.name
+                // If we don't have a real email address for the user, grab the
+                // one from the oAuth account they just signed in with
+                if (user.email.match(/.*@localhost\.localdomain$/)) {
+                  user.verified = false
+                  user.email = profile.email
+                }
                 user[provider] = profile.id
                 user.save(function (err) {
-                  return next(err, user)
+                  // @FIXME Should check the error code to verify the error was
+                  // actually caused by email already being in use here but is
+                  // almost certainly the cause of any errors when saving here.
+                  if (err) {
+                    return next(null, false, {message: 'Please check there isn\'t an account associated with the same email address.'})
+                  }
+                  return next(null, user)
                 })
               })
             }
 
-            // If oAuth account already linked to the current user, just exit
+            // If oAuth account already linked to the current user return okay
             if (req.user.id === user.id) {
               return next(null, user)
             }
@@ -196,13 +209,44 @@ exports.configure = ({
 
   // Add routes for provider
   providers.forEach(({provider, scope}) => {
+    // Route to start sign in
     server.get(path + '/oauth/' + provider, passport.authenticate(provider, {scope: scope}))
+    // Route to call back to after signing in
     server.get(path + '/oauth/' + provider + '/callback', passport.authenticate(provider,
       {
-        successRedirect: path + '/success',
+        successRedirect: path + '/signin?action=signin_' + provider,
         failureRedirect: path + '/error/oauth'
       })
     )
+    // Route to post to unlink accounts
+    server.post(path + '/oauth/' + provider + '/unlink', (req, res, next) => {
+      if (!req.user) {
+        next(new Error('Not signed in'))
+      }
+      // Lookup user
+      User.get(req.user.id, function (err, user) {
+        if (!user) {
+          next(err)
+        }
+
+        if (!user) {
+          next(new Error('Unable to look up account for current user'))
+        }
+
+        // Remove connection between user account and oauth provider
+        if (user[provider]) {
+          user[provider] = null
+        }
+
+        user.save(function (err) {
+          if (!user) {
+            next(err)
+          }
+
+          return res.redirect(path + '/signin?action=unlink_' + provider)
+        })
+      })
+    })
   })
 
   // A catch all for providers that are not configured
