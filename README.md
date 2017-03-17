@@ -48,6 +48,13 @@ If you configure a .env file (see [.env.default](https://github.com/iaincollins/
 
     now -E
 
+## Debugging
+
+If you configure a .env file with value for *LOGS_SECRET* and deploy with `now -E` you can use [now-logs](https://github.com/berzniz/now-logs) to view logs remotely.
+
+    npm install -g now-logs
+    now-logs my-secret-value
+
 ## Running tests
 
 Style formatting is enforced with the JavaScript style linter [xo](https://github.com/sindresorhus/xo) which is invoked when running `npm test`.
