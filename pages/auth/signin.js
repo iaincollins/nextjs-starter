@@ -14,17 +14,31 @@ export default class extends Page {
     return {session: await session.getSession(true)}
   }
 
+  async componentDidMount() {
+    // Get latest session data after rendering on client
+    // Any page that is specified as the oauth callback should do this
+    const session = new Session()
+    this.state = {
+      email: this.state.email,
+      session: await session.getSession(true)
+    }
+  }
+
   constructor(props) {
     super(props)
     this.state = {
-      email: ''
+      email: '',
+      session: this.props.session
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleEmailChange = this.handleEmailChange.bind(this)
   }
 
   handleEmailChange(event) {
-    this.setState({email: event.target.value.trim()})
+    this.setState({
+      email: event.target.value.trim(),
+      session: this.state.session
+    })
   }
 
   async handleSubmit(event) {
@@ -43,28 +57,28 @@ export default class extends Page {
 
   render() {
     let signinForm = <div/>
-    if (this.props.session.user) {
+    if (this.state.session.user) {
       let linkWithFacebook = <p><a className="button button-oauth button-facebook" href="/auth/oauth/facebook">Link with Facebook</a></p>
-      if (this.props.session.user.facebook) {
-        linkWithFacebook = <form action="/auth/oauth/facebook/unlink" method="post"><input name="_csrf" type="hidden" value={this.props.session.csrfToken}/><button className="button button-oauth" type="submit">Unlink from Facebook</button></form>
+      if (this.state.session.user.facebook) {
+        linkWithFacebook = <form action="/auth/oauth/facebook/unlink" method="post"><input name="_csrf" type="hidden" value={this.state.session.csrfToken}/><button className="button button-oauth" type="submit">Unlink from Facebook</button></form>
       }
 
       let linkWithGoogle = <p><a className="button button-oauth button-google" href="/auth/oauth/google">Link with Google</a></p>
-      if (this.props.session.user.google) {
-        linkWithGoogle = <form action="/auth/oauth/google/unlink" method="post"><input name="_csrf" type="hidden" value={this.props.session.csrfToken}/><button className="button button-oauth" type="submit">Unlink from Google</button></form>
+      if (this.state.session.user.google) {
+        linkWithGoogle = <form action="/auth/oauth/google/unlink" method="post"><input name="_csrf" type="hidden" value={this.state.session.csrfToken}/><button className="button button-oauth" type="submit">Unlink from Google</button></form>
       }
 
       let linkWithTwitter = <p><a className="button button-oauth button-twitter" href="/auth/oauth/twitter">Link with Twitter</a></p>
-      if (this.props.session.user.twitter) {
-        linkWithTwitter = <form action="/auth/oauth/twitter/unlink" method="post"><input name="_csrf" type="hidden" value={this.props.session.csrfToken}/><button className="button button-oauth" type="submit">Unlink from Twitter</button></form>
+      if (this.state.session.user.twitter) {
+        linkWithTwitter = <form action="/auth/oauth/twitter/unlink" method="post"><input name="_csrf" type="hidden" value={this.state.session.csrfToken}/><button className="button button-oauth" type="submit">Unlink from Twitter</button></form>
       }
 
       signinForm = (
         <div>
           <h3>You are signed in</h3>
-          <p>Name: <strong>{this.props.session.user.name}</strong></p>
-          <p>Email address: <strong>{this.props.session.user.email}</strong></p>
-          <p>Email verified: <strong>{(this.props.session.user.verified) ? 'Yes' : 'No'}</strong></p>
+          <p>Name: <strong>{this.state.session.user.name}</strong></p>
+          <p>Email address: <strong>{this.state.session.user.email}</strong></p>
+          <p>Email verified: <strong>{(this.state.session.user.verified) ? 'Yes' : 'No'}</strong></p>
           <p>You can link your account to your other accounts so you can sign in with them too.</p>
           {linkWithFacebook}
           {linkWithGoogle}
@@ -84,7 +98,7 @@ export default class extends Page {
       signinForm = (
         <div>
           <form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
-            <input name="_csrf" type="hidden" value={this.props.session.csrfToken}/>
+            <input name="_csrf" type="hidden" value={this.state.session.csrfToken}/>
             <h3>Sign in with email</h3>
             <p>
               <label htmlFor="email">Email address</label><br/>
@@ -105,7 +119,7 @@ export default class extends Page {
     }
 
     return (
-      <Layout session={this.props.session}>
+      <Layout session={this.state.session}>
         <h2>Authentication</h2>
         {signinForm}
         <h3>How it works</h3>

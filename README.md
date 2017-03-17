@@ -11,6 +11,8 @@ It includes session support (with CSRF and XSS protection), email based sign-in 
 
 All functionality works both client and server side - including without JavaScript support in the browser.
 
+*Important!* Please upgrade to version 2.8 or newer as this resolves all known cross browser compatibility issues, including session behaviour with Internet Explorer.
+
 ## Demo
 
 You can try it out at https://nextjs-starter.now.sh

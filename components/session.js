@@ -1,4 +1,5 @@
 /* global window */
+/* global localStorage */
 /* global XMLHttpRequest */
 /**
  * A class to handle signing in and out and caching session data in sessionStore
@@ -71,6 +72,7 @@ export default class Session {
 
     // If force update is set, clear data from store
     if (forceUpdate === true) {
+      this._session = {}
       this._removeLocalStore('session')
     }
 
@@ -132,7 +134,7 @@ export default class Session {
       let xhr = new XMLHttpRequest()
       xhr.open('POST', '/auth/email/signin', true)
       xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
-      xhr.onreadystatechange = () => {
+      xhr.onreadystatechange = async () => {
         if (xhr.readyState === 4) {
           if (xhr.status !== 200) {
             return reject(Error('XMLHttpRequest error: Error while attempting to signin'))
@@ -181,14 +183,14 @@ export default class Session {
   // We handle that silently by just returning null here.
   _getLocalStore(name) {
     try {
-      return JSON.parse(window.localStorage.getItem(name))
+      return JSON.parse(localStorage.getItem(name))
     } catch (err) {
       return null
     }
   }
   _saveLocalStore(name, data) {
     try {
-      window.localStorage.setItem(name, JSON.stringify(data))
+      localStorage.setItem(name, JSON.stringify(data))
       return true
     } catch (err) {
       return false
@@ -196,7 +198,7 @@ export default class Session {
   }
   _removeLocalStore(name) {
     try {
-      window.localStorage.removeItem(name)
+      localStorage.removeItem(name)
       return true
     } catch (err) {
       return false
