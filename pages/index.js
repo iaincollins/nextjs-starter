@@ -36,7 +36,7 @@ export default class extends Page {
           with Facebook, Google, Twitter and other sites that support oAuth.
         </p>
         <p>
-          All functionality works both client and server site - including
+          All functionality works both client and server side - including
           without JavaScript support in the browser.
         </p>
         <h3>Examples</h3>
