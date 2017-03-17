@@ -9,7 +9,7 @@ There are practical examples with header, footer and layout files, how to add pa
 
 It includes session support (with CSRF and XSS protection), email based sign-in sytem and integrates with Passport to support signing in with Facebook, Google, Twitter and other sites that support oAuth.
 
-All functionality works both client and server site - including without JavaScript support in the browser.
+All functionality works both client and server side - including without JavaScript support in the browser.
 
 ## Demo
 
