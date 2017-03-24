@@ -37,6 +37,8 @@ If you wanted to run this site in production run:
 You should run the the build step again any time you make changes to pages or
 components.
 
+Note: If you are already running a webserver on port 80 (e.g. Macs usually have the Apache webserver running on port 80) you can still start the example by passing a different port as an Environment Variable when starting (e.g. `PORT=3000 npm start`).
+
 ## Deploying to the cloud with now.sh
 
 To deploy on [Zeit's](https://zeit.co) cloud platform `now` just install it, clone this repository and run `now` in the working directory:
