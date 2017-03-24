@@ -39,6 +39,12 @@ components.
 
 Note: If you are already running a webserver on port 80 (e.g. Macs usually have the Apache webserver running on port 80) you can still start the example in production mode by passing a different port as an Environment Variable when starting (e.g. `PORT=3000 npm start`).
 
+## Configuring
+
+If you configure a .env file (just copy [.env.default](https://github.com/iaincollins/nextjs-starter/blob/master/.env.default) over to '.env' and fill in the options) you can configure a range of options.
+
+See the [AUTHENTICATION.md](https://github.com/iaincollins/nextjs-starter/blob/master/AUTHENTICATION.md) for how to set up oAuth if you want to do that. It suggested you start with Twitter as it's the easiest to get working.
+
 ## Deploying to the cloud with now.sh
 
 To deploy on [Zeit's](https://zeit.co) cloud platform `now` just install it, clone this repository and run `now` in the working directory:
@@ -46,7 +52,7 @@ To deploy on [Zeit's](https://zeit.co) cloud platform `now` just install it, clo
     npm install -g now
     now
 
-If you configure a .env file (see [.env.default](https://github.com/iaincollins/nextjs-starter/blob/master/.env.default) for an example of the options supported) `now` will include it when deploying if you use the -E option to deploy:
+If you configure a .env file `now` will include it when deploying if you use the -E option to deploy:
 
     now -E
 
