@@ -4,7 +4,7 @@
 /**
  * A class to handle signing in and out and caching session data in sessionStore
  *
- * Note: We useXMLHttpRequest() here rather than fetch because fetch() uses
+ * Note: We use XMLHttpRequest() here rather than fetch because fetch() uses
  * Service Workers and they cannot share cookies with the browser session
  * yet (!) so if we tried to get or pass the CSRF token it would mismatch.
  */
