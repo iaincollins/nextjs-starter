@@ -182,7 +182,9 @@ exports.configure = ({
               // If we already have an account associated with that email address in the databases, the user
               // should sign in with that account instead (to prevent them creating two accounts by mistake)
               // Note: Automatically linking them here could expose a potential security exploit allowing someone
-              // to create an account for another users email address in advance then hijack it, so don't do that.
+              // to pre-register or create an account elsewhere for another users email address, so don't do that.
+              // @TODO This could be handled better in the UI (such as telling them it looks like they have
+              // previously signed with via a Google account and maybe they should try signing in with that).
               if (user) {
                 return next(null, false, {message: 'There is already an account associated with the same email address.'})
               }
