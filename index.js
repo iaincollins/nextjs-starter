@@ -14,6 +14,14 @@ if (process.env.LOGS_SECRET) {
   require('now-logs')(process.env.LOGS_SECRET)
 }
 
+process.on('uncaughtException', function(err) {
+  console.log('Uncaught Exception: ' + err)
+})
+
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection: Promise:', p, 'Reason:', reason)
+})
+
 // Default when run with `npm start` is 'production' and default port is '80'
 // `npm run dev` defaults mode to 'development' & port to '3000'
 process.env.NODE_ENV = process.env.NODE_ENV || 'production'

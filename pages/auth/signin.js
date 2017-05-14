@@ -77,7 +77,7 @@ export default class extends Page {
         <div>
           <h3>You are signed in</h3>
           <p>Name: <strong>{this.state.session.user.name}</strong></p>
-          <p>Email address: <strong>{this.state.session.user.email}</strong></p>
+          <p>Email address: <strong>{(this.state.session.user.email.match(/.*@localhost\.localdomain$/)) ? 'N/A' : this.state.session.user.email}</strong></p>
           <p>Email verified: <strong>{(this.state.session.user.verified) ? 'Yes' : 'No'}</strong></p>
           <p>You can link your account to your other accounts so you can sign in with them too.</p>
           {linkWithFacebook}

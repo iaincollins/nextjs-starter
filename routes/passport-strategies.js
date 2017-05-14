@@ -50,6 +50,12 @@ exports.configure = ({
   // model with the name of the provider or you won't be able to log in!
 
   if (process.env.FACEBOOK_ID && process.env.FACEBOOK_SECRET) {
+    /**
+     * @FIXME: The Facebook API is not returning an email address anymore.
+     * The scope value should explicitly state we want this field which last
+     * time I checked still worked, but it's not working as expected anymore.
+     * Facebook have form for changing the API but not doing semver…
+     */
     providers.push({
       provider: 'facebook',
       Strategy: require('passport-facebook').Strategy,
@@ -57,7 +63,7 @@ exports.configure = ({
         clientID: process.env.FACEBOOK_ID,
         clientSecret: process.env.FACEBOOK_SECRET
       },
-      scope: ['email', 'user_location'],
+      scope: 'email',
       getUserFromProfile(profile) {
         return {
           id: profile.id,
@@ -96,12 +102,12 @@ exports.configure = ({
         consumerKey: process.env.TWITTER_KEY,
         consumerSecret: process.env.TWITTER_SECRET
       },
-      scope: null,
+      scope: 'email',
       getUserFromProfile(profile) {
         return {
           id: profile.id,
           name: profile.displayName,
-          email: 'twitter-' + profile.id + '@localhost.localdomain'
+          email: profile.email
         }
       }
     })
@@ -116,6 +122,15 @@ exports.configure = ({
       try {
         // Normalise the provider specific profile into a User object
         profile = getUserFromProfile(profile)
+        
+        // If we didn't get an email address from the oAuth provider then
+        // generate a unique one as placeholder, using Provider name and ID.
+        // If you want users to specify a valid email address after signing in,
+        // you can check for email addresses ending "@localhost.localdomain"
+        // and prompt those users to supply a valid address.
+        if (!profile.email) {
+          profile.email = `${provider}-${profile.id}@localhost.localdomain`
+        }
 
         // See if we have this oAuth account in the database associated with a user
         User.one({[provider]: profile.id}, function (err, user) {
@@ -139,7 +154,8 @@ exports.configure = ({
                 user.name = user.name || profile.name
                 // If we don't have a real email address for the user, grab the
                 // one from the oAuth account they just signed in with
-                if (user.email.match(/.*@localhost\.localdomain$/)) {
+                if (user.email && user.email.match(/.*@localhost\.localdomain$/) &&
+                    profile.email && !profile.email.match(/.*@localhost\.localdomain$/)) {
                   user.verified = false
                   user.email = profile.email
                 }
