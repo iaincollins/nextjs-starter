@@ -1,17 +1,11 @@
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 # Next.js 2.0 Starter Project
 
-This is a starter [Next.js 2.0](https://zeit.co/blog/next) project that shows how to put together a website with server and client side rendering powered by Next.js, which uses React.
+This is a Next.js 2.0 project that incorporates Express for Node.js and reactstrap (Boostrap 4 components for React) and incorporates account registration and sign-in system.
 
-Like all Next.js projects it features automatic pre-fetching of templates with a ServiceWorker, renders pages both client and server side and live reloading in development. It also shows how to use features new in Next.js version 2.0 like integration with Express for custom route handling.
+This project exists to make it easier to get started with creating Universal apps in React.
 
-There are practical examples with header, footer and layout files, how to add page-specific CSS and JavaScript and header elements, how to write code that does asynchronous data fetching, how to write different logic for fetching data on the client and server if you need to.
-
-It includes session support (with CSRF and XSS protection), email based sign-in sytem and integrates with Passport to support signing in with Facebook, Google, Twitter and other sites that support oAuth.
-
-All functionality works both client and server side - including without JavaScript support in the browser.
-
-*Important!* Please upgrade to version 2.8 or newer as this resolves all known cross browser compatibility issues, including session behaviour with Internet Explorer.
+You are invited to copy it and have fun! Contributions to improve it are welcome.
 
 ## Demo
 

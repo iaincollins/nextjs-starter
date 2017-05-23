@@ -1,4 +1,5 @@
 import React from 'react'
+import { Row, Col } from 'reactstrap'
 import Page from '../../components/page'
 import Layout from '../../components/layout'
 import Session from '../../components/session'
@@ -58,19 +59,19 @@ export default class extends Page {
   render() {
     let signinForm = <div/>
     if (this.state.session.user) {
-      let linkWithFacebook = <p><a className="button button-oauth button-facebook" href="/auth/oauth/facebook">Link with Facebook</a></p>
+      let linkWithFacebook = <p><a className="btn btn-secondary btn-facebook" href="/auth/oauth/facebook">Link with Facebook</a></p>
       if (this.state.session.user.facebook) {
-        linkWithFacebook = <form action="/auth/oauth/facebook/unlink" method="post"><input name="_csrf" type="hidden" value={this.state.session.csrfToken}/><button className="button button-oauth" type="submit">Unlink from Facebook</button></form>
+        linkWithFacebook = <form action="/auth/oauth/facebook/unlink" method="post"><input name="_csrf" type="hidden" value={this.state.session.csrfToken}/><button className="btn btn-danger" type="submit">Unlink from Facebook</button></form>
       }
 
-      let linkWithGoogle = <p><a className="button button-oauth button-google" href="/auth/oauth/google">Link with Google</a></p>
+      let linkWithGoogle = <p><a className="btn btn-secondary btn-google" href="/auth/oauth/google">Link with Google</a></p>
       if (this.state.session.user.google) {
-        linkWithGoogle = <form action="/auth/oauth/google/unlink" method="post"><input name="_csrf" type="hidden" value={this.state.session.csrfToken}/><button className="button button-oauth" type="submit">Unlink from Google</button></form>
+        linkWithGoogle = <form action="/auth/oauth/google/unlink" method="post"><input name="_csrf" type="hidden" value={this.state.session.csrfToken}/><button className="btn btn-danger" type="submit">Unlink from Google</button></form>
       }
 
-      let linkWithTwitter = <p><a className="button button-oauth button-twitter" href="/auth/oauth/twitter">Link with Twitter</a></p>
+      let linkWithTwitter = <p><a className="btn btn-secondary btn-twitter" href="/auth/oauth/twitter">Link with Twitter</a></p>
       if (this.state.session.user.twitter) {
-        linkWithTwitter = <form action="/auth/oauth/twitter/unlink" method="post"><input name="_csrf" type="hidden" value={this.state.session.csrfToken}/><button className="button button-oauth" type="submit">Unlink from Twitter</button></form>
+        linkWithTwitter = <form action="/auth/oauth/twitter/unlink" method="post"><input name="_csrf" type="hidden" value={this.state.session.csrfToken}/><button className="btn btn-danger" type="submit">Unlink from Twitter</button></form>
       }
 
       signinForm = (
@@ -96,32 +97,40 @@ export default class extends Page {
       )
     } else {
       signinForm = (
-        <div>
-          <form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
-            <input name="_csrf" type="hidden" value={this.state.session.csrfToken}/>
-            <h3>Sign in with email</h3>
-            <p>
-              <label htmlFor="email">Email address</label><br/>
-              <input name="email" type="text" placeholder="j.smith@example.com" id="email" value={this.state.email} onChange={this.handleEmailChange}/>
-            </p>
-            <p>
-              <button id="submitButton" type="submit">Sign in</button>
-            </p>
-          </form>
-          <h3>Sign in with oAuth</h3>
-          <p>
-            <a className="button button-oauth button-facebook" href="/auth/oauth/facebook">Sign in with Facebook</a>
-            <a className="button button-oauth button-google" href="/auth/oauth/google">Sign in with Google</a>
-            <a className="button button-oauth button-twitter" href="/auth/oauth/twitter">Sign in with Twitter</a>
-          </p>
+        <div className="row">
+          <div className="col-sm-10 offset-sm-1">
+            <div className="row">
+              <div className="col-sm-6">
+                <h3>Sign-in via oAuth</h3>
+                <p><a className="btn btn-secondary btn-block btn-facebook" href="/auth/oauth/facebook">Sign in with Facebook</a></p>
+                <p><a className="btn btn-secondary btn-block btn-google" href="/auth/oauth/google">Sign in with Google</a></p>
+                <p><a className="btn btn-secondary btn-block btn-twitter" href="/auth/oauth/twitter">Sign in with Twitter</a></p>
+              </div>
+              <div className="col-sm-6">
+                <form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
+                  <input name="_csrf" type="hidden" value={this.state.session.csrfToken}/>
+                  <h3>Sign-in via email</h3>
+                  <p>
+                    <label htmlFor="email">Email address</label><br/>
+                    <input name="email" type="text" placeholder="j.smith@example.com" id="email" className="form-control" value={this.state.email} onChange={this.handleEmailChange}/>
+                  </p>
+                  <p>
+                    <button id="submitButton" type="submit" className="btn btn-primary">Sign in</button>
+                  </p>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
       )
     }
 
     return (
-      <Layout session={this.state.session}>
+      <Layout session={this.state.session} hideSignInBtn={true}>
         <h2>Authentication</h2>
+        <br/>
         {signinForm}
+        <br/>
         <h3>How it works</h3>
         <p>
           This project includes a passwordless, email based authentication system, that uses
@@ -152,8 +161,7 @@ export default class extends Page {
         </p>
         <p>
           If you aren&#39;t receiving emails when trying to sign in via email, try using another email address or
-          configuring the mail server option - some email providers block email from
-          unverified mail servers.
+          configuring the mail server option - some email providers block email from unverified mail servers.
         </p>
       </Layout>
     )

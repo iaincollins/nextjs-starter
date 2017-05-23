@@ -49,7 +49,7 @@ export default class extends Page {
 
     return (
       <Layout session={this.props.session}>
-        <h2>Asynchronous data fetching</h2>
+        <h1>Fetching Data Asynchronously</h1>
         <p>
           This example illustrates how write a simple class to fetch data
           asynchronously (e.g. from an API or a database).
