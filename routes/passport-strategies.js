@@ -57,13 +57,16 @@ exports.configure = ({
      * Facebook have form for changing the API but not doing semver…
      */
     providers.push({
-      provider: 'facebook',
       Strategy: require('passport-facebook').Strategy,
-      strategyOptions: {
+      name: 'facebook',
+      options: {
+        profileFields: ['id', 'displayName', 'email', 'link'],
+        scope: ['email', 'public_profile']
+      },
+      credentials: {
         clientID: process.env.FACEBOOK_ID,
         clientSecret: process.env.FACEBOOK_SECRET
       },
-      scope: 'email',
       getUserFromProfile(profile) {
         return {
           id: profile.id,
@@ -76,13 +79,15 @@ exports.configure = ({
 
   if (process.env.GOOGLE_ID && process.env.GOOGLE_SECRET) {
     providers.push({
-      provider: 'google',
       Strategy: require('passport-google-oauth').OAuth2Strategy,
-      strategyOptions: {
+      name: 'google',
+      options: {
+        scope: ['profile', 'email']
+      },
+      credentials: {
         clientID: process.env.GOOGLE_ID,
         clientSecret: process.env.GOOGLE_SECRET
       },
-      scope: 'profile email',
       getUserFromProfile(profile) {
         return {
           id: profile.id,
@@ -96,13 +101,15 @@ exports.configure = ({
   // Note: Twitter doesn't expose emails by default so we create a placeholder
   if (process.env.TWITTER_KEY && process.env.TWITTER_SECRET) {
     providers.push({
-      provider: 'twitter',
       Strategy: require('passport-twitter').Strategy,
-      strategyOptions: {
+      name: 'twitter',
+      options: {
+        scope: [],
+      },
+      credentials: {
         consumerKey: process.env.TWITTER_KEY,
         consumerSecret: process.env.TWITTER_SECRET
       },
-      scope: 'email',
       getUserFromProfile(profile) {
         return {
           id: profile.id,
@@ -114,11 +121,11 @@ exports.configure = ({
   }
 
   // Define a Passport strategy for provider
-  providers.forEach(({provider, Strategy, strategyOptions, getUserFromProfile}) => {
-    strategyOptions.callbackURL = path + '/oauth/' + provider + '/callback'
-    strategyOptions.passReqToCallback = true
+  providers.forEach(({name: providerName, Strategy, credentials, getUserFromProfile}) => {
+    credentials.callbackURL = path + '/oauth/' + providerName + '/callback'
+    credentials.passReqToCallback = true
 
-    passport.use(new Strategy(strategyOptions, (req, accessToken, refreshToken, profile, next) => {
+    passport.use(new Strategy(credentials, (req, accessToken, refreshToken, profile, next) => {
       try {
         // Normalise the provider specific profile into a User object
         profile = getUserFromProfile(profile)
@@ -129,11 +136,11 @@ exports.configure = ({
         // you can check for email addresses ending "@localhost.localdomain"
         // and prompt those users to supply a valid address.
         if (!profile.email) {
-          profile.email = `${provider}-${profile.id}@localhost.localdomain`
+          profile.email = `${providerName}-${profile.id}@localhost.localdomain`
         }
 
         // See if we have this oAuth account in the database associated with a user
-        User.one({[provider]: profile.id}, function (err, user) {
+        User.one({[providerName]: profile.id}, function (err, user) {
           if (err) {
             return next(err)
           }
@@ -159,7 +166,7 @@ exports.configure = ({
                   user.verified = false
                   user.email = profile.email
                 }
-                user[provider] = profile.id
+                user[providerName] = profile.id
                 user.save(function (err) {
                   // @FIXME Should check the error code to verify the error was
                   // actually caused by email already being in use here but is
@@ -206,7 +213,7 @@ exports.configure = ({
               }
 
               // If account does not exist, create one for them and sign the user in
-              User.create({name: profile.name, email: profile.email, [provider]: profile.id}, function (err, user) {
+              User.create({name: profile.name, email: profile.email, [providerName]: profile.id}, function (err, user) {
                 if (err) {
                   return next(err)
                 }
@@ -225,19 +232,19 @@ exports.configure = ({
   server.use(passport.initialize())
   server.use(passport.session())
 
-  // Add routes for provider
-  providers.forEach(({provider, scope}) => {
+  // Add routes for each provider
+  providers.forEach(({name: providerName, options: providerOptions}) => {
     // Route to start sign in
-    server.get(path + '/oauth/' + provider, passport.authenticate(provider, {scope: scope}))
+    server.get(path + '/oauth/' + providerName, passport.authenticate(providerName, providerOptions))
     // Route to call back to after signing in
-    server.get(path + '/oauth/' + provider + '/callback', passport.authenticate(provider,
+    server.get(path + '/oauth/' + providerName + '/callback', passport.authenticate(providerName,
       {
-        successRedirect: path + '/signin?action=signin_' + provider,
+        successRedirect: path + '/signin?action=signin_' + providerName,
         failureRedirect: path + '/error/oauth'
       })
     )
     // Route to post to unlink accounts
-    server.post(path + '/oauth/' + provider + '/unlink', (req, res, next) => {
+    server.post(path + '/oauth/' + providerName + '/unlink', (req, res, next) => {
       if (!req.user) {
         next(new Error('Not signed in'))
       }
@@ -252,8 +259,8 @@ exports.configure = ({
         }
 
         // Remove connection between user account and oauth provider
-        if (user[provider]) {
-          user[provider] = null
+        if (user[providerName]) {
+          user[providerName] = null
         }
 
         user.save(function (err) {
@@ -261,7 +268,7 @@ exports.configure = ({
             next(err)
           }
 
-          return res.redirect(path + '/signin?action=unlink_' + provider)
+          return res.redirect(path + '/signin?action=unlink_' + providerName)
         })
       })
     })
