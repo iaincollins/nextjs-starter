@@ -78,9 +78,7 @@ exports.configure = ({
 
   // Add CSRF to all POST requests
   // (If you want to add exceptions to paths you can do that here)
-  server.use((req, res, next) => {
-    csrf(req, res, next)
-  })
+  server.use(csrf)
 
   // With sessions connfigured (& before routes) we need to configure Passport
   // and trigger passport.initialize() before we add any routes
