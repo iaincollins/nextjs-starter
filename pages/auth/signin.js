@@ -128,18 +128,21 @@ export default class extends Page {
           one time use tokens sent out via email. Recipients follow the links in the emails to sign in.
         </p>
         <p>
+          This project also uses the popular authentication library Passport (along with express and express-sessions) to allow signing in with Facebook, Google, Twitter and other sites that support oAuth.
+        </p>
+        <p>
           Cross Site Request Forgery (CSRF) protection is added to all post requests,
-          session data on the server is encrypted and and session tokens are only stored HTTP Only cookies
+          session data on the server is encrypted and the session tokens are stored HTTP Only cookies
           on the client as protection against Cross Site Scripting (XSS) attacks.
         </p>
         <p>
-          This project also integrates with Passport to allow signing in with Facebook, Google, Twitter and other sites that support oAuth.
+          Public data associated with your profile that the client needs to display, such as your name and email address is cached in localStorage if it is supported by the browser.
         </p>
         <h3>Extending the authentication system</h3>
         <p>
-          By default, user data is persisted on the server in SQL Lite as this requires no configuration,
+          By default, user data is persisted on the server in SQL Lite as this requires no configuration to get started,
           but this can be easily changed to another database - including MongoDB, MySQL, PostgreSQL, Amazon Redshift and others
-          by setting the DB_CONNECTION_STRING environment variable accordingly.
+          by setting the DB_CONNECTION_STRING environment variable accordingly. It works great with database providers like <a href="https://mlab.com">mLab</a>.
         </p>
         <p>
           For larger sites, a fully decoupled authentication system, running on a seperate backend,
@@ -148,12 +151,16 @@ export default class extends Page {
         </p>
         <p>
           To use the oAuth sign in options, you will need to create your own account with each provider and configure each one for your site.
-          This can be a slightly cumbersome process that is hard to debug. See <a href="https://github.com/iaincollins/nextjs-starter/blob/master/AUTHENTICATION.md">AUTHENTICATION.md</a> for a step-by-step guide.
+          This can be a slightly cumbersome process that is hard to debug.
+          See <a href="https://github.com/iaincollins/nextjs-starter/blob/master/AUTHENTICATION.md">AUTHENTICATION.md</a> for 
+          a step-by-step guide to configuring oAuth and check out <a href="https://github.com/iaincollins/nextjs-starter/blob/master/routes/passport-strategies.js">passport-strategies.js</a> if
+          you want to add support for other oAuth providers (e.g. GitHub) using other Passport Strategies.
         </p>
         <p>
-          If you aren&#39;t receiving emails when trying to sign in via email, try using another email address or
-          configuring the mail server option - some email providers block email from
-          unverified mail servers.
+          If you aren&#39;t receiving emails when trying to sign in via email, try configuring the mail server option. 
+        </p>
+        <p>
+          See <a href="https://github.com/iaincollins/nextjs-starter/blob/master/.env.default">.env.default</a> for all the options you can use in your .env file.
         </p>
       </Layout>
     )
