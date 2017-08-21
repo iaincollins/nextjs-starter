@@ -13,6 +13,23 @@ export default class extends Page {
     return (
       <Layout session={this.props.session}>
         <Row>
+          <Col md="3" xs="12">
+            <h4>Pages</h4>
+            <Nav vertical>
+              <NavItem>
+                <Link prefetch href="/auth/signin"><NavLink href="/auth/signin">Authentication</NavLink></Link>
+              </NavItem>
+              <NavItem>
+                <Link prefetch  href="/routing/?id=example" as="/route/example"><NavLink href="/routing/?id=example">Route Handling</NavLink></Link>
+              </NavItem>
+              <NavItem>
+                <Link prefetch href="/css"><NavLink href="/css">CSS &amp; SCSS</NavLink></Link>
+              </NavItem>
+              <NavItem>
+                <Link prefetch href="/async"><NavLink href="/async">Fetching Data Asynchronously</NavLink></Link>
+              </NavItem>
+            </Nav>
+          </Col>
           <Col md="9" xs="12">
             <h1>About This Project</h1>
             <p className="lead">
@@ -71,23 +88,6 @@ export default class extends Page {
               All functionality works both client and server side - including
               without JavaScript support in the browser.
             </p>
-          </Col>
-          <Col md="3" xs="12">
-            <h4>Pages</h4>
-            <Nav vertical>
-              <NavItem>
-                <Link prefetch href="/auth/signin"><NavLink href="/auth/signin">Authentication</NavLink></Link>
-              </NavItem>
-              <NavItem>
-                <Link prefetch  href="/routing/?id=example" as="/route/example"><NavLink href="/routing/?id=example">Route Handling</NavLink></Link>
-              </NavItem>
-              <NavItem>
-                <Link prefetch href="/css"><NavLink href="/css">CSS &amp; SCSS</NavLink></Link>
-              </NavItem>
-              <NavItem>
-                <Link prefetch href="/async"><NavLink href="/async">Fetching Data Asynchronously</NavLink></Link>
-              </NavItem>
-            </Nav>
           </Col>
         </Row>
       </Layout>

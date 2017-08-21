@@ -1,6 +1,6 @@
 /**
  * An example with custom routing
- */
+ **/
 import Link from 'next/link'
 import React from 'react'
 import Page from '../components/page'
@@ -19,7 +19,7 @@ export default class extends Page {
     return (
       <Layout session={this.props.session}>
         <h1>Route Handling</h1>
-        <p>
+        <p className="lead">
           The current route is <strong>&quot;{ this.props.path }&quot;</strong>
         </p>
         <ul>
