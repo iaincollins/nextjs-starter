@@ -1,6 +1,6 @@
 {
   "name": "nextjs-starter",
-  "version": "2.11.0",
+  "version": "2.13.0",
   "description": "A starter Next.js project with email and oAuth authentication",
   "author": "Iain Collins <me@iaincollins.com>",
   "license": "ISC",
@@ -15,7 +15,7 @@
     "express-session": "^1.14.2",
     "isomorphic-fetch": "^2.2.1",
     "lusca": "^1.4.1",
-    "next": "^2.0.0",
+    "next": "^2.4.1",
     "next-redux-wrapper": "^1.1.2",
     "node-sass": "^4.5.0",
     "nodemailer": "^2.7.0",

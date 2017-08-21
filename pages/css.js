@@ -31,15 +31,20 @@ export default class extends Page {
           }
         `}</style>
         <h2>CSS, SCSS and &lt;head&gt; tags</h2>
-        <h3>CSS &amp; SCSS Live Reloading</h3>
+        <h3>Live reloading in development</h3>
         <p>
-          SCSS is this project is imported in <strong>components/header.js</strong> with &quot;<i>import stylesheet from &#39;../css/main.scss&#39;</i>&quot;.
+          In development mode, CSS is imported in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/components/header.js">components/header.js</a> with "<strong>import stylesheet from &#39;../css/main.scss&#39;</strong>".
         </p>
         <p>
-          This behaviour is enabled through the additional webpack configuration in <strong>next.config.js</strong>.
+          This behaviour is enabled through the webpack configuration in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/next.config.js">next.config.js</a> (by <a href="https://github.com/davibe/next.js-css-global-style-test">Davide Bertola</a>).
         </p>
+        <h3>CSS caching in production</h3>
         <p>
-          For more details see <a href="https://github.com/davibe/next.js-css-global-style-test">https://github.com/davibe/next.js-css-global-style-test</a>.
+          When running in production mode, SCSS is pre-parsed and compressed by 'node-sass' at startup then cached in memory and served via a route at
+          "<strong>/assets/{'{version}'}/main.css</strong>", which is defined in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/index.js">index.js</a>.
+        </p>
+        <p>The version string is derived from the version value in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/package.json">package.json</a>,
+          which should be incremented when deploying CSS changes to production. Ideally this might be automatically derived from the Next.js BUILD_ID but it's not accessible at run time.
         </p>
         <h3>Inline CSS</h3>
         <p>This page also has custom elements that are included on on this page as inline CSS.</p>

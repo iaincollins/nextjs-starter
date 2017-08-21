@@ -42,7 +42,10 @@ exports.configure = ({
     // sign in links in emails. Autodetects to hostname if null.
     serverUrl = null,
     // Mailserver configuration for nodemailer (defaults to localhost if null)
-    mailserver = null
+    mailserver = null,
+    // From email address should match email account specified in mailserver
+    // or you may not be able to send emails.
+    fromEmail = 'noreply@localhost.localdomain'
   } = {}) => {
   if (app === null) {
     throw new Error('app option must be a next server instance')
@@ -75,9 +78,7 @@ exports.configure = ({
 
   // Add CSRF to all POST requests
   // (If you want to add exceptions to paths you can do that here)
-  express.use((req, res, next) => {
-    csrf(req, res, next)
-  })
+  express.use(csrf)
 
   // With sessions connfigured (& before routes) we need to configure Passport
   // and trigger passport.initialize() before we add any routes
@@ -133,7 +134,7 @@ exports.configure = ({
 
           sendVerificationEmail({
             mailserver: mailserver,
-            fromEmail: 'noreply@' + req.headers.host.split(':')[0],
+            fromEmail: fromEmail,
             toEmail: email,
             url: verificationUrl
           })
@@ -146,7 +147,7 @@ exports.configure = ({
 
           sendVerificationEmail({
             mailserver: mailserver,
-            fromEmail: 'noreply@' + req.headers.host.split(':')[0],
+            fromEmail: fromEmail,
             toEmail: email,
             url: verificationUrl
           })
