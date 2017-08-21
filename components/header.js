@@ -2,10 +2,10 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import React from 'react'
-import { Collapse, Navbar, NavbarToggler, NavbarBrand } from 'reactstrap'
-import Styles from '../css/index.scss'
+import { Nav, NavItem, Button, Form, NavLink, Collapse, Navbar, NavbarToggler, NavbarBrand } from 'reactstrap'
+import Session from './session'
 import Package from '../package'
-import SignIn from './signin'
+import Styles from '../css/index.scss'
 
 export default class extends React.Component {
 
@@ -18,17 +18,57 @@ export default class extends React.Component {
 
   constructor(props) {
     super(props)
-    this.toggle = this.toggle.bind(this)
     this.state = {
-      isOpen: false
+      navbarIsOpen: false
     }
+    this.toggleNavbar = this.toggleNavbar.bind(this)
   }
 
-  toggle() {
+  toggleNavbar() {
     this.setState({
-      isOpen: !this.state.isOpen
+      navbarIsOpen: !this.state.navbarIsOpen
     })
   }
+  
+  async handleSignoutSubmit(event) {
+    event.preventDefault()
+    const session = new Session()
+    await session.signout()
+    // @FIXME Using window.location as next/router wasn't working reliably here
+    window.location = '/'
+  }
+  
+    
+  userMenu() {
+    if (this.props.session.user) {
+      const session = this.props.session
+      return (
+        <Nav className="ml-auto" navbar>
+          <NavItem>
+            <Link prefetch href="/auth/signin"><NavLink style={{padding: '0.4em'}} href="">Signed in as <strong>{session.user.name || session.user.email}</strong></NavLink></Link>
+          </NavItem>
+          <NavItem>
+            <Form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSignoutSubmit}>
+              <input name="_csrf" type="hidden" value={session.csrfToken}/>
+              <Button type="submit" color="primary">Sign out</Button>
+            </Form>
+          </NavItem>
+        </Nav>
+      )
+    } else {
+      if (this.props.hideSignInBtn === true) {
+        return (<Nav className="ml-auto" navbar></Nav>)
+      } else {
+        return (
+          <Nav className="ml-auto" navbar>
+            <NavItem>
+              <Link prefetch href="/auth/signin"><a className="btn btn-primary">Sign up / Sign in</a></Link>
+            </NavItem>
+          </Nav>
+        )
+      }
+    }
+  }  
 
   render() {
     return (
@@ -38,11 +78,11 @@ export default class extends React.Component {
         <style dangerouslySetInnerHTML={{__html: Styles}}/>
         <script src="https://cdn.polyfill.io/v2/polyfill.min.js"/>
        </Head>
-       <Navbar color="inverse" inverse toggleable style={{marginBottom: 10}}>
-         <NavbarToggler right onClick={this.toggle} />
-         <Link prefetch href="/"><NavbarBrand href="">Next.js Starter Project</NavbarBrand></Link>
-         <Collapse isOpen={this.state.isOpen} navbar>
-           <SignIn session={this.props.session} hideSignInBtn={this.props.hideSignInBtn || false}/>
+       <Navbar toggleable className="navbar navbar-dark bg-dark navbar-expand-md" style={{marginBottom: 10}}>
+         <Link prefetch href="/"><NavbarBrand href="">{Package.name}</NavbarBrand></Link>
+         <NavbarToggler right onClick={this.toggleNavbar} />
+         <Collapse isOpen={this.state.navbarIsOpen} navbar>
+          {this.userMenu()}
          </Collapse>
        </Navbar>
      </div>
