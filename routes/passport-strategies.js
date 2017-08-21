@@ -6,17 +6,12 @@
 const passport = require('passport')
 
 exports.configure = ({
-    app = null, // Next.js App
-    server = null, // Express Server
+    express = null, // Express Server
     user: User = null, // User model
     path = '/auth' // URL base path for authentication routes
   } = {}) => {
-  if (app === null) {
-    throw new Error('app option must be a next server instance')
-  }
-
-  if (server === null) {
-    throw new Error('server option must be an express server instance')
+  if (express === null) {
+    throw new Error('express option must be an instance of an express server')
   }
 
   if (User === null) {
@@ -222,22 +217,22 @@ exports.configure = ({
   })
 
   // Initialise Passport
-  server.use(passport.initialize())
-  server.use(passport.session())
+  express.use(passport.initialize())
+  express.use(passport.session())
 
   // Add routes for provider
   providers.forEach(({provider, scope}) => {
     // Route to start sign in
-    server.get(path + '/oauth/' + provider, passport.authenticate(provider, {scope: scope}))
+    express.get(path + '/oauth/' + provider, passport.authenticate(provider, {scope: scope}))
     // Route to call back to after signing in
-    server.get(path + '/oauth/' + provider + '/callback', passport.authenticate(provider,
+    express.get(path + '/oauth/' + provider + '/callback', passport.authenticate(provider,
       {
         successRedirect: path + '/signin?action=signin_' + provider,
         failureRedirect: path + '/error/oauth'
       })
     )
     // Route to post to unlink accounts
-    server.post(path + '/oauth/' + provider + '/unlink', (req, res, next) => {
+    express.post(path + '/oauth/' + provider + '/unlink', (req, res, next) => {
       if (!req.user) {
         next(new Error('Not signed in'))
       }
@@ -268,7 +263,7 @@ exports.configure = ({
   })
 
   // A catch all for providers that are not configured
-  server.get(path + '/oauth/:provider', function (req, res) {
+  express.get(path + '/oauth/:provider', function (req, res) {
     res.redirect(path + '/not-configured')
   })
 

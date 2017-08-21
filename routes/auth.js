@@ -5,10 +5,7 @@
  * - Adds sessions support to Express (with HTTP only cookies for security)
  * - Configures session store (defaults to a flat file store in /tmp/sessions)
  * - Adds protection for Cross Site Request Forgery attacks to all POST requests
- *
- * Normally some of this logic might be elsewhere (like server.js) but for the
- * purposes of this example all server logic related to authentication is here.
- */
+ **/
 'use strict'
 
 const bodyParser = require('body-parser')
@@ -21,7 +18,7 @@ const passportStrategies = require('./passport-strategies')
 
 exports.configure = ({
     app = null, // Next.js App
-    server = null, // Express Server
+    express = null, // Express Server
     user: User = null, // User model
     // URL base path for authentication routes
     path = '/auth',
@@ -51,8 +48,8 @@ exports.configure = ({
     throw new Error('app option must be a next server instance')
   }
 
-  if (server === null) {
-    throw new Error('server option must be an express server instance')
+  if (express === null) {
+    throw new Error('express option must be an instance of an express server')
   }
 
   if (User === null) {
@@ -60,11 +57,11 @@ exports.configure = ({
   }
 
   // Load body parser to handle POST requests
-  server.use(bodyParser.json())
-  server.use(bodyParser.urlencoded({extended: true}))
+  express.use(bodyParser.json())
+  express.use(bodyParser.urlencoded({extended: true}))
 
   // Configure sessions
-  server.use(session({
+  express.use(session({
     secret: secret,
     store: store,
     resave: false,
@@ -78,7 +75,7 @@ exports.configure = ({
 
   // Add CSRF to all POST requests
   // (If you want to add exceptions to paths you can do that here)
-  server.use((req, res, next) => {
+  express.use((req, res, next) => {
     csrf(req, res, next)
   })
 
@@ -86,17 +83,17 @@ exports.configure = ({
   // and trigger passport.initialize() before we add any routes
   passportStrategies.configure({
     app: app,
-    server: server,
+    express: express,
     user: User
   })
 
   // Add route to get CSRF token via AJAX
-  server.get(path + '/csrf', (req, res) => {
+  express.get(path + '/csrf', (req, res) => {
     return res.json({csrfToken: res.locals._csrf})
   })
 
   // Return session info
-  server.get(path + '/session', (req, res) => {
+  express.get(path + '/session', (req, res) => {
     let session = {
       clientMaxAge: clientMaxAge,
       csrfToken: res.locals._csrf
@@ -111,7 +108,7 @@ exports.configure = ({
   })
 
   // On post request, redirect to page with instrutions to check email for link
-  server.post(path + '/email/signin', (req, res) => {
+  express.post(path + '/email/signin', (req, res) => {
     const email = req.body.email || null
 
     if (!email || email.trim() === '') {
@@ -160,7 +157,7 @@ exports.configure = ({
     return app.render(req, res, pages + '/check-email', req.params)
   })
 
-  server.get(path + '/email/signin/:token', (req, res) => {
+  express.get(path + '/email/signin/:token', (req, res) => {
     if (!req.params.token) {
       return res.redirect(path + '/signin')
     }
@@ -193,7 +190,7 @@ exports.configure = ({
     })
   })
 
-  server.post(path + '/signout', (req, res) => {
+  express.post(path + '/signout', (req, res) => {
     // Log user out by disassociating their account from the session
     req.logout()
     res.redirect('/')

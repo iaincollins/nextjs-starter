@@ -1,6 +1,6 @@
 'use strict'
 
-const express = require('express')
+const express = require('express')()
 const next = require('next')
 const orm = require('orm')
 const sass = require('node-sass')
@@ -32,7 +32,7 @@ process.env.PORT = process.env.PORT || 80
 // By default it uses SQL Lite to create a DB in /tmp/nextjs-starter.db
 process.env.DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING || 'sqlite:///tmp/nextjs-starter.db'
 
-// Secret used to encrypt session data stored on the server
+// Secret used to encrypt session data stored on the express
 process.env.SESSION_SECRET = process.env.SESSION_SECRET || 'change-me'
 
 const app = next({
@@ -41,12 +41,9 @@ const app = next({
 })
 
 const handle = app.getRequestHandler()
-let server
 
 app.prepare()
 .then(() => {
-  // Get instance of Express server
-  server = express()
 
   // Set it up the database (used to store user info and email sign in tokens)
   return new Promise((resolve, reject) => {
@@ -86,41 +83,31 @@ app.prepare()
   // Once DB is available, setup sessions and routes for authentication
   auth.configure({
     app: app,
-    server: server,
+    express: express,
     user: db.models.user,
     secret: process.env.SESSION_SECRET
-  })
-
-  // Add route to serve compiled SCSS from /assets/{build id}/main.css
-  // Note: This is is only used in production, in development it is inlined
-  const sassResult = sass.renderSync({file: './css/main.scss', outputStyle: 'compressed'})
-  server.get('/assets/:id/main.css', (req, res) => {
-    res.setHeader('Content-Type', 'text/css')
-    res.setHeader('Cache-Control', 'public, max-age=2592000')
-    res.setHeader('Expires', new Date(Date.now() + 2592000000).toUTCString())
-    res.send(sassResult.css)
   })
 
   // A simple example of a custom route
   // Says requests to '/route/{anything}' will be handled by 'pages/routing.js'
   // and the {anything} part will be pased to the page in parameters.
-  server.get('/route/:id', (req, res) => {
+  express.get('/route/:id', (req, res) => {
     return app.render(req, res, '/routing', req.params)
   })
 
   // Default catch-all handler to allow Next.js to handle all other routes
-  server.all('*', (req, res) => {
+  express.all('*', (req, res) => {
     return handle(req, res)
   })
 
   // Set vary header (good practice)
   // Note: This overrides any existing 'Vary' header but is okay in this app
-  server.use(function (req, res, next) {
+  express.use(function (req, res, next) {
     res.setHeader('Vary', 'Accept-Encoding')
     next()
   })
 
-  server.listen(process.env.PORT, err => {
+  express.listen(process.env.PORT, err => {
     if (err) {
       throw err
     }
@@ -128,6 +115,6 @@ app.prepare()
   })
 })
 .catch(err => {
-  console.log('An error occurred, unable to start the server')
+  console.log('An error occurred, unable to start the express')
   console.log(err)
 })
