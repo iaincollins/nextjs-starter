@@ -5,6 +5,7 @@ const next = require('next')
 const orm = require('orm')
 const sass = require('node-sass')
 const auth = require('./routes/auth')
+const smtpTransport = require('nodemailer-smtp-transport')
 
 // Load environment variables from .env file if present
 require('dotenv').load()
@@ -34,6 +35,22 @@ process.env.DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING || 'sqlite:/
 
 // Secret used to encrypt session data stored on the express
 process.env.SESSION_SECRET = process.env.SESSION_SECRET || 'change-me'
+
+// If EMAIL_USERNAME and EMAIL_PASSWORD are configured use them to send email.
+// e.g. For a Google Mail account (@gmail.com) set EMAIL_SERVICE to 'gmail'
+// See nodemailer documentation for other values for EMAIL_SERVICE.
+let mailserver = null
+if (process.env.EMAIL_SERVER && process.env.EMAIL_USERNAME && process.env.EMAIL_PASSWORD) {
+  mailserver = smtpTransport({
+    host: process.env.EMAIL_SERVER,
+    port: process.env.EMAIL_PORT || 25,
+    secure: (process.env.EMAIL_SECURE && process.env.EMAIL_SECURE.match(/true/i)) ? true : false,
+    auth: {
+      user: process.env.EMAIL_USERNAME,
+      pass: process.env.EMAIL_PASSWORD
+    }
+  })
+}
 
 const app = next({
   dir: '.',
@@ -85,7 +102,9 @@ app.prepare()
     app: app,
     express: express,
     user: db.models.user,
-    secret: process.env.SESSION_SECRET
+    secret: process.env.SESSION_SECRET,
+    mailserver: mailserver,
+    fromEmail: process.env.EMAIL_ADDRESS || null
   })
 
   // A simple example of a custom route
