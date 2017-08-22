@@ -7,33 +7,13 @@
  * Note: We use XMLHttpRequest() here rather than fetch because fetch() uses
  * Service Workers and they cannot share cookies with the browser session
  * yet (!) so if we tried to get or pass the CSRF token it would mismatch.
- */
+ **/
 
-export default class Session {
-
-  constructor({req} = {}) {
-    this._session = {}
-    try {
-      if (req) {
-        // If running on server we can access the server side environment
-        this._session = {
-          csrfToken: req.connection._httpMessage.locals._csrf
-        }
-        // If the session is associated with a user add user object to session
-        if (req.user) {
-          this._session.user = req.user
-        }
-      } else {
-        // If running on client, attempt to load session from localStorage
-        this._session = this._getLocalStore('session')
-      }
-    } catch (err) {
-      // Handle if error reading from localStorage or server state is safe to
-      // ignore (will just cause session data to be fetched by ajax)
-      return
-    }
-  }
-
+export default class {
+  
+  /**
+   * A simple static method to get the CSRF Token is provided for convenience.
+   **/
   static async getCsrfToken() {
     return new Promise((resolve, reject) => {
       if (typeof window === 'undefined') {
@@ -62,32 +42,38 @@ export default class Session {
   // We can't do async requests in the constructor so access is via asyc method
   // This allows us to use XMLHttpRequest when running on the client to fetch it
   // Note: We use XMLHttpRequest instead of fetch so auth cookies are passed
-  async getSession(forceUpdate) {
-    // If running on the server, return session as will be loaded in constructor
-    if (typeof window === 'undefined') {
-      return new Promise(resolve => {
-        resolve(this._session)
-      })
+  static async getSession({
+    req = null,
+    force = false
+  } = {}) {
+    let session = {}
+    if (req) {
+      // If running on the server session data should be in the req object
+      session.csrfToken = req.connection._httpMessage.locals._csrf
+      session.expires = req.session.cookie._expires
+      // If the user is logged in, add the user to the session object
+      if (req.user) {
+        session.user = req.user
+      }
+    } else {
+      // If running in the browser attempt to load session from sessionStore
+      if (force === true) {
+        // If force update is set, reset data store
+        this._removeLocalStore('session')
+      } else {
+        session = this._getLocalStore('session')
+      }
     }
 
-    // If force update is set, clear data from store
-    if (forceUpdate === true) {
-      this._session = {}
-      this._removeLocalStore('session')
-    }
-
-    // Attempt to load session data from sessionStore on every call
-    this._session = this._getLocalStore('session')
-
-    // If session data exists, has not expired AND forceUpdate is not set then
+    // If session data exists, has not expired AND force is not set then
     // return the stored session we already have.
-    if (this._session && Object.keys(this._session).length > 0 && this._session.expires && this._session.expires > Date.now()) {
+    if (session && Object.keys(session).length > 0 && session.expires && session.expires > Date.now()) {
       return new Promise(resolve => {
-        resolve(this._session)
+        resolve(session)
       })
     }
 
-    // If we don't have session data, or it's expired, or forceUpdate is set
+    // If we don't have session data, or it's expired, or force is set
     // to true then revalidate it by fetching it again from the server.
     return new Promise((resolve, reject) => {
       let xhr = new XMLHttpRequest()
@@ -96,16 +82,16 @@ export default class Session {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
             // Update session with session info
-            this._session = JSON.parse(xhr.responseText)
+            session = JSON.parse(xhr.responseText)
 
             // Set a value we will use to check this client should silently
             // revalidate based on the value of clientMaxAge set by the server
-            this._session.expires = Date.now() + this._session.clientMaxAge
+            session.expires = Date.now() + session.clientMaxAge
 
             // Save changes to session
-            this._saveLocalStore('session', this._session)
+            this._saveLocalStore('session', session)
 
-            resolve(this._session)
+            resolve(session)
           } else {
             reject(Error('XMLHttpRequest failed: Unable to get session'))
           }
@@ -118,7 +104,7 @@ export default class Session {
     })
   }
 
-  async signin(email) {
+  static async signin(email) {
     // Sign in to the server
     return new Promise(async (resolve, reject) => {
       if (typeof window === 'undefined') {
@@ -126,10 +112,10 @@ export default class Session {
       }
 
       // Make sure we have session in memory
-      this._session = await this.getSession()
+      let session = await this.getSession()
 
       // Make sure we have the latest CSRF Token in our session
-      this._session.csrfToken = await Session.getCsrfToken()
+      session.csrfToken = await this.getCsrfToken()
 
       let xhr = new XMLHttpRequest()
       xhr.open('POST', '/auth/email/signin', true)
@@ -146,12 +132,12 @@ export default class Session {
       xhr.onerror = () => {
         return reject(Error('XMLHttpRequest error: Unable to signin'))
       }
-      xhr.send('_csrf=' + encodeURIComponent(this._session.csrfToken) + '&' +
+      xhr.send('_csrf=' + encodeURIComponent(session.csrfToken) + '&' +
                 'email=' + encodeURIComponent(email))
     })
   }
 
-  async signout() {
+  static async signout() {
     // Signout from the server
     return new Promise(async (resolve, reject) => {
       if (typeof window === 'undefined') {
@@ -163,32 +149,30 @@ export default class Session {
       xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
       xhr.onreadystatechange = async () => {
         if (xhr.readyState === 4) {
-          // @TODO We aren't checking for success, just completion
-
-          // Update local session data
-          this._session = await this.getSession(true)
-
+          // @TODO We aren't checking for success, just comletion
+          this._removeLocalStore('session')
           resolve(true)
         }
       }
       xhr.onerror = () => {
         reject(Error('XMLHttpRequest error: Unable to signout'))
       }
-      xhr.send('_csrf=' + encodeURIComponent(this._session.csrfToken))
+      xhr.send('_csrf=' + encodeURIComponent(await this.getCsrfToken()))
     })
   }
 
   // The Web Storage API is widely supported, but not always available (e.g.
   // it can be restricted in private browsing mode, triggering an exception).
   // We handle that silently by just returning null here.
-  _getLocalStore(name) {
+  static _getLocalStore(name) {
     try {
       return JSON.parse(localStorage.getItem(name))
     } catch (err) {
       return null
     }
   }
-  _saveLocalStore(name, data) {
+  
+  static _saveLocalStore(name, data) {
     try {
       localStorage.setItem(name, JSON.stringify(data))
       return true
@@ -196,7 +180,8 @@ export default class Session {
       return false
     }
   }
-  _removeLocalStore(name) {
+  
+  static _removeLocalStore(name) {
     try {
       localStorage.removeItem(name)
       return true

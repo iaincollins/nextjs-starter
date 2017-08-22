@@ -8,20 +8,21 @@ export default class extends Page {
 
   static async getInitialProps({req}) {
     // On the sign in page we always force get the latest session data from the
-    // server by passing 'true' to getSession. This page is the destination
-    // page after logging or linking/unlinking accounts so avoids any weird
-    // edge cases.
-    const session = new Session({req})
-    return {session: await session.getSession(true)}
+    // server by passing 'force: true' to getSession to force cache busting.
+    //
+    // This page is the destination page after logging or linking/unlinking 
+    // accounts which helps avoid any weird edge cases.
+    return {
+      session: await Session.getSession({force: true, req: req})
+    }
   }
 
   async componentDidMount() {
     // Get latest session data after rendering on client
     // Any page that is specified as the oauth callback should do this
-    const session = new Session()
     this.state = {
       email: this.state.email,
-      session: await session.getSession(true)
+      session: await Session.getSession({force: true})
     }
   }
 
@@ -42,10 +43,8 @@ export default class extends Page {
     })
   }
 
-  async handleSubmit(event) {
+  handleSubmit(event) {
     event.preventDefault()
-
-    const session = new Session()
     session.signin(this.state.email)
     .then(() => {
       this.props.url.push('/auth/check-email')
