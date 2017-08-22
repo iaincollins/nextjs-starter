@@ -18,7 +18,7 @@ export default class extends Page {
   render() {
     return (
       <Layout session={this.props.session}>
-        <h1>Route Handling</h1>
+        <h1>Custom Routing</h1>
         <p className="lead">
           The current route is <strong>&quot;{ this.props.path }&quot;</strong>
         </p>
@@ -28,20 +28,24 @@ export default class extends Page {
         </ul>
         <h3>Next.js with Express</h3>
         <p>
-          With Next.js routing is automatic (e.g. requests for 'about' get sent to 'pages/about'),
-          but this site uses Next.js together with Express to add more complex routing behaviour provide additional functionality.
+          With Next.js routing is taken care of for you - requests for '/about' are automatically handled by 'pages/about.js' - 
+          but this site uses Next.js together with Express, which is one way you can extend or override the default behaviour with custom routing.
         </p>
         <p>
-          An example is this project tells Express that any requests for '/route/{'{'}anything{'}'}'
-          should be handled by the template that handles requests to '/routing' (i.e. 'pages/routing.js', which is this page):
+          Using Next.js with Express also means you can easily take advantage of existing libraries written for Express 
+          to add functionality to your site.
         </p>
-        <pre>{`server.get('/route/:id', (req, res) => {
+        <p>
+          In this project, we have a rule in "<strong>index.js</strong>" that tells Express that any requests for '/route/{'{'}anything{'}'}'
+          should be handled by the template 'pages/routing.js' (which is this page):
+        </p>
+        <pre>{`express.get('/route/:id', (req, res) => {
   return app.render(req, res, '/routing', req.params)
 })`}</pre>
         <p>
           The last route we have configured with Express is a fall back that says all other routes should be handled by Next.js:
         </p>
-        <pre>{`server.all('*', (req, res) => {
+        <pre>{`express.all('*', (req, res) => {
   return handle(req, res)
 })`}</pre>
         <p>
@@ -54,7 +58,7 @@ export default class extends Page {
         </p>
         <h4>Custom Error Pages</h4>
         <p>
-          If you want to see how custom 404, 500 and other HTTP errors are handled, take a look at <i>pages/_error.js</i>
+          If you want to see how custom 404, 500 and other HTTP errors are handled, take a look at 'pages/_error.js'.
         </p>
       </Layout>
     )

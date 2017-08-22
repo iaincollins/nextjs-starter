@@ -15,43 +15,46 @@ export default class extends Page {
           <title>This page has a custom title</title>
         </Head>
         <style jsx>{`
-          .styled-text {
-            background-color: green;
-            color: white;
-          }
-          .styled-text:hover {
-            background-color: red;
-            color: white;
-          }
-          @media (min-width: 900px) {
-            .styled-text {
-              background-color: blue;
-              color: white;
-            }
+          .component-scoped-css {
+            border: 2px solid red;
+            padding: 5px;
           }
         `}</style>
-        <h2>CSS, SCSS and &lt;head&gt; tags</h2>
-        <h3>Live reloading in development</h3>
+        <h2>CSS &amp; SCSS</h2>
         <p>
-          In development mode, CSS is imported in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/components/header.js">components/header.js</a> with "<strong>import stylesheet from &#39;../css/main.scss&#39;</strong>".
+          Custom webpack configuration in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/next.config.js">"<strong>next.config.js</strong>"</a> handles loading CSS/SASS from <a href="https://github.com/iaincollins/nextjs-starter/blob/master/css/index.scss">"<strong>css/index.scss</strong>"</a>.
         </p>
         <p>
-          This behaviour is enabled through the webpack configuration in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/next.config.js">next.config.js</a> (by <a href="https://github.com/davibe/next.js-css-global-style-test">Davide Bertola</a>).
+          The <a href="https://github.com/iaincollins/nextjs-starter/blob/master/css/index.scss">"<strong>index.scss</strong>"</a> file is added to
+          the page in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/components/header.js">"<strong>components/header.js</strong>"</a> and imports Boostrap.
         </p>
-        <h3>CSS caching in production</h3>
+        <pre>@import "../node_modules/bootstrap/scss/bootstrap.scss";</pre>
         <p>
-          When running in production mode, SCSS is pre-parsed and compressed by 'node-sass' at startup then cached in memory and served via a route at
-          "<strong>/assets/{'{version}'}/main.css</strong>", which is defined in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/index.js">index.js</a>.
+          Live reloading is supported, meaning any changes saved to CSS are be reflected without a page reload being required.
         </p>
-        <p>The version string is derived from the version value in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/package.json">package.json</a>,
-          which should be incremented when deploying CSS changes to production. Ideally this might be automatically derived from the Next.js BUILD_ID but it's not accessible at run time.
+        <p>
+          You can also apply inline styles to elements, or use JSX to add component-scoped CSS:
         </p>
-        <h3>Inline CSS</h3>
-        <p>This page also has custom elements that are included on on this page as inline CSS.</p>
-        <p className="styled-text">This text will change colour if you hover over it or resize the window.</p>
-        <p style={{color: 'white', backgroundColor: 'purple'}}>This text is styled using inline styling.</p>
-        <p>CSS defined using JSX as in this example <a href="https://github.com/zeit/next.js/#css">scopes the styling to this component</a>.</p>
-      </Layout>
+        <h4>Inline Style</h4>
+        <p style={{border: '2px solid blue', padding: 5}}>
+          Example of an inline style.
+        </p>
+        <h4>Scoped CSS</h4>
+        <p>
+          Styles defined with JSX in a component only impact elements in the component.
+        </p>
+        <pre>
+{`<style jsx>{\`
+  .component-scoped-css {
+    border: 2px solid red;
+    padding: 5px;
+  }
+\`}</style>`}
+        </pre>
+        <p className="component-scoped-css">
+          Example of scoped CSS.
+        </p>
+     </Layout>
     )
   }
 

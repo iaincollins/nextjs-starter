@@ -20,13 +20,13 @@ export default class extends Page {
                 <Link prefetch href="/auth/signin"><NavLink href="/auth/signin">Authentication</NavLink></Link>
               </NavItem>
               <NavItem>
-                <Link prefetch  href="/routing/?id=example" as="/route/example"><NavLink href="/routing/?id=example">Route Handling</NavLink></Link>
-              </NavItem>
-              <NavItem>
                 <Link prefetch href="/css"><NavLink href="/css">CSS &amp; SCSS</NavLink></Link>
               </NavItem>
               <NavItem>
-                <Link prefetch href="/async"><NavLink href="/async">Fetching Data Asynchronously</NavLink></Link>
+                <Link prefetch href="/async"><NavLink href="/async">Asynchronous Loading</NavLink></Link>
+              </NavItem>
+              <NavItem>
+                <Link prefetch  href="/routing/?id=example" as="/route/example"><NavLink href="/routing/?id=example">Custom Routing</NavLink></Link>
               </NavItem>
             </Nav>
           </Col>

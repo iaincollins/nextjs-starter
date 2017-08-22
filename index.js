@@ -108,12 +108,16 @@ app.prepare()
   })
 
   // A simple example of a custom route
-  // Says requests to '/route/{anything}' will be handled by 'pages/routing.js'
+  // Requests to '/route/{anything}' will be handled by 'pages/routing.js'
   // and the {anything} part will be pased to the page in parameters.
   express.get('/route/:id', (req, res) => {
     return app.render(req, res, '/routing', req.params)
   })
-
+  // Requests to just '/route' will be redirected to '/route/example'
+  express.get('/route', (req, res) => {
+    return res.redirect('/route/example')
+  })
+  
   // Default catch-all handler to allow Next.js to handle all other routes
   express.all('*', (req, res) => {
     return handle(req, res)
