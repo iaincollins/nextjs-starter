@@ -5,33 +5,41 @@
  * - Adds sessions support to Express (with HTTP only cookies for security)
  * - Configures session store (defaults to a flat file store in /tmp/sessions)
  * - Adds protection for Cross Site Request Forgery attacks to all POST requests
- **/
+ *
+ * Normally some of this logic might be elsewhere (like express.js) but for the
+ * purposes of this example all server logic related to authentication is here.
+ */
 'use strict'
 
 const bodyParser = require('body-parser')
-const session = require('express-session')
-const FileStore = require('session-file-store')(session)
 const nodemailer = require('nodemailer')
 const csrf = require('lusca').csrf()
 const uuid = require('uuid/v4')
 const passportStrategies = require('./passport-strategies')
 
 exports.configure = ({
-    app = null, // Next.js App
-    express = null, // Express Server
-    user: User = null, // User model
+    // Next.js App
+    app = null,
+    // Express Server
+    express = null,
+     // User model
+    user: User = null,
+     // String with the ID of the DB field for the user ID (e.g. 'id', '_id')
+    userDbKey = null,
     // URL base path for authentication routes
     path = '/auth',
     // Directory in ./pages/ where auth pages can be found
     pages = 'auth',
+    // Express Session Handler
+    session = require('express-session'),
     // Secret used to encrypt session data on the server
     secret = 'change-me',
     // Sessions store for express-session (defaults to /tmp/sessions file store)
-    store = new FileStore({path: '/tmp/sessions', secret: secret}),
-    // Max session age in ms (default is 4 weeks)
+    store = null,
+    // Max session age in ms (default is 7 days)
     // NB: With 'rolling: true' passed to session() the session expiry time will
     // be reset every time a user visits the site again before it expires.
-    maxAge = 60000 * 60 * 24 * 7 * 4,
+    maxAge = 60000 * 60 * 24 * 7,
     // How often the client should revalidate the session in ms (default 60s)
     // Does not impact the session life on the server, but causes the client to
     // always refetch session info after N seconds has elapsed since last
@@ -42,23 +50,32 @@ exports.configure = ({
     // sign in links in emails. Autodetects to hostname if null.
     serverUrl = null,
     // Mailserver configuration for nodemailer (defaults to localhost if null)
-    mailserver = null,
-    // From email address should match email account specified in mailserver
-    // or you may not be able to send emails.
-    fromEmail = 'noreply@localhost.localdomain'
+    mailserver = null
   } = {}) => {
+
   if (app === null) {
     throw new Error('app option must be a next server instance')
   }
 
   if (express === null) {
-    throw new Error('express option must be an instance of an express server')
+    throw new Error('express option must be an express server instance')
   }
 
   if (User === null) {
     throw new Error('user option must be a User model')
   }
-
+    
+  if (userDbKey === null) {
+    throw new Error('userDbKey option must not be null')
+  }
+  
+  if (store === null) {
+    // Example of store
+    //const FileStore = require('session-file-store')(session)
+    //store = new FileStore({path: '/tmp/sessions', secret: secret})
+    throw new Error('express session store not provided')
+  }
+  
   // Load body parser to handle POST requests
   express.use(bodyParser.json())
   express.use(bodyParser.urlencoded({extended: true}))
@@ -69,7 +86,7 @@ exports.configure = ({
     store: store,
     resave: false,
     rolling: true,
-    saveUninitialized: true,
+    saveUninitialized: false,
     httpOnly: true,
     cookie: {
       maxAge: maxAge
@@ -77,7 +94,6 @@ exports.configure = ({
   }))
 
   // Add CSRF to all POST requests
-  // (If you want to add exceptions to paths you can do that here)
   express.use(csrf)
 
   // With sessions connfigured (& before routes) we need to configure Passport
@@ -85,7 +101,9 @@ exports.configure = ({
   passportStrategies.configure({
     app: app,
     express: express,
-    user: User
+    user: User,
+    userDbKey: userDbKey,
+    serverUrl: serverUrl
   })
 
   // Add route to get CSRF token via AJAX
@@ -96,13 +114,23 @@ exports.configure = ({
   // Return session info
   express.get(path + '/session', (req, res) => {
     let session = {
+      maxAge: maxAge,
       clientMaxAge: clientMaxAge,
       csrfToken: res.locals._csrf
     }
 
     // Add user object to session if logged in
     if (req.user) {
-      session.user = req.user
+      session.user = {
+        name: req.user.name,
+        email: req.user.email
+      }
+      
+      // If logged in, export the API access token details to the client
+      // Note: This token is valid for the duration of this session only.
+      if (req.session && req.session.api) {
+        session.api = req.session.api
+      }    
     }
 
     return res.json(session)
@@ -120,34 +148,34 @@ exports.configure = ({
     const verificationUrl = (serverUrl || 'http://' + req.headers.host) + path + '/email/signin/' + token
 
     // Create verification token save it to database
-    // @FIXME Improve error handling
-    User.one({email: email}, function (err, user) {
+    // @TODO Improve error handling
+    User.one({email: email}, (err, user) => {
       if (err) {
         throw err
       }
       if (user) {
-        user.token = token
-        user.save(function (err) {
+        user.emailAccessToken = token
+        user.save((err) => {
           if (err) {
             throw err
           }
 
           sendVerificationEmail({
             mailserver: mailserver,
-            fromEmail: fromEmail,
+            fromEmail: 'noreply@' + req.headers.host.split(':')[0],
             toEmail: email,
             url: verificationUrl
           })
         })
       } else {
-        User.create({email: email, token: token}, function (err) {
+        User.create({email: email, emailAccessToken: token}, (err) => {
           if (err) {
             throw err
           }
 
           sendVerificationEmail({
             mailserver: mailserver,
-            fromEmail: fromEmail,
+            fromEmail: 'noreply@' + req.headers.host.split(':')[0],
             toEmail: email,
             url: verificationUrl
           })
@@ -164,21 +192,21 @@ exports.configure = ({
     }
 
     // Look up user by token
-    User.one({token: req.params.token}, function (err, user) {
+    User.one({emailAccessToken: req.params.token}, (err, user) => {
       if (err) {
         return res.redirect(path + '/error/email')
       }
       if (user) {
         // Reset token and mark as verified
-        user.token = null
-        user.verified = true
-        user.save(function (err) {
+        user.emailAccessToken = null
+        user.emailVerified = true
+        user.save((err) => {
           // @TODO Improve error handling
           if (err) {
             return res.redirect(path + '/error/email')
           }
           // Having validated to the token, we log the user with Passport
-          req.logIn(user, function (err) {
+          req.logIn(user, (err) => {
             if (err) {
               return res.redirect(path + '/error/email')
             }
@@ -194,7 +222,11 @@ exports.configure = ({
   express.post(path + '/signout', (req, res) => {
     // Log user out by disassociating their account from the session
     req.logout()
-    res.redirect('/')
+    // Ran into issues where passport was not deleting session as it should be
+    // destroying the session resolves that issue
+    req.session.destroy(() => {
+      res.redirect('/')
+    })
   })
 }
 
@@ -207,7 +239,7 @@ function sendVerificationEmail({mailserver, fromEmail, toEmail, url}) {
     from: fromEmail,
     subject: 'Sign in link',
     text: 'Use the link below to sign in:\n\n' + url + '\n\n'
-  }, function (err) {
+  }, (err) => {
     // @TODO Handle errors
     if (err) {
       console.log('Error sending email to ' + toEmail, err)
