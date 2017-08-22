@@ -126,7 +126,7 @@ export default class extends Page {
     }
 
     return (
-      <Layout session={this.state.session} hideSignInBtn={true}>
+      <Layout session={this.state.session}>
         <h2>Authentication</h2>
         <br/>
         {signinForm}
