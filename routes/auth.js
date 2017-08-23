@@ -22,8 +22,8 @@ exports.configure = ({
     app = null,
     // Express Server
     express = null,
-     // User model
-    user: User = null,
+    // MongoDB connection to the user database
+    userdb = null,
     // URL base path for authentication routes
     path = '/auth',
     // Directory in ./pages/ where auth pages can be found
@@ -59,17 +59,17 @@ exports.configure = ({
     throw new Error('express option must be an express server instance')
   }
 
-  if (User === null) {
-    throw new Error('user option must be a User model')
+  if (userdb === null) {
+    throw new Error('userdb option must be provided')
   }
-    
+
   if (store === null) {
     // Example of store
     //const FileStore = require('session-file-store')(session)
     //store = new FileStore({path: '/tmp/sessions', secret: secret})
     throw new Error('express session store not provided')
   }
-  
+
   // Load body parser to handle POST requests
   express.use(bodyParser.json())
   express.use(bodyParser.urlencoded({extended: true}))
@@ -95,7 +95,7 @@ exports.configure = ({
   passportStrategies.configure({
     app: app,
     express: express,
-    user: User,
+    userdb: userdb,
     serverUrl: serverUrl
   })
 
@@ -142,7 +142,7 @@ exports.configure = ({
 
     // Create verification token save it to database
     // @TODO Improve error handling
-    User.one({email: email}, (err, user) => {
+    userdb.findOne({email: email}, (err, user) => {
       if (err) {
         throw err
       }
@@ -161,7 +161,7 @@ exports.configure = ({
           })
         })
       } else {
-        User.create({email: email, emailAccessToken: token}, (err) => {
+        userdb.insert({email: email, emailAccessToken: token}, (err) => {
           if (err) {
             throw err
           }
@@ -185,7 +185,7 @@ exports.configure = ({
     }
 
     // Look up user by token
-    User.one({emailAccessToken: req.params.token}, (err, user) => {
+    userdb.findOne({emailAccessToken: req.params.token}, (err, user) => {
       if (err) {
         return res.redirect(path + '/error/email')
       }

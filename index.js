@@ -6,9 +6,9 @@ const next = require('next')
 const sass = require('node-sass')
 const auth = require('./routes/auth')
 const smtpTransport = require('nodemailer-smtp-transport')
-
-// nedb provides a MonogoDB work-a-like if Mongo DB is not configured
-const Datastore = require('nedb')
+const MongoClient = require('mongodb').MongoClient
+const MongoStore = require('connect-mongo')(session)
+const NeDB = require('nedb') // Use MongoDB work-a-like if no user db configured
 
 // Load environment variables from .env file if present
 require('dotenv').load()
@@ -34,27 +34,6 @@ process.env.PORT = process.env.PORT || 80
 // Define the session secret (should be unique to your site)
 process.env.SESSION_SECRET = process.env.SESSION_SECRET || 'change-me'
 
-// Configure a store for session data
-let sessionStore
-if (process.env.SESSION_DB_CONNECTION_STRING) {
-  /**
-   * Example of how to configure a session store (in this case, for MongoDB)
-   * 
-   * const MongoStore = require('connect-mongo')(session)
-   * sessionStore = new MongoStore({
-   *   url: process.env.SESSION_DB_CONNECTION_STRING,
-   *   autoRemove: 'interval',
-   *   autoRemoveInterval: 10, // Removes expired sessions every 10 minutes
-   *   collection: 'sessions',
-   *   stringify: false
-   * })
-   **/
-} else {
-  // If no SESSION_DB_CONNECTION_STRING specified, just use /tmp/sessions
-  const FileStore = require('session-file-store')(session)
-  sessionStore = new FileStore({path: '/tmp/sessions', secret: process.env.SESSION_SECRET})
-}
-
 // If EMAIL_USERNAME and EMAIL_PASSWORD are configured use them to send email.
 // If you don't specify an email server then email will be sent from localhost 
 // which is less reliable than using a configured mail server.
@@ -76,29 +55,59 @@ const app = next({
   dev: (process.env.NODE_ENV === 'development')
 })
 
-const handle = app.getRequestHandler()
+let userdb, sessionStore
 
 app.prepare()
 .then(() => {
-  // Set it up the database (used to store user info and email sign in tokens)
+  // Connect to the user database
   return new Promise((resolve, reject) => {
     if (process.env.USER_DB_CONNECTION_STRING) {
-  
+      // Example connection string: mongodb://localhost:27017/my-user-db
+      MongoClient.connect(process.env.USER_DB_CONNECTION_STRING, (err, db) => {
+        // Return collection called 'users
+        userdb = db.collection('users')
+        resolve(true)
+      })
     } else {
-      const db = new Datastore()
-      resolve(db)
+      // If no user db connection string, use in-memory MongoDB work-a-like
+      console.warn("Warn: No user database connection string configured (using temporary in-memory database)")
+      userdb = new NeDB({ autoload: true })
+      userdb.loadDatabase((err) => {
+        if (err) return reject(err)
+        resolve(true)
+      })
     }
   })
 })
-.then(db => {
-  // Once DB is available, setup sessions and routes for authentication
+.then(() => {
+  // Configure a session store and connect it to the session database
+  return new Promise((resolve, reject) => {
+    if (process.env.SESSION_DB_CONNECTION_STRING) {
+      sessionStore = new MongoStore({
+         url: process.env.SESSION_DB_CONNECTION_STRING,
+         autoRemove: 'interval',
+         autoRemoveInterval: 10, // Removes expired sessions every 10 minutes
+         collection: 'sessions',
+         stringify: false
+      })
+      resolve(true)
+    } else {
+      // If no session db connection string, use in-memory MongoDB work-a-like
+      console.warn("Warn: No session database connection string configured (using in-memory session store)")
+      sessionStore = new session.MemoryStore()
+      resolve(true)
+    }
+  })
+})
+.then(() => {
+  // Once DB connections are available, can configure authentication routes
   auth.configure({
     app: app,
     express: express,
-    userdb: db,
-    secret: process.env.SESSION_SECRET,
-    store: sessionStore,
+    userdb: userdb,
     session: session,
+    store: sessionStore,
+    secret: process.env.SESSION_SECRET,
     mailserver: mailserver,
     fromEmail: process.env.EMAIL_ADDRESS || null,
     serverUrl: process.env.SERVER_URL || null
@@ -119,7 +128,8 @@ app.prepare()
   
   // Default catch-all handler to allow Next.js to handle all other routes
   express.all('*', (req, res) => {
-    return handle(req, res)
+    let nextRequestHandler = app.getRequestHandler()
+    return nextRequestHandler(req, res)
   })
 
   express.listen(process.env.PORT, err => {
@@ -130,6 +140,6 @@ app.prepare()
   })
 })
 .catch(err => {
-  console.log('An error occurred, unable to start the express')
+  console.log('An error occurred, unable to start the server')
   console.log(err)
 })

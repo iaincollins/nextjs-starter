@@ -6,27 +6,31 @@
 const passport = require('passport')
 
 exports.configure = ({
-    express = null, // Express Server
-    user: User = null, // User model
-    userDbKey = '_id',
-    path = '/auth', // URL base path for authentication routes
+    express = null,    // Express Server
+    userdb = null,     // MongoDB connection to the user database
+    path = '/auth',    // URL base path for authentication routes
     serverUrl: serverUrl
   } = {}) => {
   if (express === null) {
     throw new Error('express option must be an instance of an express server')
   }
 
-  if (User === null) {
-    throw new Error('user option must be a User model')
+  if (userdb === null) {
+    throw new Error('userdb option must be provided')
   }
-  
+
+  // User DB Key. This is always '_id' on MongoDB, but configurable as an option
+  // here to make it easier to refactor the code below if you are using another
+  // database.
+  const userDbKey = '_id'
+
   // Tell Passport how to seralize/deseralize user accounts
   passport.serializeUser((user, next) => {
     next(null, user[userDbKey])
   })
 
   passport.deserializeUser((id, next) => {
-    User.one({[userDbKey]: id}, (err, user) => {
+    userdb.findOne({[userDbKey]: id}, (err, user) => {
       // Pass error back (if there was one) and invalidate session if user
       // could not be fetched by returning 'false'. This prevents an exception
       // in edge cases like an account being deleted while logged in.
@@ -45,7 +49,7 @@ exports.configure = ({
 
   let providers = []
 
-  // IMPORTANT! If you add a provider, be sure to add a property to the User
+  // IMPORTANT! If you add a provider, be sure to add a property to the user
   // model with the name of the provider or you won't be able to log in!
 
   if (process.env.FACEBOOK_ID && process.env.FACEBOOK_SECRET) {
@@ -131,7 +135,7 @@ exports.configure = ({
       req.session[providerName] = {accessToken: accessToken}
 
       try {
-        // Normalise the provider specific profile into a User object
+        // Normalise the provider specific profile into a standard user object
         profile = getUserFromProfile(profile)
         
         // If we didn't get an email address from the oAuth provider then
@@ -144,7 +148,7 @@ exports.configure = ({
         }
 
         // See if we have this oAuth account in the database associated with a user
-        User.one({ [providerName+'.id']: profile.id }, (err, user) => {
+        userdb.findOne({ [providerName+'.id']: profile.id }, (err, user) => {
 
           if (err) return next(err)
 
@@ -153,7 +157,7 @@ exports.configure = ({
                         
             // If the oAuth account is not linked to another account, link it and exit
             if (!user) {
-             return User.one({[userDbKey]: req.user.id}, (err, user) => {
+             return userdb.findOne({[userDbKey]: req.user.id}, (err, user) => {
                 if (err) {
                   return next(err)
                 }
@@ -173,7 +177,8 @@ exports.configure = ({
                   id: profile.id,
                   refreshToken: refreshToken
                 }
-                return user.save((err) => {
+                
+                return userdb.update({[userDbKey]: user[userDbKey]}, user, {}, (err) => {
                   // @FIXME Should check the error code to verify the error was
                   // actually caused by email already being in use here but is
                   // almost certainly the cause of any errors when saving here.
@@ -187,14 +192,16 @@ exports.configure = ({
 
             // If oAuth account already linked to the current user return okay
             if (req.user.id === user.id) {
-              // If we got a refreshToken try to save it to the profile 
+              // @TODO Improve error handling and update query syntax here
+              // If we got a refreshToken try to save it to the profile,
+              // but don't worry about errors if we don't get one 
               if (refreshToken) {
                 user[providerName] = {
                   id: profile.id,
                   refreshToken: refreshToken
                 }
-                return user.save((err) => {
-                   return next(null, user)
+                return userdb.update({[userDbKey]: user[userDbKey]}, user, {}, (err) => {
+                  return next(null, user)
                 })
               } else {
                 return next(null, user)
@@ -210,13 +217,15 @@ exports.configure = ({
 
             // If we have the oAuth account in the db then let them sign in as that user
             if (user) {
-              // If we got a refreshToken try to save it to the profile 
+              // @TODO Improve error handling and update query syntax here
+              // If we got a refreshToken try to save it to the profile,
+              // but don't worry about errors if we don't get one 
               if (refreshToken) {
                 user[providerName] = {
                   id: profile.id,
                   refreshToken: refreshToken
                 }
-                return user.save((err) => {
+                return userdb.update({[userDbKey]: user[userDbKey]}, user, {}, (err) => {
                   return next(null, user)
                 })
               } else {
@@ -226,7 +235,7 @@ exports.configure = ({
 
             // If we don't have the oAuth account in the db, check to see if an account with the
             // same email address as the one associated with their oAuth acccount exists in the db
-            return User.one({email: profile.email}, (err, user) => {
+            return userdb.findOne({email: profile.email}, (err, user) => {
               if (err) {
                 return next(err)
               }
@@ -241,7 +250,7 @@ exports.configure = ({
               }
 
               // If account does not exist, create one for them and sign the user in
-              return User.create({
+              return userdb.insert({
                 name: profile.name,
                 email: profile.email,
                 [providerName]: {
@@ -284,7 +293,7 @@ exports.configure = ({
         return next(new Error('Not signed in'))
       }
       // Lookup user
-      User.one({[userDbKey]: req.user.id}, (err, user) => {
+      userdb.findOne({[userDbKey]: req.user.id}, (err, user) => {
         if (err) {
           return next(err)
         }
@@ -298,12 +307,9 @@ exports.configure = ({
           user[providerName] = null
         }
 
-        return user.save((err) => {
-          if (!user) {
-            return next(err)
-          }
-
-          return res.redirect(path + '/signin?action=unlink_' + providerName)
+        return userdb.update({[userDbKey]: user[userDbKey]}, user, {}, (err) => {
+          if (err) return next(err)
+          return res.redirect(path + '/signin?action=unlink&service=' + providerName)
         })
       })
     })
