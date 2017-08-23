@@ -8,7 +8,7 @@ const passport = require('passport')
 exports.configure = ({
     express = null, // Express Server
     user: User = null, // User model
-    userDbKey = null, // eg '_id' if using MongoDB or 'id' for an SQL DB
+    userDbKey = '_id',
     path = '/auth', // URL base path for authentication routes
     serverUrl: serverUrl
   } = {}) => {
@@ -20,10 +20,6 @@ exports.configure = ({
     throw new Error('user option must be a User model')
   }
   
-  if (userDbKey === null) {
-    throw new Error('userDbKey option must not be null')
-  }
-
   // Tell Passport how to seralize/deseralize user accounts
   passport.serializeUser((user, next) => {
     next(null, user[userDbKey])

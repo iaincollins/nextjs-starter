@@ -24,8 +24,6 @@ exports.configure = ({
     express = null,
      // User model
     user: User = null,
-     // String with the ID of the DB field for the user ID (e.g. 'id', '_id')
-    userDbKey = null,
     // URL base path for authentication routes
     path = '/auth',
     // Directory in ./pages/ where auth pages can be found
@@ -65,10 +63,6 @@ exports.configure = ({
     throw new Error('user option must be a User model')
   }
     
-  if (userDbKey === null) {
-    throw new Error('userDbKey option must not be null')
-  }
-  
   if (store === null) {
     // Example of store
     //const FileStore = require('session-file-store')(session)
@@ -102,7 +96,6 @@ exports.configure = ({
     app: app,
     express: express,
     user: User,
-    userDbKey: userDbKey,
     serverUrl: serverUrl
   })
 
