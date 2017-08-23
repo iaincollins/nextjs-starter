@@ -122,12 +122,12 @@ exports.configure = ({
 
   // Define a Passport strategy for provider
   providers.forEach(({providerName, Strategy, strategyOptions, getUserFromProfile}) => {
-      
+
     strategyOptions.callbackURL = (serverUrl || '') + path + '/oauth/' + providerName + '/callback' 
     strategyOptions.passReqToCallback = true
     
     passport.use(new Strategy(strategyOptions, (req, accessToken, refreshToken, profile, next) => {
-      
+
       req.session[providerName] = {accessToken: accessToken}
 
       try {
@@ -142,15 +142,11 @@ exports.configure = ({
         if (!profile.email) {
           profile.email = `${providerName}-${profile.id}@localhost.localdomain`
         }
-        
+
         // See if we have this oAuth account in the database associated with a user
         User.one({ [providerName+'.id']: profile.id }, (err, user) => {
-        
-          if (err) {
-            // Ignore errors triggered in dev mode when using SQLITE DB
-            if (!String(err).match(/^Error: SQLITE_ERROR: no such column/))
-              return next(err)
-          }
+
+          if (err) return next(err)
 
           if (req.user) {
             // If the current session is signed in

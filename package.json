@@ -7,6 +7,7 @@
   "repository": "https://github.com/iaincollins/nextjs-starter.git",
   "main": "index.js",
   "dependencies": {
+    "babel-core": "^6.26.0",
     "babel-plugin-wrap-in-js": "^1.1.1",
     "body-parser": "^1.15.2",
     "bootstrap": "^4.0.0-beta",
@@ -40,7 +41,6 @@
     "redux-thunk": "^2.1.0",
     "sass-loader": "^5.0.1",
     "session-file-store": "^1.0.0",
-    "sqlite3": "^3.1.8",
     "uuid": "^3.0.1"
   },
   "devDependencies": {
