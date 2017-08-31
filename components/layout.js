@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Container, Nav, NavItem, Button, Form, NavLink, Collapse, Navbar,
         NavbarToggler, NavbarBrand, Modal, ModalHeader, ModalBody, ModalFooter }
   from 'reactstrap'
+import Signin from './signin'
 import Session from './session'
 import Package from '../package'
 import Styles from '../css/index.scss'
@@ -43,18 +44,18 @@ export default class extends React.Component {
   render() {
     return (
       <div>
-       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <style dangerouslySetInnerHTML={{__html: Styles}}/>
-        <script src="https://cdn.polyfill.io/v2/polyfill.min.js"/>
-       </Head>
-       <Navbar toggleable className="navbar navbar-dark bg-dark navbar-expand-md" style={{marginBottom: 10}}>
-         <Link prefetch href="/"><NavbarBrand href="">{Package.name}</NavbarBrand></Link>
-         <NavbarToggler right onClick={this.toggleNavbar} />
-         <Collapse isOpen={this.state.navbarIsOpen} navbar>
-           <UserMenu session={this.props.session}/>
-         </Collapse>
-       </Navbar>
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1"/>
+          <style dangerouslySetInnerHTML={{__html: Styles}}/>
+          <script src="https://cdn.polyfill.io/v2/polyfill.min.js"/>
+        </Head>
+        <Navbar toggleable className="navbar navbar-dark bg-dark navbar-expand-md" style={{marginBottom: 10}}>
+          <Link prefetch href="/"><NavbarBrand href="">{Package.name}</NavbarBrand></Link>
+          <NavbarToggler right onClick={this.toggleNavbar}/>
+          <Collapse isOpen={this.state.isOpen} navbar>
+            <UserMenu session={this.props.session} toggleModal={this.toggleModal}/>
+          </Collapse>
+        </Navbar>
         <Container>
           {this.props.children}
         </Container>
@@ -69,10 +70,10 @@ export default class extends React.Component {
             &nbsp;| &copy; {new Date().getYear() + 1900}
           </p>
         </div>
+        <SigninModal modal={this.state.modal} toggleModal={this.toggleModal} session={this.props.session}/>
       </div>
     )
   }
-
 }
 
 export class UserMenu extends React.Component {
@@ -102,7 +103,8 @@ export class UserMenu extends React.Component {
       return (
         <Nav className="ml-auto" navbar>
           <NavItem>
-            <Link prefetch href="/auth/signin"><a className="btn btn-primary">Sign up / Sign in</a></Link>
+          {/*<Link prefetch href="/auth/signin"><a className="btn btn-primary">Sign up / Sign in</a></Link>*/}
+          <Button color="primary" onClick={this.props.toggleModal}>Sign up / Sign in</Button>
           </NavItem>
         </Nav>
       )
@@ -110,16 +112,15 @@ export class UserMenu extends React.Component {
   }
 }
 
-
-/*
-<Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-  <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
-  <ModalBody>
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  </ModalBody>
-  <ModalFooter>
-    <Button color="primary" onClick={this.toggle}>Do Something</Button>{' '}
-    <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-  </ModalFooter>
-</Modal>
-*/
+export class SigninModal extends React.Component {
+  render() {
+    return (
+      <Modal isOpen={this.props.modal} toggle={this.props.toggleModal} style={{maxWidth: 600}}>
+        <ModalHeader toggle={this.props.toggleModal}>Sign in / Sign up</ModalHeader>
+        <ModalBody>
+          <Signin session={this.props.session}/>
+        </ModalBody>
+      </Modal>
+    )
+  }
+}
