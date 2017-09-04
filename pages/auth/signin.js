@@ -40,7 +40,7 @@ export default class extends Page {
   render() {
     return (
       <Layout session={this.state.session}>
-        <h2>Sign up / Sign in</h2>
+        <h1 className="text-center">Sign up / Sign in</h1>
         <Row>
           <Col lg="8" className="mr-auto ml-auto" style={{marginBottom: 20}}>
             <Signin session={this.state.session}/>

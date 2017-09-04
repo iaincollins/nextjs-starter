@@ -39,14 +39,14 @@ export default class extends React.Component {
     } else {
       return (
         <div>
-          <p className="lead text-center" style={{marginTop: 10, marginBottom: 30}}>Sign in with an existing account or using email</p>
+          <p className="lead text-center" style={{marginTop: 10, marginBottom: 30}}>Sign in with an existing account or with email</p>
           <Row>
-            <div className="col-md-6">
+            <Col md={6}>
               <p><a className="btn btn-secondary btn-block btn-facebook" href="/auth/oauth/facebook">Sign in with Facebook</a></p>
               <p><a className="btn btn-secondary btn-block btn-google" href="/auth/oauth/google">Sign in with Google</a></p>
               <p><a className="btn btn-secondary btn-block btn-twitter" href="/auth/oauth/twitter">Sign in with Twitter</a></p>
-            </div>
-            <div className="col-md-6">
+            </Col>
+            <Col md={6}>
               <Form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
                 <Input name="_csrf" type="hidden" value={this.state.session.csrfToken}/>
                 <p>
@@ -57,7 +57,7 @@ export default class extends React.Component {
                   <Button id="submitButton" type="submit">Sign in with email</Button>
                 </p>
               </Form>
-            </div>
+            </Col>
           </Row>
         </div>
       )

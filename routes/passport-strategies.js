@@ -9,7 +9,8 @@ exports.configure = ({
     express = null,    // Express Server
     userdb = null,     // MongoDB connection to the user database
     path = '/auth',    // URL base path for authentication routes
-    serverUrl: serverUrl
+    serverUrl = null,
+    userDbKey = '_id'  // Always '_id' on Mongo but other databases may be 'id'
   } = {}) => {
   if (express === null) {
     throw new Error('express option must be an instance of an express server')
@@ -18,11 +19,6 @@ exports.configure = ({
   if (userdb === null) {
     throw new Error('userdb option must be provided')
   }
-
-  // User DB Key. This is always '_id' on MongoDB, but configurable as an option
-  // here to make it easier to refactor the code below if you are using another
-  // database.
-  const userDbKey = '_id'
 
   // Tell Passport how to seralize/deseralize user accounts
   passport.serializeUser((user, next) => {

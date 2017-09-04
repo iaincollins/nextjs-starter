@@ -46,7 +46,11 @@ exports.configure = ({
     // sign in links in emails. Autodetects to hostname if null.
     serverUrl = null,
     // Mailserver configuration for nodemailer (defaults to localhost if null)
-    mailserver = null
+    mailserver = null,
+    // User DB Key. This is always '_id' on MongoDB, but configurable as an 
+    // option to make it easier to refactor the code below if you are using 
+    // another database.
+    userDbKey = '_id'
   } = {}) => {
 
   if (app === null) {
@@ -94,7 +98,8 @@ exports.configure = ({
     app: app,
     express: express,
     userdb: userdb,
-    serverUrl: serverUrl
+    serverUrl: serverUrl,
+    userDbKey: userDbKey
   })
 
   // Add route to get CSRF token via AJAX
@@ -155,7 +160,7 @@ exports.configure = ({
       }
       if (user) {
         user.emailAccessToken = token
-        userdb.update({'_id': user._id}, user, {}, (err) => {
+        userdb.update({[userDbKey]: user[userDbKey]}, user, {}, (err) => {
           if (err) {
             throw err
           }
@@ -200,7 +205,7 @@ exports.configure = ({
         // Reset token and mark as verified
         user.emailAccessToken = null
         user.emailVerified = true
-        userdb.update({'_id': user._id}, user, {}, (err) => {
+        userdb.update({[userDbKey]: user[userDbKey]}, user, {}, (err) => {
           // @TODO Improve error handling
           if (err) {
             return res.redirect(path + '/error/email')

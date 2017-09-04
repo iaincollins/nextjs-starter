@@ -1,6 +1,8 @@
 /* global window */
 /**
- * This is a simple example of how to render data fetched asynchronously.
+ * A simple example of how to render data fetched asynchronously (in a
+ * non-blocking way) while rendering on a client with JavaScript support, while
+ * still also rendering in browsers that do not support JavaScript.
  **/
 import React from 'react'
 import Page from '../components/page'
