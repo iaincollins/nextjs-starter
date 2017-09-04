@@ -26,8 +26,6 @@ exports.configure = ({
     userdb = null,
     // URL base path for authentication routes
     path = '/auth',
-    // Directory in ./pages/ where auth pages can be found
-    pages = 'auth',
     // Express Session Handler
     session = require('express-session'),
     // Secret used to encrypt session data on the server
@@ -129,12 +127,21 @@ exports.configure = ({
     return res.json(session)
   })
 
+  express.get(path + '/signin', (req, res) => {
+    if (req.user) {
+      // If signed in, send user to profile page when they request signin
+      return app.render(req, res, path + '/profile', req.params)
+    } else {
+      return app.render(req, res, path + '/signin', req.params)
+    }
+  })
+
   // On post request, redirect to page with instrutions to check email for link
   express.post(path + '/email/signin', (req, res) => {
     const email = req.body.email || null
 
     if (!email || email.trim() === '') {
-      return app.render(req, res, pages + '/signin', req.params)
+      return app.render(req, res, path + '/signin', req.params)
     }
 
     const token = uuid()
@@ -176,7 +183,7 @@ exports.configure = ({
       }
     })
 
-    return app.render(req, res, pages + '/check-email', req.params)
+    return app.render(req, res, path + '/check-email', req.params)
   })
 
   express.get(path + '/email/signin/:token', (req, res) => {
@@ -238,5 +245,7 @@ function sendVerificationEmail({mailserver, fromEmail, toEmail, url}) {
       console.log('Error sending email to ' + toEmail, err)
     }
   })
-  // console.log('Generated sign in link ' + url + ' for ' + toEmail)
+  if (process.env.NODE_ENV === 'development')  {
+    console.log('Generated sign in link ' + url + ' for ' + toEmail)
+  }
 }

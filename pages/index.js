@@ -26,7 +26,7 @@ export default class extends Page {
                 <Link prefetch href="/async"><NavLink href="/async">Asynchronous Loading</NavLink></Link>
               </NavItem>
               <NavItem>
-                <Link prefetch  href="/routing/?id=example" as="/route/example"><NavLink href="/route/example">Custom Routing</NavLink></Link>
+                <Link prefetch href="/routing/?id=example" as="/route/example"><NavLink href="/route/example">Custom Routing</NavLink></Link>
               </NavItem>
             </Nav>
           </Col>

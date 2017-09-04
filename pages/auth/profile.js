@@ -1,28 +1,31 @@
 import React from 'react'
 import fetch from 'unfetch'
 import { Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap'
-import Page from '../components/page'
-import Layout from '../components/layout'
-import Session from '../components/session'
+import Page from '../../components/page'
+import Layout from '../../components/layout'
+import Session from '../../components/session'
 
 export default class extends Page {
 
-  static async getInitialProps({req}) {
-    let props = await super.getInitialProps({req})
-    props.isSignedIn = (props.session.user) ? true : false
-    return props
+  static async getInitialProps({req, query}) {
+    return {
+      session: await Session.getSession({force: true, req: req})
+    }
   }
 
   constructor(props) {
     super(props)
     this.state = {
       session: props.session,
+      isSignedIn: (props.session.user) ? true : false,
       name: '',
       email: '',
       emailVerified: false,
       linkedWithFacebook: false,
       linkedWithGoogle: false,
-      linkedWithTwitter: false
+      linkedWithTwitter: false,
+      alertText: null,
+      alertStyle: null,
     }
     if (props.session.user) {
       this.state.name = props.session.user.name
@@ -30,6 +33,34 @@ export default class extends Page {
     }
     this.handleChange = this.handleChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
+  }
+
+  async componentDidMount() {
+    const session = await Session.getSession({force: true})
+    this.setState({
+      session: session,
+      isSignedIn: (session.user) ? true : false
+    })
+
+    this.getProfile()
+  }
+  
+  getProfile() {
+    fetch('/account/user', {
+      credentials: 'include'
+    })
+    .then(r => r.json())
+    .then(user => {
+      if (!user.name || !user.email) return
+      this.setState({
+        name: user.name,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        linkedWithFacebook: user.linkedWithFacebook,
+        linkedWithGoogle: user.linkedWithGoogle,
+        linkedWithTwitter: user.linkedWithTwitter
+      })
+    })
   }
   
   handleChange(event) {
@@ -42,16 +73,24 @@ export default class extends Page {
     // Submits the URL encoded form without causing a page reload
     e.preventDefault()
     
+    this.setState({
+      alertText: null,
+      alertStyle: null
+    })
+    
     const formData = {
       _csrf: await Session.getCsrfToken(),
-      name: this.state.name,
-      email: this.state.email
+      name: this.state.name || '',
+      email: this.state.email || ''
     }
     
+    // URL encode form
+    // Note: This uses a x-www-form-urlencoded rather than sending JSON so that
+    // the form also in browsers without JavaScript
     const encodedForm = Object.keys(formData).map((key) => {
       return encodeURIComponent(key) + '=' + encodeURIComponent(formData[key])
     }).join('&')
-
+    
     fetch('/account/user', {
       credentials: 'include',
       method: 'POST',
@@ -61,58 +100,66 @@ export default class extends Page {
       body: encodedForm
     })
     .then(async res => {
-      await Session.getSession({force: true})
-      this.forceUpdate()
-    })
-  }
-
-  async componentDidMount() {
-    fetch('/account/user', {
-      credentials: 'include'
-    })
-    .then(r => r.json())
-    .then(user => {
-      // @TODO Error handling
-      this.setState({
-        name: user.name,
-        email: user.email,
-        emailVerified: user.emailVerified,
-        linkedWithFacebook: user.linkedWithFacebook,
-        linkedWithGoogle: user.linkedWithGoogle,
-        linkedWithTwitter: user.linkedWithTwitter
-      })
+      if (res.status === 200) {
+        this.getProfile()
+        this.setState({
+          alertText: 'Changes to your profile have been saved',
+          alertStyle: 'alert-success',
+        })
+        // Force update session so that changes to name or email are reflected
+        // immediately in the navbar (as we pass our session to it)
+        this.setState({
+          session: await Session.getSession({force: true}),
+        })
+      } else {
+        this.setState({
+          session: await Session.getSession({force: true}),
+          alertText: 'Failed to save changes to your profile',
+          alertStyle: 'alert-danger',
+        })        
+      }
     })
   }
 
   render() {
-    if (this.props.isSignedIn === true) {
+    if (this.state.isSignedIn === true) {
+      const alert = (this.state.alertText === null) ? <div/> : <div className={`alert ${this.state.alertStyle}`} role="alert">{this.state.alertText}</div>
+      
       return (
         <Layout session={this.state.session}>
           <h2>Your profile</h2>
+          <p className="lead text-muted">
+            Edit your profile and link your account
+          </p>
           <Row>
             <Col xs="12" md="8" lg="9">
+              {alert}
               <Form method="post" action="/account/user" onSubmit={this.onSubmit}>
-                <Input name="_csrf" type="hidden" value={this.props.session.csrfToken} onChange={()=>{}}/>
+                <Input name="_csrf" type="hidden" value={this.state.session.csrfToken} onChange={()=>{}}/>
                 <FormGroup row>
                   <Label sm={2}>Name:</Label>
-                  <Col sm={10}>
+                  <Col sm={10} md={8}>
                     <Input name="name" value={this.state.name} onChange={this.handleChange}/>
                   </Col>
                 </FormGroup>
                 <FormGroup row>
                   <Label sm={2}>Email:</Label>
-                  <Col sm={10}>
+                  <Col sm={10} md={8}>
                     <Input name="email" value={(this.state.email.match(/.*@localhost\.localdomain$/)) ? '' : this.state.email} onChange={this.handleChange}/>
                   </Col>
                 </FormGroup>
-                <p className="text-right">
-                  <Button color="primary" type="submit">Save changes</Button>
-                </p>
+                <FormGroup row>
+                  <Col sm={12} md={10}>
+                    <p className="text-right">
+                      <Button color="primary" type="submit">Save changes</Button>
+                    </p>
+                  </Col>
+                </FormGroup>
               </Form>
             </Col>
             <Col xs="12" md="4" lg="3">
               <h3>Link accounts</h3>
-              <p>You can link your profile to other accounts so you can sign in with them too.</p>
+              <p>Link accounts to sign in with them.</p>
               <LinkAccount provider="Facebook" session={this.props.session} linked={this.state.linkedWithFacebook}/>
               <LinkAccount provider="Google" session={this.props.session} linked={this.state.linkedWithGoogle}/>
               <LinkAccount provider="Twitter" session={this.props.session} linked={this.state.linkedWithTwitter}/>

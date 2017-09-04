@@ -154,16 +154,20 @@ app.prepare()
         if (err || !user)
           return res.status(500).json({error: 'Unable to fetch profile'})
 
-        user.name = req.body.name || user.name
-        // Reset email verification field if email address has changed
-        if (req.body.email && req.body.email !== user.email)
-          user.emailVerified = false
+          if (req.body.name)
+          user.name = req.body.name
+
+        if (req.body.email) {
+          // Reset email verification field if email address has changed
+          if (req.body.email && req.body.email !== user.email)
+            user.emailVerified = false
         
-        user.email = req.body.email || user.email
+          user.email = req.body.email
+        }
         userdb.update({'_id': user._id}, user, {}, (err) => {
           if (err)
             return res.status(500).json({error: 'Unable save changes to profile'})
-          return res.status(204).redirect('/account')
+          return res.status(204).redirect('/auth/profile')
         })
       })
     } else {

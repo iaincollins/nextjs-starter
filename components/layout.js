@@ -54,6 +54,11 @@ export default class extends React.Component {
           <Link prefetch href="/"><NavbarBrand href="/">{Package.name}</NavbarBrand></Link>
           <NavbarToggler right onClick={this.toggleNavbar}/>
           <Collapse isOpen={this.state.isOpen} navbar>
+            <Nav navbar>
+              <NavItem>
+                <Link prefetch href="/"><NavLink className="text-light" href="/">Home</NavLink></Link>
+              </NavItem>
+            </Nav>
             <UserMenu session={this.props.session} toggleModal={this.toggleModal}/>
           </Collapse>
         </Navbar>
