@@ -6,6 +6,7 @@ const next = require('next')
 const sass = require('node-sass')
 const auth = require('./routes/auth')
 const smtpTransport = require('nodemailer-smtp-transport')
+const directTransport = require('nodemailer-direct-transport')
 const MongoClient = require('mongodb').MongoClient
 const MongoStore = require('connect-mongo')(session)
 const NeDB = require('nedb') // Use MongoDB work-a-like if no user db configured
@@ -37,7 +38,7 @@ process.env.SESSION_SECRET = process.env.SESSION_SECRET || 'change-me'
 // If EMAIL_USERNAME and EMAIL_PASSWORD are configured use them to send email.
 // If you don't specify an email server then email will be sent from localhost 
 // which is less reliable than using a configured mail server.
-let mailserver = null
+let mailserver = directTransport()
 if (process.env.EMAIL_SERVER && process.env.EMAIL_USERNAME && process.env.EMAIL_PASSWORD) {
   mailserver = smtpTransport({
     host: process.env.EMAIL_SERVER,
@@ -126,29 +127,49 @@ app.prepare()
     return res.redirect('/route/example')
   })
 
+  // Expose a route to return user profile if logged in with a session
   express.get('/account/user', (req, res) => {
     if (req.user) {
-      console.log(req.user)
-      userdb.findOne({[req.user.id]: id}, (err, user) => {
+      userdb.findOne({'_id': req.user.id}, (err, user) => {
         if (err || !user)
-          return next(err, false)
-  
-        console.log(user)
+          return res.status(500).json({error: 'Unable to fetch profile'})
         res.json({
-          id: user.id,
           name: user.name,
           email: user.email,
-          verified: false,
-          linkedWithFacebook: false,
-          linkedWithGoogle: false,
-          linkedWithTwitter: false,
+          emailVerified: (user.emailVerified && user.emailVerified === true) ? true : false,
+          linkedWithFacebook: (user.facebook && user.facebook.id) ? true : false,
+          linkedWithGoogle: (user.google && user.google.id) ? true : false,
+          linkedWithTwitter: (user.twitter && user.twitter.id) ? true : false
         })
       })
     } else {
-      return res.status(403).json({error: 'Login required'})
+      return res.status(403).json({error: 'Must be signed in to get profile'})
     }
   })
   
+  // Expose a route to allow users to update their profiles (name, email)
+  express.post('/account/user', (req, res) => {
+    if (req.user) {
+      userdb.findOne({'_id': req.user.id}, (err, user) => {
+        if (err || !user)
+          return res.status(500).json({error: 'Unable to fetch profile'})
+
+        user.name = req.body.name || user.name
+        // Reset email verification field if email address has changed
+        if (req.body.email && req.body.email !== user.email)
+          user.emailVerified = false
+        
+        user.email = req.body.email || user.email
+        userdb.update({'_id': user._id}, user, {}, (err) => {
+          if (err)
+            return res.status(500).json({error: 'Unable save changes to profile'})
+          return res.status(204).redirect('/account')
+        })
+      })
+    } else {
+      return res.status(403).json({error: 'Must be signed in to update profile'})
+    }
+  })
   
   // Default catch-all handler to allow Next.js to handle all other routes
   express.all('*', (req, res) => {

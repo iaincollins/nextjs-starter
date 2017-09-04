@@ -35,7 +35,8 @@ export default class extends React.Component {
     })
   }
 
-  toggleModal() {
+  toggleModal(e) {
+    e.preventDefault()
     this.setState({
       modal: !this.state.modal
     })
@@ -50,7 +51,7 @@ export default class extends React.Component {
           <script src="https://cdn.polyfill.io/v2/polyfill.min.js"/>
         </Head>
         <Navbar toggleable className="navbar navbar-dark bg-dark navbar-expand-md" style={{marginBottom: 10}}>
-          <Link prefetch href="/"><NavbarBrand href="">{Package.name}</NavbarBrand></Link>
+          <Link prefetch href="/"><NavbarBrand href="/">{Package.name}</NavbarBrand></Link>
           <NavbarToggler right onClick={this.toggleNavbar}/>
           <Collapse isOpen={this.state.isOpen} navbar>
             <UserMenu session={this.props.session} toggleModal={this.toggleModal}/>
@@ -89,7 +90,7 @@ export class UserMenu extends React.Component {
       return (
         <Nav className="ml-auto" navbar>
           <NavItem>
-            <Link prefetch href="/account"><NavLink style={{padding: '0.4em'}} href="">Signed in as <strong>{session.user.name || session.user.email}</strong></NavLink></Link>
+            <Link prefetch href="/account"><NavLink style={{padding: '0.4em'}} href="/account">Signed in as <strong>{session.user.name || session.user.email}</strong></NavLink></Link>
           </NavItem>
           <NavItem>
             <Form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSignoutSubmit}>
@@ -104,7 +105,7 @@ export class UserMenu extends React.Component {
         <Nav className="ml-auto" navbar>
           <NavItem>
           {/*<Link prefetch href="/auth/signin"><a className="btn btn-primary">Sign up / Sign in</a></Link>*/}
-          <Button color="primary" onClick={this.props.toggleModal}>Sign up / Sign in</Button>
+          <a href="/auth/signin" className="btn btn-primary" onClick={this.props.toggleModal}>Sign up / Sign in</a>
           </NavItem>
         </Nav>
       )
