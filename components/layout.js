@@ -36,7 +36,7 @@ export default class extends React.Component {
   }
 
   toggleModal(e) {
-    e.preventDefault()
+    if (e) e.preventDefault()
     this.setState({
       modal: !this.state.modal
     })
@@ -50,7 +50,7 @@ export default class extends React.Component {
           <style dangerouslySetInnerHTML={{__html: Styles}}/>
           <script src="https://cdn.polyfill.io/v2/polyfill.min.js"/>
         </Head>
-        <Navbar toggleable className="navbar navbar-dark bg-dark navbar-expand-md" style={{marginBottom: 10}}>
+        <Navbar toggleable className="navbar navbar-dark bg-dark navbar-expand-md sticky-top " style={{marginBottom: 10}}>
           <Link prefetch href="/"><NavbarBrand href="/">{Package.name}</NavbarBrand></Link>
           <NavbarToggler right onClick={this.toggleNavbar}/>
           <Collapse isOpen={this.state.isOpen} navbar>
@@ -90,12 +90,12 @@ export class UserMenu extends React.Component {
       return (
         <Nav className="ml-auto" navbar>
           <NavItem>
-            <Link prefetch href="/account"><NavLink style={{padding: '0.4em'}} href="/account">Signed in as <strong>{session.user.name || session.user.email}</strong></NavLink></Link>
+            <Link prefetch href="/auth/profile"><NavLink className="text-light" style={{padding: '0.4em 0.6em 0.4em 0'}} href="/auth/profile">Signed in as <strong>{session.user.name || session.user.email}</strong></NavLink></Link>
           </NavItem>
           <NavItem>
             <Form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSignoutSubmit}>
               <input name="_csrf" type="hidden" value={session.csrfToken}/>
-              <Button type="submit" color="primary">Sign out</Button>
+              <Button type="submit" color="secondary">Sign out</Button>
             </Form>
           </NavItem>
         </Nav>
@@ -117,7 +117,6 @@ export class SigninModal extends React.Component {
   render() {
     return (
       <Modal isOpen={this.props.modal} toggle={this.props.toggleModal} style={{maxWidth: 600}}>
-        <ModalHeader toggle={this.props.toggleModal}>Sign in / Sign up</ModalHeader>
         <ModalBody>
           <Signin session={this.props.session}/>
         </ModalBody>
