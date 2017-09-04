@@ -70,7 +70,7 @@ app.prepare()
       })
     } else {
       // If no user db connection string, use in-memory MongoDB work-a-like
-      console.warn("Warn: No user database connection string configured (using temporary in-memory database)")
+      console.warn("Warning: No user database connection string configured (using in-memory database, user data will not be persisted)")
       userdb = new NeDB({ autoload: true })
       userdb.loadDatabase((err) => {
         if (err) return reject(err)
@@ -93,7 +93,7 @@ app.prepare()
       resolve(true)
     } else {
       // If no session db connection string, use in-memory MongoDB work-a-like
-      console.warn("Warn: No session database connection string configured (using in-memory session store)")
+      console.warn("Warning: No session database connection string configured (using in-memory session store, session data will not be persisted)")
       sessionStore = new session.MemoryStore()
       resolve(true)
     }
@@ -125,6 +125,30 @@ app.prepare()
   express.get('/route', (req, res) => {
     return res.redirect('/route/example')
   })
+
+  express.get('/account/user', (req, res) => {
+    if (req.user) {
+      console.log(req.user)
+      userdb.findOne({[req.user.id]: id}, (err, user) => {
+        if (err || !user)
+          return next(err, false)
+  
+        console.log(user)
+        res.json({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          verified: false,
+          linkedWithFacebook: false,
+          linkedWithGoogle: false,
+          linkedWithTwitter: false,
+        })
+      })
+    } else {
+      return res.status(403).json({error: 'Login required'})
+    }
+  })
+  
   
   // Default catch-all handler to allow Next.js to handle all other routes
   express.all('*', (req, res) => {

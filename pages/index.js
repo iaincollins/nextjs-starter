@@ -49,7 +49,7 @@ export default class extends Page {
 > npm run dev`}
               </pre>
             <p>
-              If you want to try deploying your new website to the cloud, the simplest way is to install the the 'now' package (from <a href="https://zeit.co">Zeit</a>, who are also the creators of Next.js). It's free for open source projects:
+              If you want to try deploying your new website to the cloud, the simplest way is to install the the 'now' package (from <a href="https://zeit.co">Zeit</a>, who are also the creators of Next.js).
             </p>
               <pre>
 {`> npm install -g now

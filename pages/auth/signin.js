@@ -34,46 +34,9 @@ export default class extends Page {
   }
 
   render() {
-    let linkWithFacebook = <p><a className="btn btn-secondary btn-facebook" href="/auth/oauth/facebook">Link with Facebook</a></p>
-    let linkWithGoogle = <p><a className="btn btn-secondary btn-google" href="/auth/oauth/google">Link with Google</a></p>
-    let linkWithTwitter = <p><a className="btn btn-secondary btn-twitter" href="/auth/oauth/twitter">Link with Twitter</a></p>
-
-    if (this.state.session.user) {
-      if (this.state.session.user.facebook) {
-        linkWithFacebook = <form action="/auth/oauth/facebook/unlink" method="post"><input name="_csrf" type="hidden" value={this.state.session.csrfToken}/><button className="btn btn-danger" type="submit">Unlink from Facebook</button></form>
-      }
-
-      if (this.state.session.user.google) {
-        linkWithGoogle = <form action="/auth/oauth/google/unlink" method="post"><input name="_csrf" type="hidden" value={this.state.session.csrfToken}/><button className="btn btn-danger" type="submit">Unlink from Google</button></form>
-      }
-
-      if (this.state.session.user.twitter) {
-        linkWithTwitter = <form action="/auth/oauth/twitter/unlink" method="post"><input name="_csrf" type="hidden" value={this.state.session.csrfToken}/><button className="btn btn-danger" type="submit">Unlink from Twitter</button></form>
-      }
-    }
-
     return (
       <Layout session={this.state.session}>
         <h2>Sign up / Sign in</h2>
-        {/*
-        <h3>You are signed in</h3>
-        <p>Name: <strong>{this.state.session.user.name}</strong></p>
-        <p>Email address: <strong>{(this.state.session.user.email.match(/.*@localhost\.localdomain$/)) ? 'N/A' : this.state.session.user.email}</strong></p>
-        <p>Email verified: <strong>{(this.state.session.user.verified) ? 'Yes' : 'No'}</strong></p>
-        <p>You can link your account to your other accounts so you can sign in with them too.</p>
-        {linkWithFacebook}
-        {linkWithGoogle}
-        {linkWithTwitter}
-        <p>
-          <i>
-            Note: When signed in you should be able to change your name and email address and delete your account
-            but those features aren&#39;t implemented in this example project. If you sign in with a service that
-            doesn&#39;t provide  an email address (like Twitter) you will be assigned a placeholder email address
-            (e.g. twitter-15403657@localhost.localdomain) until you supply a real one. Email addresses can be
-            verified by signing in with them (the verified status should reset to false if the email address is changed).
-          </i>
-        </p>
-        */}
         <Row>
           <Col lg="8" className="mr-auto ml-auto" style={{marginBottom: 20}}>
             <Signin session={this.state.session}/>

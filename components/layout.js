@@ -89,7 +89,7 @@ export class UserMenu extends React.Component {
       return (
         <Nav className="ml-auto" navbar>
           <NavItem>
-            <Link prefetch href="/auth/signin"><NavLink style={{padding: '0.4em'}} href="">Signed in as <strong>{session.user.name || session.user.email}</strong></NavLink></Link>
+            <Link prefetch href="/account"><NavLink style={{padding: '0.4em'}} href="">Signed in as <strong>{session.user.name || session.user.email}</strong></NavLink></Link>
           </NavItem>
           <NavItem>
             <Form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSignoutSubmit}>

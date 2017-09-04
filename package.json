@@ -48,6 +48,9 @@
     "eslint-plugin-react": "^7.3.0",
     "xo": "^0.18.2"
   },
+  "optionalDependencies": {
+    "fsevents": "*"
+  },
   "scripts": {
     "test": "xo",
     "dev": "NODE_ENV=development PORT=3000 node index.js",

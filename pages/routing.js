@@ -53,7 +53,7 @@ export default class extends Page {
           to use &lt;Link&gt; with custom routes.
         </p>
         <p>
-          If you want custom routing but don't need the other features offered by a framework like Express there are a
+          If you just want to use custom routes without the other features offered by a framework like Express there are a
           number of simpler routing options available designed especially for use with Next.js.
         </p>
         <h4>Custom Error Pages</h4>
