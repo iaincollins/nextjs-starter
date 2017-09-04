@@ -148,7 +148,7 @@ exports.configure = ({
       }
       if (user) {
         user.emailAccessToken = token
-        user.save((err) => {
+        userdb.update({'_id': user._id}, user, {}, (err) => {
           if (err) {
             throw err
           }
@@ -193,7 +193,7 @@ exports.configure = ({
         // Reset token and mark as verified
         user.emailAccessToken = null
         user.emailVerified = true
-        user.save((err) => {
+        userdb.update({'_id': user._id}, user, {}, (err) => {
           // @TODO Improve error handling
           if (err) {
             return res.redirect(path + '/error/email')
