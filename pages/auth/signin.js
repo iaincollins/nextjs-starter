@@ -39,7 +39,7 @@ export default class extends Page {
 
   render() {
     return (
-      <Layout session={this.state.session}>
+      <Layout session={this.state.session} navmenu={false}>
         <h1 className="text-center">Sign up / Sign in</h1>
         <Row>
           <Col lg="8" className="mr-auto ml-auto" style={{marginBottom: 20}}>

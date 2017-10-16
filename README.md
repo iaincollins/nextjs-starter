@@ -1,11 +1,11 @@
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
-# Next.js 2.0 Starter Project
+# Next.js Starter Project
 
-This is a Next.js 2.0 project that incorporates Express for Node.js and reactstrap (Boostrap 4 components for React) and incorporates account registration and sign-in system.
+This is a Next.js project that incorporates Express for Node.js and reactstrap (Boostrap 4 for React) and incorporates account registration and sign-in system.
 
-This project exists to make it easier to get started with creating Universal apps in React.
+This project exists to make it easier to get started with creating Universal apps in React. You are invited to copy it and have fun!
 
-You are invited to copy it and have fun! Contributions to improve it are welcome.
+Contributions to improve it are welcome.
 
 ## Demo
 
@@ -49,6 +49,13 @@ To deploy on [Zeit's](https://zeit.co) cloud platform `now` just install it, clo
 If you configure a .env file `now` will include it when deploying if you use the -E option to deploy:
 
     now -E
+
+If you want to have your local `.env` file contain variables for local development and have a different sent of varaibles you use in production or staging, you can create additional .env files and tell `now` to use a specific 
+file when deploying.
+
+For example:
+
+    now -E production.env
 
 ## Debugging
 

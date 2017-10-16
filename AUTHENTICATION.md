@@ -15,11 +15,14 @@ If you want to add new oAuth providers (such as GitHub), you will need to:
 
 ## Configuring your account
 
-These guides are approximate as exactly how to configure oAuth varies for each provider and tends to change when they update their developer portals.
+These guides are approximate as exactly how to configure oAuth varies for each provider and tends to change when they update their developer portals, which can be quite often. If you can't see the options mentioned, try exploring the UI in the developer portal or configuration pages.
 
-I am not able to help if you run into problems here, but pull requests with improved or extended instructions are most welcome.
+Due to the volume of requests I'm not usually able to help with specific problems but pull requests with improved or extended instructions are very welcome.
 
-Twitter's oAuth implementation is the most permissive and easiest to configure, you may want to start with it.
+Tip: Twitter's oAuth implementation is the most permissive and easiest to configure, you may want to start with it. If you run into problems, you might 
+want to check email sign-in is working as baseline.
+
+Please note that Facebook oAuth cannot be used to sign in to 'localhost' and that if you want to sign in to `localhost` with Google+ you must specifically add something like `http://localhost:3000/auth/oauth/google/callback` as a authorized redirect URI for your application.
 
 ### Facebook Login
 

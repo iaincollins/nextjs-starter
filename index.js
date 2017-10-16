@@ -3,7 +3,6 @@
 const express = require('express')()
 const session = require('express-session')
 const next = require('next')
-const sass = require('node-sass')
 const auth = require('./routes/auth')
 const smtpTransport = require('nodemailer-smtp-transport')
 const directTransport = require('nodemailer-direct-transport')
@@ -20,11 +19,11 @@ if (process.env.LOGS_SECRET) {
 }
 
 process.on('uncaughtException', function(err) {
-  console.log('Uncaught Exception: ', err)
+  console.error('Uncaught Exception: ', err)
 })
 
 process.on('unhandledRejection', (reason, p) => {
-  console.log('Unhandled Rejection: Promise:', p, 'Reason:', reason)
+  console.error('Unhandled Rejection: Promise:', p, 'Reason:', reason)
 })
 
 // Default when run with `npm start` is 'production' and default port is '80'
@@ -65,7 +64,6 @@ app.prepare()
     if (process.env.USER_DB_CONNECTION_STRING) {
       // Example connection string: mongodb://localhost:27017/my-user-db
       MongoClient.connect(process.env.USER_DB_CONNECTION_STRING, (err, db) => {
-        // Return collection called 'users
         userdb = db.collection('users')
         resolve(true)
       })

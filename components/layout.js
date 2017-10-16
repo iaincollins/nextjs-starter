@@ -2,9 +2,9 @@ import React from 'react'
 import Head from 'next/head'
 import Router from 'next/router'
 import Link from 'next/link'
-import { Container, Nav, NavItem, Button, Form, NavLink, Collapse, Navbar,
-        NavbarToggler, NavbarBrand, Modal, ModalHeader, ModalBody, ModalFooter }
-  from 'reactstrap'
+import { Container, Row, Col, Nav, NavItem, Button, Form, NavLink, Collapse,
+         Navbar, NavbarToggler, NavbarBrand, Modal, ModalHeader, ModalBody,
+         ModalFooter } from 'reactstrap'
 import Signin from './signin'
 import Session from './session'
 import Package from '../package'
@@ -62,10 +62,10 @@ export default class extends React.Component {
             <UserMenu session={this.props.session} toggleModal={this.toggleModal}/>
           </Collapse>
         </Navbar>
-        <Container>
+        <MainBody navmenu={this.props.navmenu}>
           {this.props.children}
-        </Container>
-        <div className="container">
+        </MainBody>
+        <Container>
           <hr/>
           <p>
             <Link prefetch href="/"><a><strong>Home</strong></a></Link>
@@ -75,10 +75,52 @@ export default class extends React.Component {
             <Link href="https://github.com/zeit/next.js"><a>nextjs {Package.dependencies.next}</a></Link>
             &nbsp;| &copy; {new Date().getYear() + 1900}
           </p>
-        </div>
+        </Container>
         <SigninModal modal={this.state.modal} toggleModal={this.toggleModal} session={this.props.session}/>
       </div>
     )
+  }
+}
+
+export class MainBody extends React.Component {
+  render() {
+    if (this.props.navmenu === false) {
+      return (
+        <Container style={{marginTop: '2em'}}>
+          {this.props.children}
+        </Container>
+      )
+    } else {
+      return (
+        <Container style={{marginTop: '2em'}}>
+          <Row>
+            <Col md="3" xs="12">
+              <h5 className="text-muted">PAGES</h5>
+              <Nav vertical>
+                <NavItem>
+                  <Link prefetch href="/"><NavLink href="/">About</NavLink></Link>
+                </NavItem>
+                <NavItem>
+                  <Link prefetch href="/layout-and-styling"><NavLink href="/styling-and-layout">Layout and Styling</NavLink></Link>
+                </NavItem>
+                <NavItem>
+                  <Link prefetch href="/async"><NavLink href="/async">Asynchronous Loading</NavLink></Link>
+                </NavItem>
+                <NavItem>
+                  <Link prefetch href="/routing/?id=example" as="/route/example"><NavLink href="/route/example">Custom Routing</NavLink></Link>
+                </NavItem>
+                <NavItem>
+                  <Link prefetch href="/authentication"><NavLink href="/authentication">Authentication</NavLink></Link>
+                </NavItem>
+              </Nav>
+            </Col>
+            <Col md="9" xs="12">
+              {this.props.children}
+            </Col>
+          </Row>
+        </Container>
+      )
+    }
   }
 }
 

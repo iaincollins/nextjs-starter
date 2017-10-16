@@ -126,8 +126,8 @@ export default class extends Page {
       const alert = (this.state.alertText === null) ? <div/> : <div className={`alert ${this.state.alertStyle}`} role="alert">{this.state.alertText}</div>
       
       return (
-        <Layout session={this.state.session}>
-          <h2>Your profile</h2>
+        <Layout session={this.state.session} navmenu={false}>
+          <h1>Your profile</h1>
           <p className="lead text-muted">
             Edit your profile and link your account
           </p>
@@ -158,8 +158,7 @@ export default class extends Page {
               </Form>
             </Col>
             <Col xs="12" md="4" lg="3">
-              <h3>Link accounts</h3>
-              <p>Link accounts to sign in with them.</p>
+              <h3>Link Accounts</h3>
               <LinkAccount provider="Facebook" session={this.props.session} linked={this.state.linkedWithFacebook}/>
               <LinkAccount provider="Google" session={this.props.session} linked={this.state.linkedWithGoogle}/>
               <LinkAccount provider="Twitter" session={this.props.session} linked={this.state.linkedWithTwitter}/>
