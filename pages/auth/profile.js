@@ -1,9 +1,16 @@
 import React from 'react'
+import Link from 'next/link'
 import fetch from 'unfetch'
 import { Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap'
 import Page from '../../components/page'
 import Layout from '../../components/layout'
 import Session from '../../components/session'
+
+/**
+ * This modules uses 'unfetch', which works like fetch, except - unlike
+ * isomorphic-fetch - it sends cookies so can be used with session based
+ * authentication to make ssecure requests using HTTP only cookies.
+ **/ 
 
 export default class extends Page {
 
@@ -127,7 +134,7 @@ export default class extends Page {
       
       return (
         <Layout session={this.state.session} navmenu={false}>
-          <h1>Your profile</h1>
+          <h1>Your Profile</h1>
           <p className="lead text-muted">
             Edit your profile and link your account
           </p>
@@ -168,9 +175,10 @@ export default class extends Page {
       )
     } else {
       return (
-        <Layout session={this.props.session}>
-          <p>
-            You are not signed in.
+        <Layout session={this.props.session} navmenu={false}>
+          <h1>Your Profile</h1>
+          <p className="lead" style={{marginBottom: '2em'}}>
+            <Link href="/auth/signin"><a>You must be signed in to view your profile.</a></Link>
           </p>
         </Layout>
       )
