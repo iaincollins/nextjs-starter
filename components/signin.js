@@ -39,7 +39,7 @@ export default class extends React.Component {
     } else {
       return (
         <div>
-          <p className="lead text-center" style={{fontWeight: 'bold', marginTop: 10, marginBottom: 30}}>Sign in with an existing account or with email</p>
+          <p className="lead text-center" style={{fontWeight: '600', marginTop: 10, marginBottom: 30}}>Sign in with another account or with email.</p>
           <Row>
             <Col md={6}>
               <p><a className="btn btn-secondary btn-block btn-facebook" href="/auth/oauth/facebook">Sign in with Facebook</a></p>

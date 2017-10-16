@@ -7,11 +7,14 @@ export default class extends Page {
   render() {
     return (
       <Layout session={this.props.session} navmenu={false}>
-        <h2>Unable to sign in</h2>
-        <p>If you have already signed in with your email address or previously signed in using a different service, use that method to sign in.</p>
-        <p><Link href="/auth/signin"><a>Try signing in with your email address or another service.</a></Link></p>
-        <h3>Why can&#39;t I sign in?</h3>
-        <p>You can&#39;t sign in with an account if you have previously signed in using your email address or another service that also tied to your email address.
+        <h1>Unable to sign in</h1>
+        <p className="lead">If you have signed up using a different service, use that method to sign in, or sign in with email.</p>
+        <p><Link href="/auth/signin"><a className="lead" style={{fontWeight: 'bold'}}>Try signing in with your email address or another service.</a></Link></p>
+        <h3 style={{marginTop: '1em', marginBottom: '0.5em'}}>Why can't I sign in?</h3>
+        <p>
+          An account associated with your email address has already been created. Sign in via email or with the same service you used to create the account.
+        </p>
+        <p>
           This is a security measure to prevent someone from hijacking your account by signing up for another service using your email address.
         </p>
         <p>

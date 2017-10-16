@@ -163,8 +163,9 @@ export class UserMenu extends React.Component {
 export class SigninModal extends React.Component {
   render() {
     return (
-      <Modal isOpen={this.props.modal} toggle={this.props.toggleModal} style={{maxWidth: 600}}>
-        <ModalBody>
+      <Modal isOpen={this.props.modal} toggle={this.props.toggleModal} style={{maxWidth: 700}}>
+        <ModalHeader>Sign up / Sign in</ModalHeader>
+        <ModalBody style={{padding: '1em 2em'}}>
           <Signin session={this.props.session}/>
         </ModalBody>
       </Modal>
