@@ -1,11 +1,11 @@
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 # Next.js Starter Project
 
-This is a Next.js project that incorporates Express for Node.js and reactstrap (Boostrap 4 for React) and incorporates account registration and sign-in system.
+Next.js is a framework that makes it easy to create Universal web apps in React. With Next.js, React pages are automatically rendered on both client and server side, without the hassle of setting up dependancies like webpack or babel and with automatic routing.
 
-This project exists to make it easier to get started with creating Universal apps in React. You are invited to copy it and have fun!
+This is a Next.js project that shows provides an example of how to use Next.js in a 'real world' project with Express (the popular web server framework for Node.js), reactstrap (Boostrap 4 for React), with REST APIs and incorporates a working authentication system that supports both oAuth and Email using Passport (a popular authentication framework for Node.js).
 
-Contributions to improve it are welcome.
+This project exists to make it easier to get started with creating Universal apps in React. You are invited to use it as a refernce or to copy it and use it as a base for your own projects. Contributions to improve this project are welcome.
 
 ## Demo
 
