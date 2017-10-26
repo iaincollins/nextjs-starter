@@ -18,17 +18,18 @@ export default class extends Page {
           that uses <a href="https://expressjs.com">Express</a> and <a href="https://reactstrap.github.io/">reactstrap</a> (Bootstrap 4 for React)
         </p>
         <p>
-          This '<em>starter project</em>' includes an authenticaiton system that
+          This starter project includes an authentication system that
           supports email and oAuth sign-in (Facebook, Google, Twitter, etc),
-          isomorphic rendering (i.e. client and server side) and tries to 
-          illustrate best practice security with features such as
-          Cross Site Request Forgery.
+          isomorphic rendering of React pages (aka 'universal rendering' - 
+          rendering React pages server side and in the browser) and shows how to
+          do things like add Cross Site Request Forgery, use HTTP Only Cookies
+          for sessions, leverage SASS for CSS and use layout templates with React.
         </p>
         <p>
           This project is intended to take some of the pain out of getting
           started with a functional React application. While Next.js makes creating
-          simple React apps easy, this project shows you how to go furhter and
-          add features like authentication to your own projects.
+          simple React apps easy, this project shows you how to go further and
+          do some fo the things you might want have when creating a more complex web app.
         </p>
         <h2>Getting Started</h2>
         <p>
