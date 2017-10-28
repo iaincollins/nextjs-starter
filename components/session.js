@@ -4,9 +4,13 @@
 /**
  * A class to handle signing in and out and caching session data in sessionStore
  *
- * Note: We use XMLHttpRequest() here rather than fetch because fetch() uses
- * Service Workers and they cannot share cookies with the browser session
- * yet (!) so if we tried to get or pass the CSRF token it would mismatch.
+ * The POST methods use 'application/x-www-form-urlencoded' (rather than JSON)
+ * because they are designed to still work without JavaScript in the browser.
+ * 
+ * Note: We use unfetch() because it uses XMLHttpRequest() behind the scenes.
+ * Most implmentations of fetch() use Service Workers which cannot access the
+ * HTTP Only session cookie the browser uses, so trying to read or pass the CSRF
+ * token associated with the session would not work.
  **/
 import fetch from 'unfetch'
 
