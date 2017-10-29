@@ -13,23 +13,28 @@ export default class extends Page {
     return (
       <Layout session={this.props.session}>
         <h1>Next.js Starter Project</h1>
-        <p className="lead">
-          This is a <a href="https://zeit.co/blog/next">Next.js</a> project
-          that uses <a href="https://expressjs.com">Express</a> and <a href="https://reactstrap.github.io/">reactstrap</a> (Bootstrap 4 for React)
-        </p>
-        <p>
-          This starter project includes an authentication system that
-          supports email and oAuth sign-in (Facebook, Google, Twitter, etc),
-          isomorphic rendering of React pages (aka 'universal rendering' - 
-          rendering React pages server side and in the browser) and shows how to
-          do things like add Cross Site Request Forgery, use HTTP Only Cookies
-          for sessions, leverage SASS for CSS and use layout templates with React.
-        </p>
-        <p>
+        <p style={{fontSize: '1.8em', fontWeight: 300}}>
           This project is intended to take some of the pain out of getting
-          started with a functional React application. While Next.js makes creating
+          started creating a full featured React application.
+        </p>
+        <p className="lead">
+          <a href="https://zeit.co/blog/next">Next.js</a> makes creating
           simple React apps easy, this project shows you how to go further and
-          do some fo the things you might want have when creating a more complex web app.
+          extend a Next.js app with components and frameworks found in complex web apps.
+        </p>
+        <p>
+          Included are examples of how to use Next.js with other libraries such as
+          the <a href="https://expressjs.com">Express</a> web server framework
+          and the <a href="http://www.passportjs.org">Passport</a> framework for 
+          authentication via email and oAuth (Facebook, Google, Twitter…).
+        </p>
+        <p>
+          Other features are <a href="https://www.npmjs.com/package/express-sessions">Express Session</a> support
+          with <a href="https://www.owasp.org/index.php/HttpOnly">HTTP Only Cookies</a> for XSS protection,
+          integration with <a href="https://www.mongodb.com">MongoDB</a> to store
+          user accounts, <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">Cross Site Request Forgery protection</a> with
+          CSRF tokens, <a href="https://getbootstrap.com">Bootstrap v4.0</a>, <a href="http://sass-lang.com/">SASS for CSS</a> and
+          an example of how to use configurable layout templates with React pages.
         </p>
         <h2>Getting Started</h2>
         <p>
@@ -66,6 +71,13 @@ export default class extends Page {
           This project exists to make it easier to get started with creating websites in React with Next.js.
           You are <a href="https://github.com/iaincollins/nextjs-starter">invited to copy this project</a> and
           use it as a base for your own projects or just to use it as reference.
+        </p>
+        <p>
+          There are many different ways to achieve similar functionality to that included in this 
+          project, such as alternative lightweight web frameworks, using encrypted JWT
+          cookies for authentication instead of session based authentication,
+          CSRF protection that doesn't use sessions (e.g. 'double cookie' method)
+          and more sophisticated ways of handling SASS/CSS and templating. 
         </p>
         <p>
           Contributions to improve this project to make it more useful (or simpler) are welcome.

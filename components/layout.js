@@ -96,9 +96,9 @@ export class MainBody extends React.Component {
           <Row>
             <Col md="3" xs="12">
               <h5 className="text-muted">PAGES</h5>
-              <Nav vertical>
+              <Nav vertical style={{marginBottom: 20}}>
                 <NavItem>
-                  <Link prefetch href="/"><NavLink href="/">About</NavLink></Link>
+                  <Link prefetch href="/"><NavLink href="/">Home</NavLink></Link>
                 </NavItem>
                 <NavItem>
                   <Link prefetch href="/layout-and-styling"><NavLink href="/styling-and-layout">Layout and Styling</NavLink></Link>
