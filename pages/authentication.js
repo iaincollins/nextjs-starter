@@ -1,6 +1,3 @@
-/**
- * This shows how to add CSS styles and head elements to a specific page
- */
 import React from 'react'
 import Page from '../components/page'
 import Layout from '../components/layout'

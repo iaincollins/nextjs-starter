@@ -165,7 +165,7 @@ app.prepare()
         userdb.update({'_id': user._id}, user, {}, (err) => {
           if (err)
             return res.status(500).json({error: 'Unable save changes to profile'})
-          return res.status(204).redirect('/auth/profile')
+          return res.status(204).redirect('/account')
         })
       })
     } else {

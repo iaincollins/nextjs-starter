@@ -132,15 +132,6 @@ exports.configure = ({
     return res.json(session)
   })
 
-  express.get(path + '/signin', (req, res) => {
-    if (req.user) {
-      // If signed in, send user to profile page when they request signin
-      return app.render(req, res, path + '/profile', req.params)
-    } else {
-      return app.render(req, res, path + '/signin', req.params)
-    }
-  })
-
   // On post request, redirect to page with instrutions to check email for link
   express.post(path + '/email/signin', (req, res) => {
     const email = req.body.email || null

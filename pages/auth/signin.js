@@ -8,15 +8,26 @@ import Signin from '../../components/signin'
 
 export default class extends Page {
 
-  static async getInitialProps({req}) {
+  static async getInitialProps({req, res}) {
     // On the sign in page we always force get the latest session data from the
     // server by passing 'force: true' to getSession to force cache busting.
     //
     // This page is the destination page after logging or linking/unlinking 
     // accounts which helps avoid any weird edge cases.
     const session = await Session.getSession({force: true, req: req})
-    if (session.user)
-      Router.push('/auth/profile')
+    
+    
+    // If you want to redirect users to some page other than '/account' on login
+    // then change the location here
+    const redirectIfSignedIn = '/account'
+    if (session.user) {
+      if (req) {
+        res.redirect(redirectIfSignedIn)
+      } else {
+        Router.push(redirectIfSignedIn)
+      }
+    }
+      
     return {
       session: session
     }

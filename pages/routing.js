@@ -1,6 +1,3 @@
-/**
- * An example with custom routing
- **/
 import Link from 'next/link'
 import React from 'react'
 import Page from '../components/page'

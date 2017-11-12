@@ -2,9 +2,9 @@ import React from 'react'
 import Link from 'next/link'
 import fetch from 'unfetch'
 import { Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap'
-import Page from '../../components/page'
-import Layout from '../../components/layout'
-import Session from '../../components/session'
+import Page from '../components/page'
+import Layout from '../components/layout'
+import Session from '../components/session'
 
 /**
  * This modules uses 'unfetch', which works like fetch, except - unlike
@@ -134,10 +134,14 @@ export default class extends Page {
       
       return (
         <Layout session={this.state.session} navmenu={false}>
-          <h1>Your Profile</h1>
-          <p className="lead text-muted">
-            Edit your profile and link your account
-          </p>
+          <Row>
+            <Col xs="12" className="text-center">
+              <h1 className="mb-0">Your Account</h1>
+              <p className="lead text-muted">
+                Edit your profile and link your account
+              </p>
+            </Col>
+          </Row>
           <Row>
             <Col xs="12" md="8" lg="9">
               {alert}
@@ -176,10 +180,14 @@ export default class extends Page {
     } else {
       return (
         <Layout session={this.props.session} navmenu={false}>
-          <h1>Your Profile</h1>
-          <p className="lead" style={{marginBottom: '2em'}}>
-            <Link href="/auth/signin"><a>You must be signed in to view your profile.</a></Link>
-          </p>
+          <Row>
+            <Col xs="12" className="text-center">
+              <h1>Your Account</h1>
+              <p className="lead" style={{marginBottom: '2em'}}>
+                <Link href="/auth/signin"><a>You must be signed in to view your account profile.</a></Link>
+              </p>
+            </Col>
+          </Row>
         </Layout>
       )
     }
