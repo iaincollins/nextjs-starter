@@ -279,7 +279,7 @@ exports.configure = ({
     // Route to call back to after signing in
     express.get(path + '/oauth/' + providerName + '/callback',
       passport.authenticate(providerName, {
-        successRedirect: path + '/signin?action=signin&service=' + providerName,
+        successRedirect: path + '/callback?action=signin&service=' + providerName,
         failureRedirect: path + '/error/oauth?service=' + providerName
       })
     )
@@ -305,7 +305,7 @@ exports.configure = ({
 
         return userdb.update({[userDbKey]: user[userDbKey]}, user, {}, (err) => {
           if (err) return next(err)
-          return res.redirect(path + '/signin?action=unlink&service=' + providerName)
+          return res.redirect(path + '/callback?action=unlink&service=' + providerName)
         })
       })
     })
@@ -313,7 +313,7 @@ exports.configure = ({
 
   // A catch all for providers that are not configured
   express.get(path + '/oauth/:provider', (req, res) => {
-    res.redirect(path + '/not-configured')
+    res.redirect(path + '/error/not-configured')
   })
 
   return passport

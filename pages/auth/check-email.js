@@ -6,15 +6,16 @@ import Session from '../../components/session'
 export default class extends Page {
   
   static async getInitialProps({req, res}) {
+    // Get latest session (forceing cache busting when rending on client)
     const session = await Session.getSession({force: true, req: req})
     
-    // If signed in already, instead of displaying message send to sign in page
+    // If signed in already, instead of displaying message send to callback page
     // which should redirect them to whatever page it normally sends clients to
     if (session.user) {
       if (req) {
-        res.redirect('/auth/signin')
+        res.redirect('/auth/callback')
       } else {
-        Router.push('/auth/signin')
+        Router.push('/auth/callback')
       }
     }
       
