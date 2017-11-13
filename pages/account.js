@@ -5,6 +5,7 @@ import { Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap'
 import Page from '../components/page'
 import Layout from '../components/layout'
 import Session from '../components/session'
+import Cookies from '../components/cookies'
 
 /**
  * This modules uses 'unfetch', which works like fetch, except - unlike
@@ -49,6 +50,10 @@ export default class extends Page {
       isSignedIn: (session.user) ? true : false
     })
 
+    // If the user bounces off to link/unlink their account we want them to
+    // land back here after signing in with the other service / unlinking.
+    Cookies.save('redirect_url', '/account')
+    
     this.getProfile()
   }
   

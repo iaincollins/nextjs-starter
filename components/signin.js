@@ -12,6 +12,7 @@ export default class extends React.Component {
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleEmailChange = this.handleEmailChange.bind(this)
+    
   }
   
   handleEmailChange(event) {

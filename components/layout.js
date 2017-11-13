@@ -7,6 +7,7 @@ import { Container, Row, Col, Nav, NavItem, Button, Form, NavLink, Collapse,
          ModalFooter } from 'reactstrap'
 import Signin from './signin'
 import Session from './session'
+import Cookies from './cookies'
 import Package from '../package'
 import Styles from '../css/index.scss'
 
@@ -37,6 +38,10 @@ export default class extends React.Component {
 
   toggleModal(e) {
     if (e) e.preventDefault()
+
+    if (this.state.modal !== true)
+      Cookies.save('redirect_url', window.location.pathname)
+
     this.setState({
       modal: !this.state.modal
     })
@@ -101,13 +106,13 @@ export class MainBody extends React.Component {
                   <Link prefetch href="/"><NavLink href="/">Home</NavLink></Link>
                 </NavItem>
                 <NavItem>
-                  <Link prefetch href="/demos/layout-and-styling"><NavLink href="/demos/styling-and-layout">Layout and Styling</NavLink></Link>
+                  <Link prefetch href="/demos/layout-and-styling"><NavLink href="/demos/layout-and-styling">Layout and Styling</NavLink></Link>
                 </NavItem>
                 <NavItem>
                   <Link prefetch href="/demos/async"><NavLink href="/demos/async">Asynchronous Loading</NavLink></Link>
                 </NavItem>
                 <NavItem>
-                  <Link prefetch href="/demos/routing/?id=example" as="/custom-route/example"><NavLink href="/demos/route/example">Custom Routing</NavLink></Link>
+                  <Link prefetch href="/demos/routing/?id=example" as="/custom-route/example"><NavLink href="/custom-route/example">Custom Routing</NavLink></Link>
                 </NavItem>
                 <NavItem>
                   <Link prefetch href="/demos/authentication"><NavLink href="/demos/authentication">Authentication</NavLink></Link>
@@ -151,8 +156,9 @@ export class UserMenu extends React.Component {
       return (
         <Nav className="ml-auto" navbar>
           <NavItem>
-          {/*<Link prefetch href="/auth/signin"><a className="btn btn-primary">Sign up / Sign in</a></Link>*/}
-          <a href="/auth/signin" className="btn btn-primary" onClick={this.props.toggleModal}>Sign up / Sign in</a>
+          {/* @TODO Add support for passing current URL path as redirect URL so that users without JavaScript are also
+          redirected to the page they were on before they signed in. */}
+          <a href="/auth/signin?redirect=/" className="btn btn-primary" onClick={this.props.toggleModal}>Sign up / Sign in</a>
           </NavItem>
         </Nav>
       )

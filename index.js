@@ -9,6 +9,7 @@ const directTransport = require('nodemailer-direct-transport')
 const MongoClient = require('mongodb').MongoClient
 const MongoStore = require('connect-mongo')(session)
 const NeDB = require('nedb') // Use MongoDB work-a-like if no user db configured
+const cookieParser = require('cookie-parser')
 
 // Load environment variables from .env file if present
 require('dotenv').load()
@@ -54,6 +55,10 @@ const app = next({
   dir: '.',
   dev: (process.env.NODE_ENV === 'development')
 })
+
+// We use cookie-parser to parse cookies and populate req.cookies in express
+// (this makes cookies easier to work with in pages when rendering server side)
+express.use(cookieParser())
 
 let userdb, sessionStore
 

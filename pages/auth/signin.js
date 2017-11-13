@@ -5,10 +5,11 @@ import Page from '../../components/page'
 import Layout from '../../components/layout'
 import Session from '../../components/session'
 import Signin from '../../components/signin'
+import Cookies from '../../components/cookies'
 
 export default class extends Page {
 
-  static async getInitialProps({req, res}) {
+  static async getInitialProps({req, res, query}) {
     // On the sign in page we always force get the latest session data from the
     // server by passing 'force: true' to getSession to force cache busting.
     const session = await Session.getSession({force: true, req: req})
@@ -24,7 +25,15 @@ export default class extends Page {
         Router.push('/auth/callback')
       }
     }
-
+    
+    if (query.redirect) {
+      if (res) {
+        res.cookie('redirect_url', query.redirect)
+      } else {
+        Cookies.save('redirect_url', query.redirect)
+      }
+    }
+    
     return {
       session: session
     }
