@@ -114,15 +114,15 @@ app.prepare()
 
   // A simple example of custom routing
   //
-  // Requests to '/route/{anything}' will be handled by 'pages/routing.js'
-  // and the {anything} part will be pased to the page in parameters.
-  express.get('/route/:id', (req, res) => {
-    return app.render(req, res, '/routing', req.params)
+  // Send requests for '/custom-route/{anything}' to 'pages/demos/routing.js'
+  express.get('/custom-route/:id', (req, res) => {
+    return app.render(req, res, '/demos/routing')
   })
   //
-  // Requests to just '/route' will be redirected to '/route/example'
-  express.get('/route', (req, res) => {
-    return res.redirect('/route/example')
+  // Requests to just '/custom-route' will redirect to '/custom-route/example' 
+  // (which will trigger the route handling above)
+  express.get('/custom-route', (req, res) => {
+    return res.redirect('/custom-route/example')
   })
 
   // Expose a route to return user profile if logged in with a session

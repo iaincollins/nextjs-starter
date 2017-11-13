@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import React from 'react'
-import Page from '../components/page'
-import Layout from '../components/layout'
+import Page from '../../components/page'
+import Layout from '../../components/layout'
 
 export default class extends Page {
   render() {
@@ -15,7 +15,7 @@ export default class extends Page {
         <h3>Page Component</h3>
         <p>
           Pages in this project extend from the Page component in
-          "<strong>components/page.js</strong>", rather than directly
+          <strong>./components/page.js</strong>, rather than directly
           extending from <strong>React.Component</strong> as most React pages do.
         </p>
         <p>
@@ -28,7 +28,7 @@ export default class extends Page {
         <p>
           Pages in this project inherit common HTML components, such as the 
           top navigation bar, by using the Layout component from 
-          "<strong>components/layout.js</strong>", which wraps content with
+          <strong>./components/layout.js</strong>, which wraps content with
           common header and footer HTML.
         </p>
         <p>
@@ -60,7 +60,7 @@ export default class extends Page {
         <p>
           A more complex project might call for multiple different layouts or
           to allow options to be passed to the layout component (e.g. 
-          "<strong>{'<Layout navmenu={false} …>'}</strong>" to hide the
+          <strong>{'<Layout navmenu={false} …>'}</strong> to hide the
           navigation menu).
         </p>
         <h2>Styling with CSS/SCSS</h2>
@@ -71,11 +71,11 @@ export default class extends Page {
           }
         `}</style>
         <p>
-          The file <a href="https://github.com/iaincollins/nextjs-starter/blob/master/css/index.scss">"<strong>index.scss</strong>"</a> imports Bootstrap and is added to
-          the page in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/components/header.js">"<strong>components/header.js</strong>"</a>.
+          The file <a href="https://github.com/iaincollins/nextjs-starter/blob/master/css/index.scss"><strong>index.scss</strong></a> imports Bootstrap and is added to
+          the page in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/components/header.js"><strong>components/header.js</strong></a>.
         </p>
         <p>
-          Webpack configuration directives in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/next.config.js">"<strong>next.config.js</strong>"</a> handle
+          Webpack configuration directives in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/next.config.js"><strong>next.config.js</strong></a> handle
           loading it as CSS/SASS, meaning you can use variables and other features of SASS.
         </p>
         <p>

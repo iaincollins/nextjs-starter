@@ -1,6 +1,6 @@
 import React from 'react'
-import Page from '../components/page'
-import Layout from '../components/layout'
+import Page from '../../components/page'
+import Layout from '../../components/layout'
 
 export default class extends Page {
   render() {
@@ -28,7 +28,7 @@ export default class extends Page {
           User accounts are created when a user signs in for the first time and
           are stored in a MongoDB (or an in-memory database if no DB is configured).
           User accounts are more tightly integrated into
-          the sign-in system in <strong>routes/auth.js</strong> and <strong>routes/passport-strategies.js</strong> so
+          the sign-in system in <strong>./routes/auth.js</strong> and <strong>./routes/passport-strategies.js</strong> so
           changing the type of datastore used for user account sign in is more
           complicated than changing the session store.
         </p>

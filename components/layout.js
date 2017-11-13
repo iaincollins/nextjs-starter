@@ -101,16 +101,16 @@ export class MainBody extends React.Component {
                   <Link prefetch href="/"><NavLink href="/">Home</NavLink></Link>
                 </NavItem>
                 <NavItem>
-                  <Link prefetch href="/layout-and-styling"><NavLink href="/styling-and-layout">Layout and Styling</NavLink></Link>
+                  <Link prefetch href="/demos/layout-and-styling"><NavLink href="/demos/styling-and-layout">Layout and Styling</NavLink></Link>
                 </NavItem>
                 <NavItem>
-                  <Link prefetch href="/async"><NavLink href="/async">Asynchronous Loading</NavLink></Link>
+                  <Link prefetch href="/demos/async"><NavLink href="/demos/async">Asynchronous Loading</NavLink></Link>
                 </NavItem>
                 <NavItem>
-                  <Link prefetch href="/routing/?id=example" as="/route/example"><NavLink href="/route/example">Custom Routing</NavLink></Link>
+                  <Link prefetch href="/demos/routing/?id=example" as="/custom-route/example"><NavLink href="/demos/route/example">Custom Routing</NavLink></Link>
                 </NavItem>
                 <NavItem>
-                  <Link prefetch href="/authentication"><NavLink href="/authentication">Authentication</NavLink></Link>
+                  <Link prefetch href="/demos/authentication"><NavLink href="/demos/authentication">Authentication</NavLink></Link>
                 </NavItem>
               </Nav>
             </Col>

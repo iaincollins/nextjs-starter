@@ -1,8 +1,8 @@
 /* global window */
 import React from 'react'
-import Page from '../components/page'
-import Layout from '../components/layout'
-import AsyncData from '../components/async-data'
+import Page from '../../components/page'
+import Layout from '../../components/layout'
+import AsyncData from '../../components/async-data'
 
 export default class extends Page {
 
