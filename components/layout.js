@@ -55,9 +55,9 @@ export default class extends React.Component {
           <style dangerouslySetInnerHTML={{__html: Styles}}/>
           <script src="https://cdn.polyfill.io/v2/polyfill.min.js"/>
         </Head>
-        <Navbar toggleable className="navbar navbar-dark bg-dark navbar-expand-md sticky-top " style={{marginBottom: 10}}>
+        <Navbar className="navbar navbar-dark bg-dark navbar-expand-md sticky-top" style={{marginBottom: 10}}>
           <Link prefetch href="/"><NavbarBrand href="/">{Package.name}</NavbarBrand></Link>
-          <NavbarToggler right onClick={this.toggleNavbar}/>
+          <NavbarToggler onClick={this.toggleNavbar}/>
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav navbar>
               <NavItem>
