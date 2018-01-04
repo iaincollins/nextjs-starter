@@ -7,7 +7,7 @@ import Layout from '../../components/layout'
 export default class extends Page {
   render() {
     return (
-      <Layout session={this.props.session}>
+      <Layout {...this.props}>
         <h1>Custom Routing</h1>
         <h2>Example Custom Routes</h2>
         <p>

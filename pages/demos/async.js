@@ -55,7 +55,7 @@ export default class extends Page {
 
   render() {
     return (
-      <Layout session={this.props.session}>
+      <Layout {...this.props}>
         <h1>Asynchronous Loading</h1>
         <p>
           This page is an example of how to fetch and load data asynchronously

@@ -8,7 +8,7 @@ export default class extends Page {
 
   render() {
     return (
-      <Layout session={this.props.session}>
+      <Layout {...this.props}>
         <h1>Next.js Starter Project</h1>
         <p style={{fontSize: '1.8em', fontWeight: 300}}>
           This project is intended to take some of the pain out of getting

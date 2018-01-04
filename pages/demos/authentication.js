@@ -5,7 +5,7 @@ import Layout from '../../components/layout'
 export default class extends Page {
   render() {
     return (
-      <Layout session={this.props.session}>
+      <Layout {...this.props}>
         <h1>Authentication</h1>
         <p>
           The most significant feature of this project is the authentication support.

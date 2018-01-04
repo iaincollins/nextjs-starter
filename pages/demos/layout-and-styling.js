@@ -6,7 +6,7 @@ import Layout from '../../components/layout'
 export default class extends Page {
   render() {
     return (
-      <Layout session={this.props.session}>
+      <Layout {...this.props}>
         <Head>
           <title>Layout and Styling</title>
         </Head>
