@@ -5,7 +5,7 @@ Next.js is a framework that makes it easy to create Universal web apps in React.
 
 This is a Next.js project that shows provides an example of how to use Next.js in a 'real world' project with Express (the popular web server framework for Node.js), reactstrap (Boostrap 4 for React), with REST APIs and incorporates a working authentication system that supports both oAuth and Email using Passport (a popular authentication framework for Node.js).
 
-This project exists to make it easier to get started with creating Universal apps in React. You are invited to use it as a refernce or to copy it and use it as a base for your own projects. Contributions to improve this project are welcome.
+This project exists to make it easier to get started with creating Universal apps in React. You are invited to use it as a reference or to copy it and use it as a base for your own projects. Contributions to improve this project are welcome.
 
 ## Demo
 

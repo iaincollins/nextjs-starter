@@ -27,9 +27,9 @@ export default class extends Page {
   render() {
     return (
       <Layout {...this.props} navmenu={false}>
-        <div style={{margin: '2em 0'}} className="text-center">
-          <h1 style={{margin: '0.5em 0'}}>Check your email</h1>
-          <p className="lead">You have been sent an email with a link you can use to sign in.</p>
+        <div className="text-center pt-5 pb-5">
+          <h1 className="display-4">Check your email</h1>
+          <p className="lead">Check your email for a sign in link.</p>
         </div>
       </Layout>
     )

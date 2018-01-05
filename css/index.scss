@@ -1,4 +1,18 @@
+@charset "UTF-8";
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+$ionicons-font-path: "/fonts/ionicons" !default;
+$ionicons-font-family: "Ionicons" !default;
+$ionicons-version: "3.0.0-alpha.3" !default;
+@import "../node_modules/ionicons/dist/scss/ionicons";
+
+body {
+  font-size: 1.2em;
+}
+
+.lead {
+  font-size: 1.4em;
+}
 
 pre {
   background-color: #333;
@@ -8,16 +22,9 @@ pre {
   border-radius: 5px;
 }
 
-h1 {
-  font-size: 42pt;
-  line-height: 46pt;
-  margin-bottom: .5em;
-  font-weight: 300;
-}
-
-h2 {
-  font-size: 32pt;
-  line-height: 36pt;
-  margin-bottom: .5em;
-  font-weight: 300;
+.navbar,
+.navbar .btn,
+.navbar .dropdown-item,
+.navbar button {
+  font-size: 18px;
 }

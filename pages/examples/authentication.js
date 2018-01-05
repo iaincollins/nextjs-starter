@@ -1,4 +1,5 @@
-import React from 'react'
+import SyntaxHighlighter from 'react-syntax-highlighter/prism'
+import { atomDark as SyntaxHighlighterTheme } from 'react-syntax-highlighter/styles/prism'
 import Page from '../../components/page'
 import Layout from '../../components/layout'
 
@@ -6,16 +7,17 @@ export default class extends Page {
   render() {
     return (
       <Layout {...this.props}>
-        <h1>Authentication</h1>
+        <h1 className="display-2">Authentication</h1>
         <p>
           The most significant feature of this project is the authentication support.
         </p>
         <p>
           This project uses the <a href="http://passportjs.org/">Passport</a> authentication
-          library (the most commonly used authentication library for Node.js) to provide
-          support for signing in with accounts on services likes Facebook, Google, Twitter (etc).
-          You can also sign-in in via email address, though configuring an email
-          server to use for this is strongly recommended.
+          library - the most commonly used authentication library for Node.js - to provide
+          support for signing in with accounts on services like Facebook, Google, Twitter.
+        </p>
+        <p>
+          Users can also sign in via email if you configure it with an email account.
         </p>
         <h2>Session Database</h2>
         <p>
@@ -37,7 +39,7 @@ export default class extends Page {
           Configuration of oAuth providers for signing is handled by creating a <strong>.env</strong> file in the root of the project.
         </p>
         <h3>Example .env</h3>
-        <pre>
+        <SyntaxHighlighter style={SyntaxHighlighterTheme} language="bash">
 {`SERVER_URL=http://localhost:3000
 USER_DB_CONNECTION_STRING=mongodb://localhost:27017/my-database
 SESSION_DB_CONNECTION_STRING=mongodb://localhost:27017/my-database
@@ -55,7 +57,7 @@ EMAIL_PORT=465
 EMAIL_SECURE=true
 EMAIL_USERNAME=example@gmail.com
 EMAIL_PASSWORD=`}
-        </pre>
+        </SyntaxHighlighter>
         <p>
           For tips on configuring authentication see <a href="https://github.com/iaincollins/nextjs-starter/blob/master/AUTHENTICATION.md">AUTHENTICATION.md</a>
         </p>
@@ -74,7 +76,7 @@ EMAIL_PASSWORD=`}
         <p>
           The Page component itself is very simple:
         </p>
-        <pre>
+        <SyntaxHighlighter style={SyntaxHighlighterTheme} language="javascript">
 {`
 import React from 'react'
 import Session from './session'
@@ -87,7 +89,7 @@ export default class extends React.Component {
     }
   }
 }`}
-        </pre>
+        </SyntaxHighlighter>
         <p>
           This project uses this approach because of how <strong>getInitialProps()</strong> works
           in Next.js. The <strong>getInitialProps()</strong> method is called whenever a
