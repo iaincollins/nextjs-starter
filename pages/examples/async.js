@@ -1,5 +1,6 @@
 /* global window */
 import React from 'react'
+import { Row, Col, Nav, NavItem, NavLink } from 'reactstrap'
 import Page from '../../components/page'
 import Layout from '../../components/layout'
 import AsyncData from '../../components/async-data'
@@ -56,30 +57,36 @@ export default class extends Page {
   render() {
     return (
       <Layout {...this.props}>
-        <h1>Asynchronous Loading</h1>
+        <h1 className="display-2">Async Data</h1>
         <p>
           This page is an example of how to fetch and load data asynchronously
-          (e.g. from an API or a database) so that it avoids avoids blocking
-          rendering when possible but still works in browsers that do not
-          support JavaScript.
+          - for example, from an API or a database - so that pages load
+           quickly and with without blocking rendering when possible, but in
+           a way that still works in browsers that do not support JavaScript.
         </p>
         <p>
-          The data is JSON, fetched from <a href="https://jsonplaceholder.typicode.com/">jsonplaceholder.typicode.com</a> using <a href="https://github.com/matthew-andrews/isomorphic-fetch">isomorphic-fetch</a>.
+          The data displayed on this page is JSON fetched from <a href="https://jsonplaceholder.typicode.com/">jsonplaceholder.typicode.com</a> using <a href="https://github.com/matthew-andrews/isomorphic-fetch">isomorphic-fetch</a>.
         </p>
-        <h4>Server Side Rendering</h4>
-        <p>
-          When rendering on the server, this page will not be rendered until it
-          has fetched the remote data. This ensures web crawlers and browsers that
-          do not have JavaScript will still see the full content of the page.
-        </p>
-        <h4>Client Side Rendering</h4>
-        <p>
-          When the page is rendered by browser that supports JavaScript it will
-          load the page without the remote data and have the client fetch and
-          insert the data while the page is loading.
-        </p>
+        <Row>
+          <Col sm="6">
+            <h2>Server Side</h2>
+            <p>
+              When rendering on the server, this page will not be rendered until it
+              has fetched the remote data. This ensures web crawlers and browsers that
+              do not have JavaScript enabled will still see the full content of the page.
+            </p>
+          </Col>
+          <Col sm="6">
+            <h2>Client Side</h2>
+            <p>
+              When the page is rendered by browser that supports JavaScript it will
+              load the page immediately, without data, and have the client fetch and
+              insert the data while the page is loading.
+            </p>
+          </Col>
+        </Row>
         <hr/>
-        <h2>Feed from REST API</h2>
+        <h2 className="display-4">Example Data from REST API</h2>
         <RenderPosts posts={this.state.posts} error={this.state.error}/>
       </Layout>
     )

@@ -1,4 +1,3 @@
-import React from 'react'
 import Router from 'next/router'
 import { Row, Col } from 'reactstrap'
 import Page from '../../components/page'
@@ -57,8 +56,8 @@ export default class extends Page {
   render() {
     return (
       <Layout session={this.state.session} navmenu={false}>
-        <h1 className="text-center">Sign up / Sign in</h1>
-        <Row>
+        <h1 className="text-center display-4">Sign up / Sign in</h1>
+        <Row className="mb-5">
           <Col lg="8" className="mr-auto ml-auto" style={{marginBottom: 20}}>
             <Signin session={this.state.session}/>
           </Col>

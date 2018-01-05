@@ -68,22 +68,62 @@ export default class extends Page {
     return (
       <div>
         <style jsx global>{`
-          body {
-            background: #fff;
-            font-family: sans-serif;
-            padding: 2em;
-            text-align: center;
+          .lds-wrapper {
+              top: 50%;
+              left: 50%;
+              position: absolute;
+              margin-top: -25px;
+              margin-left: -25px;
+              height: 50px;
+              width: 50px;
+          }
+          .lds-css {
+            width: 50px;
+            height: 50px;
+            margin: auto;
+            transform: scale(1);
+          }
+          @keyframes lds-ring {
+            0% {
+              transform: rotate(0)
+            }
+            100% {
+              transform: rotate(360deg)
+            }
+          }
+          .lds-ring > div {
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            border: 5px solid #ccc;
+            border-color: #ccc transparent transparent transparent;
+            animation: lds-ring 1.5s cubic-bezier(0.5,0,0.5,1) infinite;
+          }
+          .lds-ring > div:nth-child(2) {
+            animation-delay: .195s;
+          }
+          .lds-ring > div:nth-child(3) {
+            animation-delay: .39s;
+          }
+          .lds-ring > div:nth-child(4) {
+            animation-delay: .585s;
           }
           a:link,
           a:visited,
           a:hover,
           a:active {
-           color: #000;
            text-decoration: none;
           }
         `}</style>
         <meta httpEquiv="refresh" content={'1;url='+this.props.redirectTo} />
-        <p><a href={this.props.redirectTo}>Redirecting…</a></p>
+        <a className="lds-wrapper">
+          <div href={this.props.redirectTo} className="lds-css">
+            <div className="lds-ring" style={{width: '100%', height: '100%'}}><div></div><div></div><div></div><div></div></div>
+          </div>
+        </a>
       </div>
     )
   }

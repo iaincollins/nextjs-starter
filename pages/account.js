@@ -34,6 +34,7 @@ export default class extends Page {
       linkedWithTwitter: false,
       alertText: null,
       alertStyle: null,
+      gotProfile: false
     }
     if (props.session.user) {
       this.state.name = props.session.user.name
@@ -70,7 +71,8 @@ export default class extends Page {
         emailVerified: user.emailVerified,
         linkedWithFacebook: user.linkedWithFacebook,
         linkedWithGoogle: user.linkedWithGoogle,
-        linkedWithTwitter: user.linkedWithTwitter
+        linkedWithTwitter: user.linkedWithTwitter,
+        gotProfile: true
       })
     })
   }
@@ -128,7 +130,7 @@ export default class extends Page {
           session: await Session.getSession({force: true}),
           alertText: 'Failed to save changes to your profile',
           alertStyle: 'alert-danger',
-        })        
+        })
       }
     })
   }
@@ -139,17 +141,17 @@ export default class extends Page {
       
       return (
         <Layout session={this.state.session} navmenu={false}>
-          <Row>
-            <Col xs="12" className="text-center">
-              <h1 className="mb-0">Your Account</h1>
-              <p className="lead text-muted">
+          <Row className="mb-1">
+            <Col xs="12">
+              <h1 className="display-4">Your Account</h1>
+              <p className="lead text-muted" style={{fontSize: '2em'}}>
                 Edit your profile and link your account
               </p>
             </Col>
           </Row>
-          <Row>
+          {alert}
+          <Row className="mt-4">
             <Col xs="12" md="8" lg="9">
-              {alert}
               <Form method="post" action="/account/user" onSubmit={this.onSubmit}>
                 <Input name="_csrf" type="hidden" value={this.state.session.csrfToken} onChange={()=>{}}/>
                 <FormGroup row>
@@ -167,17 +169,20 @@ export default class extends Page {
                 <FormGroup row>
                   <Col sm={12} md={10}>
                     <p className="text-right">
-                      <Button color="primary" type="submit">Save changes</Button>
+                      <Button color="primary" type="submit">Save Changes</Button>
                     </p>
                   </Col>
                 </FormGroup>
               </Form>
             </Col>
             <Col xs="12" md="4" lg="3">
-              <h3>Link Accounts</h3>
-              <LinkAccount provider="Facebook" session={this.props.session} linked={this.state.linkedWithFacebook}/>
-              <LinkAccount provider="Google" session={this.props.session} linked={this.state.linkedWithGoogle}/>
-              <LinkAccount provider="Twitter" session={this.props.session} linked={this.state.linkedWithTwitter}/>
+              <LinkedAccounts
+                session={this.props.session}
+                linkedWithFacebook={this.state.linkedWithFacebook}
+                linkedWithGoogle={this.state.linkedWithGoogle}
+                linkedWithTwitter={this.state.linkedWithTwitter}
+                gotProfile={this.state.gotProfile}
+                />
             </Col>
           </Row>
         </Layout>
@@ -199,6 +204,27 @@ export default class extends Page {
   }
 }
 
+export class LinkedAccounts extends React.Component {
+  render() {
+    if (typeof window === 'undefined' || this.props.gotProfile !== true) {
+      /** 
+       * Don't display if rendering server side or if we haven't fetch the 
+       * profile yet. Note: This requires JavaScript in the browser to be
+       * enabled, but most oAuth providers only work with JavaScript enabled!
+       */
+      return (<div/>)
+    } else {
+      return (
+        <div>
+          <LinkAccount provider="Facebook" session={this.props.session} linked={this.props.linkedWithFacebook}/>
+          <LinkAccount provider="Google" session={this.props.session} linked={this.props.linkedWithGoogle}/>
+          <LinkAccount provider="Twitter" session={this.props.session} linked={this.props.linkedWithTwitter}/>
+        </div>
+      )
+    }
+  }
+}
+
 export class LinkAccount extends React.Component {
   render() {
     if (this.props.linked === true) {
@@ -206,14 +232,18 @@ export class LinkAccount extends React.Component {
         <Form action={`/auth/oauth/${this.props.provider.toLowerCase()}/unlink`} method="post">
           <Input name="_csrf" type="hidden" value={this.props.session.csrfToken}/>
           <p>
-            <Button block color="danger" type="submit">Unlink from {this.props.provider}</Button>
+            <Button block color="danger" outline type="submit">
+              Unlink from {this.props.provider}
+            </Button>
           </p>
         </Form>
       )
     } else if (this.props.linked === false) {
       return (
         <p>
-          <a className="btn btn-block btn-secondary" href={`/auth/oauth/${this.props.provider.toLowerCase()}`}>Link with {this.props.provider}</a>
+          <a className="btn btn-block btn-secondary" href={`/auth/oauth/${this.props.provider.toLowerCase()}`}>
+            <span className="icon ion-md-link mr-1"></span> Link with {this.props.provider}
+          </a>
         </p>
       )
     } else {

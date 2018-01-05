@@ -40,12 +40,12 @@ export default class extends React.Component {
     } else {
       return (
         <div>
-          <p className="lead text-center" style={{marginTop: 10, marginBottom: 30}}>If you don't already have an account one will be created for you.</p>
+          <p className="text-center" style={{marginTop: 10, marginBottom: 30}}>If you don't have an account, one will be created when you sign in.</p>
           <Row>
             <Col md={6}>
-              <p><a className="btn btn-secondary btn-block btn-facebook" href="/auth/oauth/facebook">Sign in with Facebook</a></p>
-              <p><a className="btn btn-secondary btn-block btn-google" href="/auth/oauth/google">Sign in with Google</a></p>
-              <p><a className="btn btn-secondary btn-block btn-twitter" href="/auth/oauth/twitter">Sign in with Twitter</a></p>
+              <p><a className="btn btn-outline-dark btn-block btn-facebook" href="/auth/oauth/facebook">Sign in with Facebook</a></p>
+              <p><a className="btn btn-outline-dark btn-block btn-google" href="/auth/oauth/google">Sign in with Google</a></p>
+              <p><a className="btn btn-outline-dark btn-block btn-twitter" href="/auth/oauth/twitter">Sign in with Twitter</a></p>
             </Col>
             <Col md={6}>
               <Form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
@@ -55,7 +55,7 @@ export default class extends React.Component {
                   <Input name="email" type="text" placeholder="j.smith@example.com" id="email" className="form-control" value={this.state.email} onChange={this.handleEmailChange}/>
                 </p>
                 <p className="text-right">
-                  <Button id="submitButton" type="submit">Sign in with email</Button>
+                  <Button id="submitButton" outline color="dark" type="submit">Sign in with email</Button>
                 </p>
               </Form>
             </Col>

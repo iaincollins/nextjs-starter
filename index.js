@@ -116,12 +116,14 @@ app.prepare()
     fromEmail: process.env.EMAIL_ADDRESS || null,
     serverUrl: process.env.SERVER_URL || null
   })
-
+  
+  express.use('/fonts/ionicons', require('express').static('./node_modules/ionicons/dist/fonts'))
+  
   // A simple example of custom routing
   //
-  // Send requests for '/custom-route/{anything}' to 'pages/demos/routing.js'
+  // Send requests for '/custom-route/{anything}' to 'pages/examples/routing.js'
   express.get('/custom-route/:id', (req, res) => {
-    return app.render(req, res, '/demos/routing')
+    return app.render(req, res, '/examples/routing')
   })
   //
   // Requests to just '/custom-route' will redirect to '/custom-route/example' 
