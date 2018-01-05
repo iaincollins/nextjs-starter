@@ -8,7 +8,10 @@ export default class extends Page {
   render() {
     return (
       <Layout {...this.props} navmenu={false} container={false}>
-        <Jumbotron className="splash text-light rounded-0">
+        <Jumbotron className="splash text-light rounded-0" style={{
+          background: '#EA519C url(/static/images/jumbotron-background.png)',
+          backgroundSize: 'cover'
+          }}>
           <Container className="mt-5 mb-5">
             <h1 className="display-2 splash-text" style={{fontWeight: 500}}>▲ Next.js Starter Project</h1>
             <p className="lead splash-text" style={{fontSize: '2em'}}>
@@ -81,12 +84,6 @@ now`}
             For tips on configuring authentication see <a href="https://github.com/iaincollins/nextjs-starter/blob/master/AUTHENTICATION.md">AUTHENTICATION.md</a>
           </p>
         </Container>
-        <style jsx global>{`
-        .splash {
-          background: #EA519C url(static/images/jumbotron-background.png);
-          background-size: cover;
-        }
-        `}</style>
       </Layout>
     )
   }
