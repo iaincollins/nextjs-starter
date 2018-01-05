@@ -3,20 +3,17 @@
 
 Next.js is a framework that makes it easy to create Universal web apps in React. With Next.js, React pages are automatically rendered on both client and server side, without the hassle of setting up dependancies like webpack or babel and with automatic routing.
 
-This is a Next.js project that shows provides an example of how to use Next.js in a 'real world' project with Express (the popular web server framework for Node.js), reactstrap (Boostrap 4 for React), with REST APIs and incorporates a working authentication system that supports both oAuth and Email using Passport (a popular authentication framework for Node.js).
+This is a starter project that provides an example of how to use Next.js with Express (the popular web server framework for Node.js), with SCSS, Bootstrap, reactstrap (Boostrap 4 for React), the Ionicons icon set with REST APIs and incorporates an authentication system that supports both oAuth and Email using Passport (a popular authentication framework for Node.js).
 
-This project exists to make it easier to get started with creating Universal apps in React. You are invited to use it as a reference or to copy it and use it as a base for your own projects. Contributions to improve this project are welcome.
+This project exists to make it easier to get started with creating universal apps in React. You are invited to use it as a reference or to copy it and use it as a base for your own projects. Contributions to improve this project are welcome.
 
-## Demo
-
-You can try it out at https://nextjs-starter.now.sh
-
-The demo is hosted on Next.js creators [Zeit's](https://zeit.co) cloud platform.
+You can see it running at https://nextjs-starter.now.sh
 
 ## Running locally in development mode
 
-To get started in development mode, just clone the repository and run:
+To get started, just clone the repository and run `npm install && npm run dev`:
 
+    git clone https://github.com/iaincollins/nextjs-starter.git
     npm install
     npm run dev
 
@@ -24,14 +21,13 @@ Note: If you are running on Windows run install --noptional flag (i.e. `npm inst
 
 ## Building and deploying in production
 
-If you wanted to run this site in production run:
+If you wanted to run this site in production, you should install modules then build the site with `npm run build` and run it with `npm start`:
 
     npm install
     npm run build
     npm start
 
-You should run the the build step again any time you make changes to pages or
-components.
+You should run `npm run build` again any time you make changes to the site.
 
 Note: If you are already running a webserver on port 80 (e.g. Macs usually have the Apache webserver running on port 80) you can still start the example in production mode by passing a different port as an Environment Variable when starting (e.g. `PORT=3000 npm start`).
 

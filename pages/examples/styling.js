@@ -8,18 +8,38 @@ export default class extends Page {
     return (
       <Layout {...this.props} title="Layout and Styling">
         <h1 className="display-2">Styling</h1>
-        <h2 className="display-4">SCSS</h2>
+        <h2 className="display-4">SCSS and Webpack</h2>
+        <p>
+          In development mode, changs to CSS are live reloaded, meaning any changes to CSS are applied immediately without a page reload being required.
+        </p>
         <p>
           The file <a href="https://github.com/iaincollins/nextjs-starter/blob/master/css/index.scss">index.scss</a> imports <a href="https://getbootstrap.com/">Bootstrap</a> and <a href="https://ionicframework.com/docs/ionicons/">Ionicons</a> and defines additional global CSS.
         </p>
         <p>
-          Webpack configuration directives in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/next.config.js">next.config.js</a> handle
-          loading it as CSS/SASS, meaning you can use variables and other features of SASS. The compiled CSS is added to the page
-          in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/components/layout.js">components/layout.js</a>.
+          The compiled CSS is added to the page in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/components/layout.js">components/layout.js</a>.
         </p>
         <p>
-          In development mode, changs to CSS are live reloaded, meaning any changes to CSS are applied immediately without a page reload being required.
+          Loading SCSS is made possible with webpack configuration directives in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/next.config.js">next.config.js</a>.
         </p>
+        <SyntaxHighlighter style={SyntaxHighlighterTheme} language={"javascript"}>
+{`config.module.rules.push(
+{
+  test: /\.(css|scss)/,
+  loader: 'emit-file-loader',
+  options: {
+    name: 'dist/[path][name].[ext]'
+  }
+},
+{
+  test: /\.css$/,
+  loader: 'babel-loader!raw-loader'
+},
+{
+  test: /\.scss$/,
+  loader: 'babel-loader!raw-loader!sass-loader'
+}
+)`}
+        </SyntaxHighlighter>
         <h2 className="display-4">Inline Styling</h2>
         <p>
           Inline styles are styles applied directly to an element. They can reference JavaScript variables.
@@ -32,7 +52,7 @@ export default class extends Page {
         <p style={{border: '2px solid blue', padding: 5, fontSize: '1em'}}>
           Example of an inline style.
         </p>
-        <h2 className="display-4">Scoped CSS with JSX</h2>
+        <h2 className="display-4">Scoped CSS</h2>
         <p>
           Styles defined with JSX in a component only impact elements in the component, meaning any CSS/SCSS rules will not impact how components on the same page appear.
         </p>
@@ -56,7 +76,7 @@ export default class extends Page {
         <p className="component-scoped-css">
           Example of scoped CSS
         </p>
-        <h2 className="display-4">Global CSS with JSX</h2>
+        <h2 className="display-4">Global CSS</h2>
         <p>
           Use the 'global' option to have CSS defined with JSX apply outside of the scope of the component where it is declared.
           This will impact all elements on the current page.
@@ -67,6 +87,13 @@ export default class extends Page {
     border: 2px solid blue;
   }
 \`}</style>`}
+        </SyntaxHighlighter>
+        <h2 className="display-4">Fonts</h2>
+        <p>
+          The <a href="https://ionicframework.com/docs/ionicons/">Ionicon</a> icon font assets are served directly from NPM using a route defined in Express.
+        </p>
+        <SyntaxHighlighter style={SyntaxHighlighterTheme} language={"javascript"}>
+{`express.use('/fonts/ionicons', require('express').static('./node_modules/ionicons/dist/fonts'))`}
         </SyntaxHighlighter>
      </Layout>
     )

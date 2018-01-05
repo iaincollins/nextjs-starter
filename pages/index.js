@@ -5,7 +5,6 @@ import Page from '../components/page'
 import Layout from '../components/layout'
 
 export default class extends Page {
-
   render() {
     return (
       <Layout {...this.props} navmenu={false} container={false}>
@@ -24,9 +23,9 @@ export default class extends Page {
           <p className="text-muted">
             * This project is not associated with Next.js or Zeit.
           </p>
-          <h2 className="text-center display-4 mt-5 mb-5">Included</h2>
+          <h2 className="text-center display-4 mt-5 mb-2">Included</h2>
           <Row className="pb-5">
-            <Col xs="12" sm="4" className="pt-3">
+            <Col xs="12" sm="4" className="pt-5">
               <h3 className="text-center mb-4">Sessions / Security</h3>
               <ListGroup>
                 <ListGroupItem><a className="text-dark" href="https://expressjs.com">Express</a></ListGroupItem>
@@ -35,7 +34,7 @@ export default class extends Page {
                 <ListGroupItem><a className="text-dark" href="https://www.owasp.org/index.php/HttpOnly">HTTP Only Cookies</a></ListGroupItem>
               </ListGroup>
             </Col>
-            <Col xs="12" sm="4" className="pt-3">
+            <Col xs="12" sm="4" className="pt-5">
               <h3 className="text-center mb-4">Authentication</h3>
               <ListGroup>
                 <ListGroupItem><a className="text-dark" href="http://www.passportjs.org">Passport</a></ListGroupItem>
@@ -44,7 +43,7 @@ export default class extends Page {
                 <ListGroupItem>Facebook, Google, Twitter…</ListGroupItem>
               </ListGroup>
             </Col>
-            <Col xs="12" sm="4" className="pt-3">
+            <Col xs="12" sm="4" className="pt-5">
               <h4 className="text-center mb-4">CSS / SCSS</h4>
               <ListGroup>
                 <ListGroupItem><a className="text-dark" href="https://getbootstrap.com">Bootstrap 4.0</a></ListGroupItem>
@@ -54,11 +53,14 @@ export default class extends Page {
               </ListGroup>
             </Col>
           </Row>
-          <h2 className="text-center display-4 mt-5 mb-5">Getting Started</h2>
+          <h2 className="text-center display-4 mt-2 mb-5">Getting Started</h2>
           <p>
             <a href="https://github.com/zeit/next.js">Next.js</a> from <a href="https://zeit.co">Zeit</a> makes creating
-            React apps easy. This project shows you how to go further and
-            extend a Next.js app with behaviour found in complex web apps.
+            websites with React easy. 
+          </p>
+          <p>
+            This project shows you how to extend a Next.js
+            site with more complex behaviour.
           </p>
           <pre>
 {`git clone https://github.com/iaincollins/nextjs-starter.git
@@ -88,5 +90,4 @@ now`}
       </Layout>
     )
   }
-
 }
