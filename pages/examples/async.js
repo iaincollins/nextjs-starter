@@ -60,15 +60,15 @@ export default class extends Page {
         <h1 className="display-2">Async Data</h1>
         <p>
           This page is an example of how to fetch and load data asynchronously
-          - for example, from an API or a database - so that pages load
-           quickly and with without blocking rendering when possible, but in
-           a way that still works in browsers that do not support JavaScript.
+          so that pages load quickly and with without blocking rendering when
+          possible, but in a way that still works in browsers that do not
+          support JavaScript.
         </p>
         <p>
-          The data displayed on this page is JSON fetched from <a href="https://jsonplaceholder.typicode.com/">jsonplaceholder.typicode.com</a> using <a href="https://github.com/matthew-andrews/isomorphic-fetch">isomorphic-fetch</a>.
+          This page calls <a href="https://jsonplaceholder.typicode.com/">jsonplaceholder.typicode.com</a> using <a href="https://github.com/matthew-andrews/isomorphic-fetch">isomorphic-fetch</a>.
         </p>
         <Row>
-          <Col sm="6">
+          <Col xs="12" md="6">
             <h2>Server Side</h2>
             <p>
               When rendering on the server, this page will not be rendered until it
@@ -76,7 +76,7 @@ export default class extends Page {
               do not have JavaScript enabled will still see the full content of the page.
             </p>
           </Col>
-          <Col sm="6">
+          <Col xs="12" md="6">
             <h2>Client Side</h2>
             <p>
               When the page is rendered by browser that supports JavaScript it will
@@ -86,7 +86,7 @@ export default class extends Page {
           </Col>
         </Row>
         <hr/>
-        <h2 className="display-4">Example Data from REST API</h2>
+        <h2 className="display-4">Data from API</h2>
         <RenderPosts posts={this.state.posts} error={this.state.error}/>
       </Layout>
     )

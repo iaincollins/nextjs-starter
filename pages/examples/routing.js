@@ -13,7 +13,7 @@ export default class extends Page {
         <p>
           With Next.js routing is taken care of for you. For example, a request
           for <strong>/about</strong> is automatically handled by the page
-          at <strong>./pages/about.js</strong>.
+          at <a href="https://github.com/iaincollins/nextjs-starter/blob/master/pages/about.js">pages/about.js</a>.
         </p>
         <p>
           This project uses Next.js together with Express to extend or override
@@ -24,9 +24,9 @@ export default class extends Page {
           <li><Link href="/examples/routing/?id=example-two" as="/custom-route/example-two"><a>Example Route Two</a></Link></li>
         </ul>
         <p>
-          We have a rule in <strong>./index.js</strong> that
+          We have a rule in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/index.js">index.js</a> that
           tells Express that any requests for <strong>/custom-route/{'{'}anything{'}'}</strong> should
-          be handled by the template <strong>/examples/routing</strong>, which is this page (<strong>./pages/examples/routing.js</strong>).
+          be handled by the template <a href="https://github.com/iaincollins/nextjs-starter/blob/master/pages/examples/routing.js">pages/examples/routing.js</a>, which is this page.
         </p>
         <SyntaxHighlighter style={SyntaxHighlighterTheme} language="javascript">
 {`express.get('/custom-route/:id', (req, res) => {
@@ -43,7 +43,7 @@ export default class extends Page {
   return nextRequestHandler(req, res)
 })`}</SyntaxHighlighter>
         <p>
-          Take a look at the source of <strong>./pages/examples/routing.js</strong> and <strong>./index.js</strong> to see how
+          Take a look at the source of <a href="https://github.com/iaincollins/nextjs-starter/blob/master/pages/examples/routing.js">this page</a> and <a href="https://github.com/iaincollins/nextjs-starter/blob/master/index.js">index.js</a> to see how
           to use &lt;Link&gt; with custom routes.
         </p>
         <h2>Alternative ways of handling routes</h2>
@@ -51,12 +51,9 @@ export default class extends Page {
           If you just want to use custom routes without the other features offered by a framework like Express, there are a
           number of simpler routing options such as <a href="https://www.npmjs.com/package/next-routes">next-routes</a> designed specifically for use with Next.js.
         </p>
-        <p>
-          If you need to use a framework like Express for some features, you can still next-routes at the same time, for simpler configuration of routes.
-        </p>
         <h2>Custom error pages</h2>
         <p>
-          If you want to see how custom 404, 500 and other HTTP errors are handled take a look at <strong>./pages/_error.js</strong>.
+          If you want to see how custom 404, 500 and other HTTP errors are handled take a look at <a href="https://github.com/iaincollins/nextjs-starter/blob/master/pages/_error.js">pages/_error.js</a>.
         </p>
       </Layout>
     )
