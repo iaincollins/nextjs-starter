@@ -71,6 +71,14 @@ export default class {
       return new Promise(resolve => {
         resolve(session)
       })
+    } else {
+      // If running on server, but session has expired return empty object
+      // (no valid session)
+      if (typeof window === 'undefined') {
+        return new Promise(resolve => {
+          resolve({})
+        })
+      }
     }
 
     // If we don't have session data, or it's expired, or force is set
