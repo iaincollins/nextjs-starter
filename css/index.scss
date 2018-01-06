@@ -30,8 +30,7 @@ pre {
 }
 
 /**
- * This is a fix for Reactstrap 5.0.0-alpha.4 not displaying 
- * menus correctly.
+ * This is a fix for Reactstrap 5.0.0-alpha.4 not displaying menus correctly.
  **/
 .navbar .dropdown {
   display: block;
@@ -42,6 +41,25 @@ pre {
     position: relative !important;
     display: block !important;
     transform: none !important;
-    border: 0px;
+    padding: 0 0 10px 0;
+    border: none;
+  }
+}
+
+/**
+ * CSS for dropdown menus that don't require JavaScript
+ **/
+.nojs-dropdown-content {
+  width: 100%;
+}
+.nojs-dropdown-toggle {
+  display: none;
+}
+@media (max-width: 767px) {
+  .nojs-dropdown-content {
+     display: none;
+  }
+  .nojs-dropdown-toggle:checked + .nojs-dropdown-content {
+    display: block;
   }
 }
