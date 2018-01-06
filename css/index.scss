@@ -28,3 +28,20 @@ pre {
 .navbar button {
   font-size: 18px;
 }
+
+/**
+ * This is a fix for Reactstrap 5.0.0-alpha.4 not displaying 
+ * menus correctly.
+ **/
+.navbar .dropdown {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .navbar .dropdown-menu {
+    position: relative !important;
+    display: block !important;
+    transform: none !important;
+    border: 0px;
+  }
+}
