@@ -58,6 +58,7 @@
   "scripts": {
     "test": "xo",
     "dev": "NODE_ENV=development PORT=3000 node index.js",
+    "build": "next build",
     "start": "node index.js",
     "postinstall": "next build"
   },
