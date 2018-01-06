@@ -57,14 +57,14 @@ export default class extends React.Component {
             <span className="icon ion-md-home mr-1"></span> {Package.name}
           </NavbarBrand>
         </Link>
-        <label for="navbar-menu-toggle" className="d-block d-md-none">
+        <label htmlFor="navbar-menu-toggle" className="d-block d-md-none">
           <span className="icon ion-md-menu p-2" style={{fontSize: '1.5em'}}></span>
         </label>
         <input type="checkbox" id="navbar-menu-toggle" className="nojs-dropdown-toggle" aria-label="Menu"/>
         <div className="nojs-dropdown-content">
           <Collapse isOpen={true} navbar>
             <Nav navbar>
-              <UncontrolledDropdown nav inNavbar>
+              <UncontrolledDropdown nav>
                 <DropdownToggle nav caret>
                   Examples
                 </DropdownToggle>
