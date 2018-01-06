@@ -191,10 +191,9 @@ export default class extends Page {
       return (
         <Layout session={this.props.session} navmenu={false}>
           <Row>
-            <Col xs="12" className="text-center">
-              <h1>Your Account</h1>
-              <p className="lead" style={{marginBottom: '2em'}}>
-                <Link href="/auth/signin"><a>You must be signed in to view your account profile.</a></Link>
+            <Col xs="12" className="text-center pt-5 pb-5">
+              <p className="lead">
+                <Link href="/auth/signin"><a>Sign in to view your account.</a></Link>
               </p>
             </Col>
           </Row>
