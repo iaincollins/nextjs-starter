@@ -58,39 +58,39 @@ export default class extends React.Component {
             <span className="icon ion-md-home mr-1"></span> {Package.name}
           </NavbarBrand>
         </Link>
-          <label for="navbar-menu-toggle" className="d-block d-md-none">
-            <span className="icon ion-md-menu p-2" style={{fontSize: '1.5em'}}></span>
-          </label>
-          <input type="checkbox" id="navbar-menu-toggle" className="nojs-dropdown-toggle" aria-label="Menu"/>
-          <div className="nojs-dropdown-content">
-            <Collapse isOpen={true} navbar>
-              <Nav navbar>
-                <UncontrolledDropdown nav inNavbar>
-                  <DropdownToggle nav caret>
-                    Examples
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    <Link prefetch href="/examples/layout">
-                      <a href="/examples/layout" className="dropdown-item">Layout</a>
-                    </Link>
-                    <Link prefetch href="/examples/styling">
-                      <a href="/examples" className="dropdown-item">Styling</a>
-                    </Link>
-                    <Link prefetch href="/examples/async">
-                      <a href="/examples/async" className="dropdown-item">Async Data</a>
-                    </Link>
-                    <Link prefetch href="/examples/routing">
-                      <a href="/examples/routing" className="dropdown-item">Routing</a>
-                    </Link>
-                    <Link prefetch href="/examples/authentication">
-                      <a href="/examples/authentication" className="dropdown-item">Authentication</a>
-                    </Link>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-              </Nav>
-              <UserMenu session={this.props.session} toggleModal={this.toggleModal}/>
-            </Collapse>
-          </div>
+        <label for="navbar-menu-toggle" className="d-block d-md-none">
+          <span className="icon ion-md-menu p-2" style={{fontSize: '1.5em'}}></span>
+        </label>
+        <input type="checkbox" id="navbar-menu-toggle" className="nojs-dropdown-toggle" aria-label="Menu"/>
+        <div className="nojs-dropdown-content">
+          <Collapse isOpen={true} navbar>
+            <Nav navbar>
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret>
+                  Examples
+                </DropdownToggle>
+                <DropdownMenu>
+                  <Link prefetch href="/examples/layout">
+                    <a href="/examples/layout" className="dropdown-item">Layout</a>
+                  </Link>
+                  <Link prefetch href="/examples/styling">
+                    <a href="/examples" className="dropdown-item">Styling</a>
+                  </Link>
+                  <Link prefetch href="/examples/async">
+                    <a href="/examples/async" className="dropdown-item">Async Data</a>
+                  </Link>
+                  <Link prefetch href="/examples/routing">
+                    <a href="/examples/routing" className="dropdown-item">Routing</a>
+                  </Link>
+                  <Link prefetch href="/examples/authentication">
+                    <a href="/examples/authentication" className="dropdown-item">Authentication</a>
+                  </Link>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </Nav>
+            <UserMenu session={this.props.session} toggleModal={this.toggleModal}/>
+          </Collapse>
+        </div>
         </Navbar>
         <MainBody navmenu={this.props.navmenu} fluid={this.props.fluid} container={this.props.container}>
           {this.props.children}
