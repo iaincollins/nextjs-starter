@@ -5,7 +5,8 @@ export default class extends React.Component {
   // Expose session to all pages
   static async getInitialProps({req}) {
     return {
-      session: await Session.getSession({req})
+      session: await Session.getSession({req}),
+      lang: 'en'
     }
   }
 }
