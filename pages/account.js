@@ -212,14 +212,14 @@ export class LinkedAccounts extends React.Component {
        * profile yet. Note: This requires JavaScript in the browser to be
        * enabled, but most oAuth providers only work with JavaScript enabled!
        */
-      return (<div/>)
+      return (<React.Fragment/>)
     } else {
       return (
-        <div>
+        <React.Fragment>
           <LinkAccount provider="Facebook" session={this.props.session} linked={this.props.linkedWithFacebook}/>
           <LinkAccount provider="Google" session={this.props.session} linked={this.props.linkedWithGoogle}/>
           <LinkAccount provider="Twitter" session={this.props.session} linked={this.props.linkedWithTwitter}/>
-        </div>
+        </React.Fragment>
       )
     }
   }
