@@ -66,7 +66,7 @@ export default class extends Page {
     // Use a meta refresh to redirect clients without JavaScript as a fallback
     // - also provides a regular link in case the meta refresh doesn't work.
     return (
-      <div>
+      <React.Fragment>
         <style jsx global>{`
           .lds-wrapper {
               top: 50%;
@@ -124,7 +124,7 @@ export default class extends Page {
             <div className="lds-ring" style={{width: '100%', height: '100%'}}><div></div><div></div><div></div><div></div></div>
           </div>
         </a>
-      </div>
+      </React.Fragment>
     )
   }
 

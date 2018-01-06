@@ -44,7 +44,7 @@ export default class extends React.Component {
   
   render() {
     return (
-      <div>
+      <React.Fragment>
         <Head>
           <meta charSet="UTF-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -108,7 +108,7 @@ export default class extends React.Component {
           </p>
         </Container>
         <SigninModal modal={this.state.modal} toggleModal={this.toggleModal} session={this.props.session}/>
-      </div>
+      </React.Fragment>
     )
   }
 }
@@ -117,9 +117,9 @@ export class MainBody extends React.Component {
   render() {
     if (this.props.container === false) {
       return (
-        <div>
+        <React.Fragment>
           {this.props.children}
-        </div>
+        </React.Fragment>
       )
     } else if (this.props.navmenu === false) {
       return (

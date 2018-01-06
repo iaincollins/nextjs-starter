@@ -104,7 +104,7 @@ export class RenderPosts extends React.Component {
       return <p><i>Loading content…</i></p>
     } else {
       // Display posts
-      return <div>
+      return <React.Fragment>
         {
           this.props.posts.map((post, i) => (
             <div key={i}>
@@ -113,7 +113,7 @@ export class RenderPosts extends React.Component {
             </div>
           ))
         }
-      </div>
+      </React.Fragment>
     }
   }
 }

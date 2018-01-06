@@ -39,7 +39,7 @@ export default class extends React.Component {
       return(<div/>)
     } else {
       return (
-        <div>
+        <React.Fragment>
           <p className="text-center" style={{marginTop: 10, marginBottom: 30}}>If you don't have an account, one will be created when you sign in.</p>
           <Row>
             <Col md={6}>
@@ -60,7 +60,7 @@ export default class extends React.Component {
               </Form>
             </Col>
           </Row>
-        </div>
+        </React.Fragment>
       )
     }
   }
