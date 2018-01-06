@@ -1,6 +1,5 @@
 import React from 'react'
 import Head from 'next/head'
-import Router from 'next/router'
 import Link from 'next/link'
 import { Container, Row, Col, Nav, NavItem, Button, Form, NavLink, Collapse,
          Navbar, NavbarToggler, NavbarBrand, Modal, ModalHeader, ModalBody,
@@ -162,40 +161,12 @@ export class MainBody extends React.Component {
 }
 
 export class UserMenu extends React.Component {
-
-  constructor(props) {
-    super(props)
-    this.handleSignoutSubmit = this.handleSignoutSubmit.bind(this)
-  }
-  
-  async handleSignoutSubmit(event) {
-    event.preventDefault()
-    await Session.signout()
-    Router.push('/')
-  }
-  
   render() {
     if (this.props.session && this.props.session.user) {
       const session = this.props.session
       return (
         <Nav className="ml-auto"  navbar>
-          <UncontrolledDropdown nav inNavbar>
-            <DropdownToggle nav caret>
-              <span className="icon ion-md-contact mr-1"></span> {session.user.name || session.user.email}
-            </DropdownToggle>
-            <DropdownMenu>
-              <Link prefetch href="/account">
-                <a href="/account" className="dropdown-item"><span className="icon ion-md-person mr-1"></span> Account</a>
-              </Link>
-              <DropdownItem divider />
-              <div className="dropdown-item p-0">
-                <Form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSignoutSubmit}>
-                  <input name="_csrf" type="hidden" value={session.csrfToken}/>
-                  <Button type="submit" color="light" block className="text-left pl-4 rounded-0"><span className="icon ion-md-log-out mr-1"></span> Sign out</Button>
-                </Form>
-              </div>
-            </DropdownMenu>
-          </UncontrolledDropdown>
+           <Link href="/account"><NavLink href="/account" className="nav-item"><span className="icon ion-md-contact mr-1"></span> {session.user.name || session.user.email}</NavLink></Link>
         </Nav>
       )
     } else {
