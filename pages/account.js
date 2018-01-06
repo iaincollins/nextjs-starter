@@ -212,7 +212,7 @@ export class LinkedAccounts extends React.Component {
        * profile yet. Note: This requires JavaScript in the browser to be
        * enabled, but most oAuth providers only work with JavaScript enabled!
        */
-      return (<React.Fragment/>)
+      return null
     } else {
       return (
         <React.Fragment>
