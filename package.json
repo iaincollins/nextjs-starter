@@ -1,6 +1,6 @@
 {
   "name": "nextjs-starter",
-  "version": "4.2.4",
+  "version": "4.2.5",
   "description": "A starter Next.js project with email and oAuth authentication",
   "author": "Iain Collins <me@iaincollins.com>",
   "license": "ISC",
@@ -58,8 +58,8 @@
   "scripts": {
     "test": "xo",
     "dev": "NODE_ENV=development PORT=3000 node index.js",
-    "build": "next build",
-    "start": "node index.js"
+    "start": "node index.js",
+    "postinstall": "next build"
   },
   "engines": {
     "node": "7.x.x"
