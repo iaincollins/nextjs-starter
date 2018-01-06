@@ -25,9 +25,9 @@ export default class extends Page {
 
   render() {
     return (
-        <Head>
-          <style dangerouslySetInnerHTML={{__html: Styles}}/>
-        </Head>
+      <Head>
+        <style dangerouslySetInnerHTML={{__html: Styles}}/>
+      </Head>
       )
   }
 `}

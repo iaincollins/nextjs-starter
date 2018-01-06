@@ -58,15 +58,15 @@ export default class extends React.Component {
           by changing the Session Store configuration in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/index.js">index.js</a>.
         </p>
         <p>
-          Loading the session data on the client is handled by
-          the <a href="https://github.com/iaincollins/nextjs-starter/blob/master/components/session.js">Session</a> component.
+          Loading session data on the client is handled by
+          the <a href="https://github.com/iaincollins/nextjs-starter/blob/master/components/session.js">Session</a> class.
         </p>
         <p>
-          The Session component inherits session data from Express Sessions when
-          running server side, and fetches them using a REST API authenticated
-          with HTTP Only cookies (that cannot be read from JavaScript) and
-          caches the  response with localStorage (if available) when running
-          client side.
+          The Session class inherits session data from Express when invoked on
+          for server side rendering. When invoked for client side rendering, it
+          fetches them using a REST API authenticated with HTTP Only cookies
+          (for security, the session token cannot be read from JavaScript)
+          and caches the response with localStorage (if available).
         </p>
         <p>
           Supporting both HTTP Only cookies (to protect against session
