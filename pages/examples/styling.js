@@ -10,18 +10,33 @@ export default class extends Page {
         <h1 className="display-2">Styling</h1>
         <h2 className="display-4">SCSS and Webpack</h2>
         <p>
-          In development mode, changs to CSS are live reloaded, meaning any changes to CSS are applied immediately without a page reload being required.
+          In development mode, changes to HTML and CSS are live reloaded, meaning any changes them are applied immediately without a page reload being required.
         </p>
         <p>
           The file <a href="https://github.com/iaincollins/nextjs-starter/blob/master/css/index.scss">index.scss</a> imports <a href="https://getbootstrap.com/">Bootstrap</a> and <a href="https://ionicframework.com/docs/ionicons/">Ionicons</a> and defines additional global CSS.
         </p>
         <p>
-          The compiled CSS is added to the page in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/components/layout.js">components/layout.js</a>.
+          This is loaded and added to the page in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/components/layout.js">components/layout.js</a>.
         </p>
+        <SyntaxHighlighter style={SyntaxHighlighterTheme} language={"javascript"} className="mb-5">
+{`import Styles from '../css/index.scss'
+
+...
+
+  render() {
+    return (
+        <Head>
+          <style dangerouslySetInnerHTML={{__html: Styles}}/>
+        </Head>
+      )
+  }
+`}
+        </SyntaxHighlighter>
         <p>
-          Loading SCSS is made possible with webpack configuration directives in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/next.config.js">next.config.js</a>.
+          Being able to import SCSS/CSS like this is made possible with webpack
+          configuration in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/next.config.js">next.config.js</a>.
         </p>
-        <SyntaxHighlighter style={SyntaxHighlighterTheme} language={"javascript"}>
+        <SyntaxHighlighter style={SyntaxHighlighterTheme} language={"javascript"} className="mb-5">
 {`config.module.rules.push(
 {
   test: /\.(css|scss)/,
@@ -93,7 +108,7 @@ export default class extends Page {
           The <a href="https://ionicframework.com/docs/ionicons/">Ionicon</a> icon font assets are served directly from NPM using a route defined in Express.
         </p>
         <SyntaxHighlighter style={SyntaxHighlighterTheme} language={"javascript"}>
-{`express.use('/fonts/ionicons', require('express').static('./node_modules/ionicons/dist/fonts'))`}
+{`expressApp.use('/fonts/ionicons', express.static('./node_modules/ionicons/dist/fonts'))`}
         </SyntaxHighlighter>
      </Layout>
     )
