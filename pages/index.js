@@ -14,12 +14,28 @@ export default class extends Page {
           }}>
           <Container className="mt-5 mb-5">
             <h1 className="display-2 splash-text" style={{fontWeight: 500}}>▲ Next.js Starter Project</h1>
-            <p className="lead splash-text" style={{fontSize: '2em'}}>
+            <p className="lead splash-text">
               An example React project built with Next.js
             </p>
-            <p className="lead splash-text" style={{fontSize: '2em'}}>
+            <p className="lead splash-text">
               A reference and template for creating new projects.
             </p>
+            <style jsx>{`
+              .display-2  {
+                font-size: 4em;
+              }
+              .lead {
+                font-size: 2em;
+              }
+              @media (max-width: 767px) {
+                .display-2  {
+                  font-size: 3em;
+                }
+                .lead {
+                  font-size: 1.5em;
+                }
+              }
+            `}</style>
           </Container>
         </Jumbotron>
         <Container className="pb-5">
