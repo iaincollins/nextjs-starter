@@ -6,14 +6,14 @@
 const passport = require('passport')
 
 exports.configure = ({
-    express = null,    // Express Server
+    expressApp = null,    // Express Server
     userdb = null,     // MongoDB connection to the user database
     path = '/auth',    // URL base path for authentication routes
     serverUrl = null,
     userDbKey = '_id'  // Always '_id' on Mongo but other databases may be 'id'
   } = {}) => {
-  if (express === null) {
-    throw new Error('express option must be an instance of an express server')
+  if (expressApp === null) {
+    throw new Error('expressApp option must be an instance of an express server')
   }
 
   if (userdb === null) {
@@ -269,22 +269,22 @@ exports.configure = ({
   })
 
   // Initialise Passport
-  express.use(passport.initialize())
-  express.use(passport.session())
+  expressApp.use(passport.initialize())
+  expressApp.use(passport.session())
 
   // Add routes for each provider
   providers.forEach(({providerName, providerOptions}) => {
     // Route to start sign in
-    express.get(path + '/oauth/' + providerName, passport.authenticate(providerName, providerOptions))
+    expressApp.get(path + '/oauth/' + providerName, passport.authenticate(providerName, providerOptions))
     // Route to call back to after signing in
-    express.get(path + '/oauth/' + providerName + '/callback',
+    expressApp.get(path + '/oauth/' + providerName + '/callback',
       passport.authenticate(providerName, {
         successRedirect: path + '/callback?action=signin&service=' + providerName,
         failureRedirect: path + '/error/oauth?service=' + providerName
       })
     )
     // Route to post to unlink accounts
-    express.post(path + '/oauth/' + providerName + '/unlink', (req, res, next) => {
+    expressApp.post(path + '/oauth/' + providerName + '/unlink', (req, res, next) => {
       if (!req.user) {
         return next(new Error('Not signed in'))
       }
@@ -312,7 +312,7 @@ exports.configure = ({
   })
 
   // A catch all for providers that are not configured
-  express.get(path + '/oauth/:provider', (req, res) => {
+  expressApp.get(path + '/oauth/:provider', (req, res) => {
     res.redirect(path + '/error/not-configured')
   })
 

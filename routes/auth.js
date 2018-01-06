@@ -19,9 +19,9 @@ const passportStrategies = require('./passport-strategies')
 
 exports.configure = ({
     // Next.js App
-    app = null,
+    nextApp = null,
     // Express Server
-    express = null,
+    expressApp = null,
     // MongoDB connection to the user database
     userdb = null,
     // URL base path for authentication routes
@@ -53,12 +53,12 @@ exports.configure = ({
     userDbKey = '_id'
   } = {}) => {
 
-  if (app === null) {
-    throw new Error('app option must be a next server instance')
+  if (nextApp === null) {
+    throw new Error('nextApp option must be a next server instance')
   }
 
-  if (express === null) {
-    throw new Error('express option must be an express server instance')
+  if (expressApp === null) {
+    throw new Error('expressApp option must be an express server instance')
   }
 
   if (userdb === null) {
@@ -73,11 +73,11 @@ exports.configure = ({
   }
 
   // Load body parser to handle POST requests
-  express.use(bodyParser.json())
-  express.use(bodyParser.urlencoded({extended: true}))
+  expressApp.use(bodyParser.json())
+  expressApp.use(bodyParser.urlencoded({extended: true}))
 
   // Configure sessions
-  express.use(session({
+  expressApp.use(session({
     secret: secret,
     store: store,
     resave: false,
@@ -90,25 +90,24 @@ exports.configure = ({
   }))
 
   // Add CSRF to all POST requests
-  express.use(csrf)
+  expressApp.use(csrf)
 
   // With sessions connfigured (& before routes) we need to configure Passport
   // and trigger passport.initialize() before we add any routes
   passportStrategies.configure({
-    app: app,
-    express: express,
+    expressApp: expressApp,
     userdb: userdb,
     serverUrl: serverUrl,
     userDbKey: userDbKey
   })
 
   // Add route to get CSRF token via AJAX
-  express.get(path + '/csrf', (req, res) => {
+  expressApp.get(path + '/csrf', (req, res) => {
     return res.json({csrfToken: res.locals._csrf})
   })
 
   // Return session info
-  express.get(path + '/session', (req, res) => {
+  expressApp.get(path + '/session', (req, res) => {
     let session = {
       maxAge: maxAge,
       clientMaxAge: clientMaxAge,
@@ -133,11 +132,11 @@ exports.configure = ({
   })
 
   // On post request, redirect to page with instrutions to check email for link
-  express.post(path + '/email/signin', (req, res) => {
+  expressApp.post(path + '/email/signin', (req, res) => {
     const email = req.body.email || null
 
     if (!email || email.trim() === '') {
-      return app.render(req, res, path + '/signin', req.params)
+      return nextApp.render(req, res, path + '/signin', req.params)
     }
 
     const token = uuid()
@@ -179,10 +178,10 @@ exports.configure = ({
       }
     })
 
-    return app.render(req, res, path + '/check-email', req.params)
+    return nextApp.render(req, res, path + '/check-email', req.params)
   })
 
-  express.get(path + '/email/signin/:token', (req, res) => {
+  expressApp.get(path + '/email/signin/:token', (req, res) => {
     if (!req.params.token) {
       return res.redirect(path + '/signin')
     }
@@ -216,7 +215,7 @@ exports.configure = ({
     })
   })
 
-  express.post(path + '/signout', (req, res) => {
+  expressApp.post(path + '/signout', (req, res) => {
     // Log user out by disassociating their account from the session
     req.logout()
     // Ran into issues where passport was not deleting session as it should be

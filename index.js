@@ -1,6 +1,6 @@
 'use strict'
 
-const express = require('express')()
+const express = require('express')
 const session = require('express-session')
 const next = require('next')
 const auth = require('./routes/auth')
@@ -51,18 +51,20 @@ if (process.env.EMAIL_SERVER && process.env.EMAIL_USERNAME && process.env.EMAIL_
   })
 }
 
-const app = next({
+const expressApp = express()
+
+const nextApp = next({
   dir: '.',
   dev: (process.env.NODE_ENV === 'development')
 })
 
 // We use cookie-parser to parse cookies and populate req.cookies in express
 // (this makes cookies easier to work with in pages when rendering server side)
-express.use(cookieParser())
+expressApp.use(cookieParser())
 
 let userdb, sessionStore
 
-app.prepare()
+nextApp.prepare()
 .then(() => {
   // Connect to the user database
   return new Promise((resolve, reject) => {
@@ -106,8 +108,8 @@ app.prepare()
 .then(() => {
   // Once DB connections are available, can configure authentication routes
   auth.configure({
-    app: app,
-    express: express,
+    nextApp: nextApp,
+    expressApp: expressApp,
     userdb: userdb,
     session: session,
     store: sessionStore,
@@ -117,23 +119,24 @@ app.prepare()
     serverUrl: process.env.SERVER_URL || null
   })
   
-  express.use('/fonts/ionicons', require('express').static('./node_modules/ionicons/dist/fonts'))
+  // Serve fonts from ionicon npm module
+  expressApp.use('/fonts/ionicons', express.static('./node_modules/ionicons/dist/fonts'))
   
   // A simple example of custom routing
   //
   // Send requests for '/custom-route/{anything}' to 'pages/examples/routing.js'
-  express.get('/custom-route/:id', (req, res) => {
-    return app.render(req, res, '/examples/routing')
+  expressApp.get('/custom-route/:id', (req, res) => {
+    return nextApp.render(req, res, '/examples/routing')
   })
   //
   // Requests to just '/custom-route' will redirect to '/custom-route/example' 
   // (which will trigger the route handling above)
-  express.get('/custom-route', (req, res) => {
+  expressApp.get('/custom-route', (req, res) => {
     return res.redirect('/custom-route/example')
   })
 
   // Expose a route to return user profile if logged in with a session
-  express.get('/account/user', (req, res) => {
+  expressApp.get('/account/user', (req, res) => {
     if (req.user) {
       userdb.findOne({'_id': req.user.id}, (err, user) => {
         if (err || !user)
@@ -153,7 +156,7 @@ app.prepare()
   })
   
   // Expose a route to allow users to update their profiles (name, email)
-  express.post('/account/user', (req, res) => {
+  expressApp.post('/account/user', (req, res) => {
     if (req.user) {
       userdb.findOne({'_id': req.user.id}, (err, user) => {
         if (err || !user)
@@ -181,12 +184,12 @@ app.prepare()
   })
   
   // Default catch-all handler to allow Next.js to handle all other routes
-  express.all('*', (req, res) => {
-    let nextRequestHandler = app.getRequestHandler()
+  expressApp.all('*', (req, res) => {
+    let nextRequestHandler = nextApp.getRequestHandler()
     return nextRequestHandler(req, res)
   })
 
-  express.listen(process.env.PORT, err => {
+  expressApp.listen(process.env.PORT, err => {
     if (err) {
       throw err
     }
