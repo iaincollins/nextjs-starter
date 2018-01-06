@@ -144,7 +144,7 @@ export default class extends Page {
           <Row className="mb-1">
             <Col xs="12">
               <h1 className="display-4">Your Account</h1>
-              <p className="lead text-muted" style={{fontSize: '2em'}}>
+              <p className="lead text-muted">
                 Edit your profile and link your account
               </p>
             </Col>
@@ -241,7 +241,7 @@ export class LinkAccount extends React.Component {
     } else if (this.props.linked === false) {
       return (
         <p>
-          <a className="btn btn-block btn-secondary" href={`/auth/oauth/${this.props.provider.toLowerCase()}`}>
+          <a className="btn btn-block btn-outline-dark" href={`/auth/oauth/${this.props.provider.toLowerCase()}`}>
             <span className="icon ion-md-link mr-1"></span> Link with {this.props.provider}
           </a>
         </p>
