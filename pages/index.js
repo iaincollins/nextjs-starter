@@ -13,7 +13,11 @@ export default class extends Page {
           backgroundSize: 'cover'
           }}>
           <Container className="mt-5 mb-5">
-            <h1 className="display-2 splash-text" style={{fontWeight: 500}}>▲ Next.js Starter Project</h1>
+            <h1 className="display-2 splash-text" style={{fontWeight: 500}}>
+              <span className="mr-3">▲</span>
+              <br className="v-block d-md-none"/>
+              Next.js Starter Project
+            </h1>
             <p className="lead splash-text">
               An example React project built with Next.js
             </p>
@@ -28,8 +32,9 @@ export default class extends Page {
                 font-size: 2em;
               }
               @media (max-width: 767px) {
-                .display-2  {
+                .display-2 {
                   font-size: 3em;
+                  margin-bottom: 1em;
                 }
                 .lead {
                   font-size: 1.5em;
@@ -58,8 +63,8 @@ export default class extends Page {
               <ListGroup>
                 <ListGroupItem><a className="text-dark" href="http://www.passportjs.org">Passport</a></ListGroupItem>
                 <ListGroupItem><a className="text-dark" href="http://www.mongodb.om">MongoDB</a></ListGroupItem>
-                <ListGroupItem>Email Sign in</ListGroupItem>
-                <ListGroupItem>Facebook, Google, Twitter…</ListGroupItem>
+                <ListGroupItem><Link href="/examples/authentication"><a className="text-dark">Email Sign in</a></Link></ListGroupItem>
+                <ListGroupItem><Link href="/examples/authentication"><a className="text-dark">Facebook, Google, Twitter</a></Link></ListGroupItem>
               </ListGroup>
             </Col>
             <Col xs="12" sm="4" className="pt-5">

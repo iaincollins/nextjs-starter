@@ -39,10 +39,6 @@ export default class extends React.Component {
 }`}
         </SyntaxHighlighter>
         <p>
-          The actual work of loading the session data is handled by
-          the <a href="https://github.com/iaincollins/nextjs-starter/blob/master/components/session.js">Session</a> component.
-        </p>
-        <p>
           When a page is loaded on the client (via JavaScript in 
           a browser) we can fetch the session state using an AJAX call, but when
           running on the server we get the session state directly from the
@@ -60,6 +56,25 @@ export default class extends React.Component {
           (or an in-memory database if no DB is configured). 
           It's easy to swap out the session storage system for another database
           by changing the Session Store configuration in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/index.js">index.js</a>.
+        </p>
+        <p>
+          Loading the session data on the client is handled by
+          the <a href="https://github.com/iaincollins/nextjs-starter/blob/master/components/session.js">Session</a> component.
+        </p>
+        <p>
+          The Session component inherits session data from Express Sessions when
+          running server side, and fetches them using a REST API authenticated
+          with HTTP Only cookies (that cannot be read from JavaScript) and
+          caches the  response with localStorage (if available) when running
+          client side.
+        </p>
+        <p>
+          Supporting both HTTP Only cookies (to protect against session
+          hijacking via XSS) and universal rendering adds extra complexity
+          to authentication handling. It is much easier to use something
+          like <a href="https://github.com/reactivestack/cookies">univeral-cookie</a> to
+          read cookies if they are accessible from JavaScript (i.e. not HTTP Only)
+          if you are not as concerned about Cross Site Scripting (XSS) exploits.
         </p>
         <h2>Users</h2>
         <p>

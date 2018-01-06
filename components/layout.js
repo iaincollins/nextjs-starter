@@ -53,43 +53,16 @@ export default class extends React.Component {
           <script src="https://cdn.polyfill.io/v2/polyfill.min.js"/>
         </Head>
         <Navbar light className="navbar navbar-expand-md pt-3 pb-3">
-          <Link prefetch href="/">
-            <NavbarBrand href="/">
-              <span className="icon ion-md-home mr-1"></span> {Package.name}
-            </NavbarBrand>
-          </Link>
-          <style jsx global>{`
-            /* This is a pure-CSS solution for navbar menu toggles */
-            .menu-toggle-label {
-              font-size: 1.5em;
-              margin: 0 5px 0 0;
-            }
-            #navbar-menu,
-            #navbar-menu-toggle {
-              display: none;
-              clear: both;
-              width: 100%;
-            }
-            #navbar-menu-toggle:checked + #navbar-menu {
-              display: block;
-            }
-            #navbar-menu .dropdown {
-              display: block;
-            }
-            @media (min-width: 768px) {
-              .menu-toggle-label {
-                display: none;
-              }
-              #navbar-menu {
-                display: block;
-              } 
-            }
-          `}</style>
-          <label className="menu-toggle-label" for="navbar-menu-toggle">
-            <span className="con ion-md-menu"></span>
+        <Link prefetch href="/">
+          <NavbarBrand href="/">
+            <span className="icon ion-md-home mr-1"></span> {Package.name}
+          </NavbarBrand>
+        </Link>
+          <label for="navbar-menu-toggle" className="d-block d-md-none">
+            <span className="icon ion-md-menu p-2" style={{fontSize: '1.5em'}}></span>
           </label>
-          <input type="checkbox" id="navbar-menu-toggle"/>
-          <div id="navbar-menu">
+          <input type="checkbox" id="navbar-menu-toggle" className="nojs-dropdown-toggle" aria-label="Menu"/>
+          <div className="nojs-dropdown-content">
             <Collapse isOpen={true} navbar>
               <Nav navbar>
                 <UncontrolledDropdown nav inNavbar>
