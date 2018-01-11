@@ -13,10 +13,12 @@ export default class extends Page {
           backgroundSize: 'cover'
           }}>
           <Container className="mt-5 mb-5">
-            <h1 className="display-2 splash-text" style={{fontWeight: 500}}>
-              <span className="mr-3">▲</span>
-              <br className="v-block d-md-none"/>
-              Next.js Starter Project
+            <h1 className="display-2 splash-text" style={{fontWeight: 300}}>
+              <span style={{fontWeight: 600}}>
+                <span className="mr-3">▲</span>
+                Next.js
+              </span>
+              <br className="v-block d-md-none"/> Starter Project
             </h1>
             <p className="lead splash-text">
               An example React project built with Next.js
