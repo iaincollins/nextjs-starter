@@ -13,15 +13,15 @@ export default class extends Page {
           library, the most commonly used authentication library for Node.js, to provide
           support for signing in with email and with services like Facebook, Google and Twitter.
         </p>
+        <h2>
+          Doing authentication well can be complicated.
+        </h2>
         <p>
           The approach to authentication taken in this project involves some
           complexity as it combines support for email and oAuth based sign in
           with both client and server side rendering and security features
           including HTTP Only cookies (a form of protection against XSS and session
           hijacking) and CSRF tokens.
-        </p>
-        <p>
-          Doing authentication well can be complicated.
         </p>
         <p>
           It is possible to support signing in more easily in React by simplifying
