@@ -151,9 +151,9 @@ export default class extends Page {
         <Layout session={this.state.session} navmenu={false}>
           <Row className="mb-1">
             <Col xs="12">
-              <h1 className="display-4">Your Account</h1>
+              <h1 className="display-2">Your Account</h1>
               <p className="lead text-muted">
-                Manage your profile and link accounts
+                Edit your profile and link accounts
               </p>
             </Col>
           </Row>

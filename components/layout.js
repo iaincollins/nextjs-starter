@@ -133,7 +133,7 @@ export class MainBody extends React.Component {
             <Col md="10" xs="12">
               {this.props.children}
             </Col>
-            <Col md="2" xs="12">
+            <Col md="2" xs="12" style={{paddingTop: '1em'}}>
               <h5 className="text-muted text-uppercase">Examples</h5>
               <Nav vertical>
                 <NavItem>

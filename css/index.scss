@@ -29,6 +29,10 @@ pre {
   font-size: 18px;
 }
 
+.navbar {
+  border-bottom: 1px solid #ddd;
+}
+
 @media (max-width: 768px) {
   .display-2 {
     font-size: 3em;
