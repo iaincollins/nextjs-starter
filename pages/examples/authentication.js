@@ -14,7 +14,7 @@ export default class extends Page {
           support for signing in with email and with services like Facebook, Google and Twitter.
         </p>
         <h2>
-          Doing authentication well can be complicated.
+          Authentication can be complicated
         </h2>
         <p>
           The approach to authentication taken in this project involves some
