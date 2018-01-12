@@ -9,16 +9,18 @@ export default class extends Page {
     return (
       <Layout {...this.props} navmenu={false} container={false}>
         <Jumbotron className="text-light rounded-0" style={{
-          background: '#EA519C url(/static/images/jumbotron-background.png)',
-          backgroundSize: 'cover'
+          background: '#6CA0FA url(/static/images/jumbotron-background.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
           }}>
           <Container className="mt-5 mb-5">
             <h1 className="display-2 mb-5" style={{fontWeight: 300}}>
               <span style={{fontWeight: 600}}>
                 <span className="mr-3">▲</span>
+                <br className="v-block d-sm-none"/>
                 Next.js
               </span>
-              <br className="v-block d-md-none"/> Starter Project
+              <br className="v-block d-lg-none"/> Starter Project
             </h1>
             <p className="lead">
               A reference and template for React projects
@@ -29,7 +31,7 @@ export default class extends Page {
               }
               .lead {
                 font-size: 2em;
-                color: #FFB4D0 !important;
+                opacity: 0.7;
               }
               @media (max-width: 767px) {
                 .display-2 {
