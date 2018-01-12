@@ -11,12 +11,14 @@ export default class extends Page {
       <Layout {...this.props}>
         <h1 className="display-2">Custom Routing</h1>
         <p>
-          With Next.js routing is taken care of for you. For example, a request
-          for <strong>/about</strong> is automatically handled by the page
+          With Next.js routing is taken care of for you by default, but the routing behaviour can be customised.
+        </p>
+        <p>
+          By default a request for <strong>/about</strong> is automatically handled by the page
           at <a href="https://github.com/iaincollins/nextjs-starter/blob/master/pages/about.js">pages/about.js</a>.
         </p>
         <p>
-          This project uses Next.js together with Express to extend or override
+          This project uses Next.js together with Express to extend and override
           the default behaviour to add custom routes. Both of these routes load the same page, but have different URLs.
         </p>
         <ul>

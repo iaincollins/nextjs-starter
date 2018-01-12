@@ -183,6 +183,22 @@ nextApp.prepare()
     }
   })
   
+  // Expose a route to allow users to delete their profile.
+  expressApp.post('/account/delete', (req, res) => {
+    if (req.user) {
+      userdb.remove({'_id': req.user.id}, (err, user) => {
+        if (err || !user)
+          return res.status(500).json({error: 'Unable to delete profile'})
+        // When the account has been deleted, redirect client to /auth/callback
+        // to ensure the client has it's local session state updated to reflect
+        // that the user is no longer logged in.
+        return res.status(204).redirect('/auth/callback')
+      })
+    } else {
+      return res.status(403).json({error: 'Must be signed in to delete profile'})
+    }
+  })
+  
   // Default catch-all handler to allow Next.js to handle all other routes
   expressApp.all('*', (req, res) => {
     let nextRequestHandler = nextApp.getRequestHandler()
