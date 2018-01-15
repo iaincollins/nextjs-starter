@@ -42,12 +42,12 @@ export default class extends React.Component {
         <React.Fragment>
           <p className="text-center" style={{marginTop: 10, marginBottom: 30}}>If you don't have an account, one will be created when you sign in.</p>
           <Row>
-            <Col md={6}>
+            <Col xs={12} md={6}>
               <p><a className="btn btn-outline-dark btn-block btn-facebook" href="/auth/oauth/facebook">Sign in with Facebook</a></p>
               <p><a className="btn btn-outline-dark btn-block btn-google" href="/auth/oauth/google">Sign in with Google</a></p>
               <p><a className="btn btn-outline-dark btn-block btn-twitter" href="/auth/oauth/twitter">Sign in with Twitter</a></p>
             </Col>
-            <Col md={6}>
+            <Col xs={12} md={6}>
               <Form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
                 <Input name="_csrf" type="hidden" value={this.state.session.csrfToken}/>
                 <p>
