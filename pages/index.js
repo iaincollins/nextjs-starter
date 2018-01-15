@@ -9,9 +9,8 @@ export default class extends Page {
     return (
       <Layout {...this.props} navmenu={false} container={false}>
         <Jumbotron className="text-light rounded-0" style={{
-          background: '#6CA0FA url(/static/images/jumbotron-background.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundColor: 'rgba(41,137,216,1)',
+          background: 'linear-gradient(to bottom, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%)'
           }}>
           <Container className="mt-5 mb-5">
             <h1 className="display-2 mb-5" style={{fontWeight: 300}}>
