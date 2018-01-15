@@ -95,8 +95,13 @@ export default class extends React.Component {
           {this.props.children}
         </MainBody>
         <Container fluid={this.props.fluid}>
+<<<<<<< HEAD
           <hr/>
           <p className="text-muted">
+=======
+          <hr className="mt-3"/>
+          <p className="text-muted small">
+>>>>>>> bc202c1c101d7ba436ffb0d1b32f2517d60e2fac
             <Link href="https://github.com/iaincollins/nextjs-starter"><a className="text-muted font-weight-bold">{Package.name} {Package.version}</a></Link>
             <span> built with </span>
             <Link href="https://github.com/zeit/next.js"><a className="text-muted font-weight-bold">Next.js {Package.dependencies.next.replace('^', '')}</a></Link>
@@ -133,7 +138,11 @@ export class MainBody extends React.Component {
             <Col md="10" xs="12">
               {this.props.children}
             </Col>
+<<<<<<< HEAD
             <Col md="2" xs="12">
+=======
+            <Col md="2" xs="12" style={{paddingTop: '1em'}}>
+>>>>>>> bc202c1c101d7ba436ffb0d1b32f2517d60e2fac
               <h5 className="text-muted text-uppercase">Examples</h5>
               <Nav vertical>
                 <NavItem>

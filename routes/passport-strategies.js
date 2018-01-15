@@ -6,7 +6,7 @@
 const passport = require('passport')
 
 exports.configure = ({
-    expressApp = null,    // Express Server
+    expressApp = null, // Express Server
     userdb = null,     // MongoDB connection to the user database
     path = '/auth',    // URL base path for authentication routes
     serverUrl = null,

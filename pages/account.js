@@ -142,7 +142,7 @@ export default class extends Page {
     await Session.signout()
     Router.push('/')
   }
-  
+
   render() {
     if (this.state.isSignedIn === true) {
       const alert = (this.state.alertText === null) ? <div/> : <div className={`alert ${this.state.alertStyle}`} role="alert">{this.state.alertText}</div>
@@ -151,9 +151,9 @@ export default class extends Page {
         <Layout session={this.state.session} navmenu={false}>
           <Row className="mb-1">
             <Col xs="12">
-              <h1 className="display-4">Your Account</h1>
+              <h1 className="display-2">Your Account</h1>
               <p className="lead text-muted">
-                Edit your profile and link your account
+                Edit your profile and link accounts
               </p>
             </Col>
           </Row>
@@ -193,15 +193,28 @@ export default class extends Page {
                 />
             </Col>
           </Row>
-          <Row>
+          <Row className="mb-5">
             <Col>
               <h2>Sign out</h2>
               <p>
-                If you sign out, you can sign in again at any time.
+                If you sign out from this computer, you can sign in again at any time.
               </p>
               <Form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSignoutSubmit}>
                 <input name="_csrf" type="hidden" value={this.state.session.csrfToken}/>
                 <Button type="submit" color="outline-secondary"><span className="icon ion-md-log-out mr-1"></span> Sign Out</Button>
+              </Form>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <h2>Delete your account</h2>
+              <p>
+                If you delete your account it will be erased immediately.
+                You can sign up again at any time.
+              </p>
+              <Form id="signout" method="post" action="/account/delete">
+                <input name="_csrf" type="hidden" value={this.state.session.csrfToken}/>
+                <Button type="submit" color="outline-danger"><span className="icon ion-md-trash mr-1"></span> Delete Account</Button>
               </Form>
             </Col>
           </Row>
@@ -213,7 +226,7 @@ export default class extends Page {
           <Row>
             <Col xs="12" className="text-center pt-5 pb-5">
               <p className="lead">
-                <Link href="/auth/signin"><a>Sign in to view your account.</a></Link>
+                <Link href="/auth/signin"><a>Sign in to manage your profile.</a></Link>
               </p>
             </Col>
           </Row>
@@ -251,7 +264,7 @@ export class LinkAccount extends React.Component {
         <Form action={`/auth/oauth/${this.props.provider.toLowerCase()}/unlink`} method="post">
           <Input name="_csrf" type="hidden" value={this.props.session.csrfToken}/>
           <p>
-            <Button block color="danger" outline type="submit">
+            <Button block color="secondary" outline type="submit">
               Unlink from {this.props.provider}
             </Button>
           </p>

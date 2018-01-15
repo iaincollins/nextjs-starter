@@ -8,21 +8,22 @@ export default class extends Page {
   render() {
     return (
       <Layout {...this.props} navmenu={false} container={false}>
-        <Jumbotron className="splash text-light rounded-0" style={{
-          background: '#EA519C url(/static/images/jumbotron-background.png)',
-          backgroundSize: 'cover'
+        <Jumbotron className="text-light rounded-0" style={{
+          background: '#6CA0FA url(/static/images/jumbotron-background.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
           }}>
           <Container className="mt-5 mb-5">
-            <h1 className="display-2 splash-text" style={{fontWeight: 500}}>
-              <span className="mr-3">▲</span>
-              <br className="v-block d-md-none"/>
-              Next.js Starter Project
+            <h1 className="display-2 mb-5" style={{fontWeight: 300}}>
+              <span style={{fontWeight: 600}}>
+                <span className="mr-3">▲</span>
+                <br className="v-block d-sm-none"/>
+                Next.js
+              </span>
+              <br className="v-block d-lg-none"/> Starter Project
             </h1>
-            <p className="lead splash-text">
-              An example React project built with Next.js
-            </p>
-            <p className="lead splash-text">
-              A reference and template for creating new projects.
+            <p className="lead">
+              A reference and template for React projects
             </p>
             <style jsx>{`
               .display-2  {
@@ -30,6 +31,7 @@ export default class extends Page {
               }
               .lead {
                 font-size: 2em;
+                opacity: 0.7;
               }
               @media (max-width: 767px) {
                 .display-2 {
@@ -43,7 +45,7 @@ export default class extends Page {
             `}</style>
           </Container>
         </Jumbotron>
-        <Container className="pb-5">
+        <Container>
           <p className="text-muted">
             * This project is not associated with Next.js or Zeit.
           </p>
