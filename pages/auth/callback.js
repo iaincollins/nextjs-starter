@@ -68,61 +68,53 @@ export default class extends Page {
     return (
       <React.Fragment>
         <style jsx global>{`
-          .lds-wrapper {
-              top: 50%;
-              left: 50%;
-              position: absolute;
-              margin-top: -25px;
-              margin-left: -25px;
-              height: 50px;
-              width: 50px;
-          }
-          .lds-css {
-            width: 50px;
-            height: 50px;
-            margin: auto;
-            transform: scale(1);
-          }
-          @keyframes lds-ring {
-            0% {
-              transform: rotate(0)
-            }
-            100% {
-              transform: rotate(360deg)
-            }
-          }
-          .lds-ring > div {
-            position: absolute;
-            top: 10%;
-            left: 10%;
-            width: 80%;
-            height: 80%;
-            border-radius: 50%;
-            border: 5px solid #ccc;
-            border-color: #ccc transparent transparent transparent;
-            animation: lds-ring 1.5s cubic-bezier(0.5,0,0.5,1) infinite;
-          }
-          .lds-ring > div:nth-child(2) {
-            animation-delay: .195s;
-          }
-          .lds-ring > div:nth-child(3) {
-            animation-delay: .39s;
-          }
-          .lds-ring > div:nth-child(4) {
-            animation-delay: .585s;
-          }
           a:link,
           a:visited,
           a:hover,
           a:active {
            text-decoration: none;
           }
+          
+          .circle-loader {
+            position: absolute;
+            top: 50%;
+            width: 200%;
+            z-index: 100;
+            text-align: center;
+            transform: translate(-50%, -50%);
+          }
+
+          .circle-loader .circle {
+            margin-left: 50%;
+            fill: transparent;
+            stroke: rgba(0,0,0,0.1);
+            stroke-width: 4px;
+            animation: dash 2s ease infinite, rotate 2s linear infinite;
+          }
+
+          @keyframes dash {
+            0% {
+              stroke-dasharray: 1,95;
+              stroke-dashoffset: 0;
+            }
+            50% {
+              stroke-dasharray: 85,95;
+              stroke-dashoffset: -25;
+            }
+            100% {
+              stroke-dasharray: 85,95;
+              stroke-dashoffset: -93;
+            }
+          }
+
+          @keyframes rotate {
+            0% {transform: rotate(0deg); }
+            100% {transform: rotate(360deg); }
+          }
         `}</style>
         <meta httpEquiv="refresh" content={'1;url='+this.props.redirectTo} />
-        <a className="lds-wrapper">
-          <div href={this.props.redirectTo} className="lds-css">
-            <div className="lds-ring" style={{width: '100%', height: '100%'}}><div></div><div></div><div></div><div></div></div>
-          </div>
+        <a href={this.props.redirectTo}  className="circle-loader">
+          <svg className="circle" width="60" height="60" version="1.1" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="15"/></svg>
         </a>
       </React.Fragment>
     )
