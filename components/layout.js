@@ -1,10 +1,10 @@
 import React from 'react'
+import Router from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
 import { Container, Row, Col, Nav, NavItem, Button, Form, NavLink, Collapse,
          Navbar, NavbarToggler, NavbarBrand, Modal, ModalHeader, ModalBody,
-         ModalFooter, UncontrolledDropdown, DropdownToggle, DropdownMenu, 
-         DropdownItem } from 'reactstrap'
+         ModalFooter } from 'reactstrap'
 import Signin from './signin'
 import Session from './session'
 import Cookies from './cookies'
@@ -24,12 +24,12 @@ export default class extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isOpen: false,
+      navOpen: false,
       modal: false
     }
     this.toggleModal = this.toggleModal.bind(this)
   }
-
+  
   toggleModal(e) {
     if (e) e.preventDefault()
 
@@ -52,28 +52,25 @@ export default class extends React.Component {
           <script src="https://cdn.polyfill.io/v2/polyfill.min.js"/>
         </Head>
         <Navbar light className="navbar navbar-expand-md pt-3 pb-3">
-        <Link prefetch href="/">
-          <NavbarBrand href="/">
-            <span className="icon ion-md-home mr-1"></span> {Package.name}
-          </NavbarBrand>
-        </Link>
-        <label htmlFor="navbar-menu-toggle" className="d-block d-md-none">
-          <span className="icon ion-md-menu p-2" style={{fontSize: '1.5em'}}></span>
-        </label>
-        <input type="checkbox" id="navbar-menu-toggle" className="nojs-dropdown-toggle" aria-label="Menu"/>
-        <div className="nojs-dropdown-content">
-          <Collapse isOpen={true} navbar>
+          <Link prefetch href="/">
+            <NavbarBrand href="/">
+              <span className="icon ion-md-home mr-1"></span> {Package.name}
+            </NavbarBrand>
+          </Link>
+          <input className="nojs-navbar-check" id="nojs-navbar-check" type="checkbox" aria-label="Menu"/>
+          <label tabIndex="1" htmlFor="nojs-navbar-check" className="nojs-navbar-label" />
+          <div className="nojs-navbar">
             <Nav navbar>
-              <UncontrolledDropdown nav>
-                <DropdownToggle nav caret>
-                  Examples
-                </DropdownToggle>
-                <DropdownMenu>
+              <div tabIndex="1" className="dropdown nojs-dropdown">
+                <div className="nav-item">
+                  <span className="dropdown-toggle nav-link">Examples</span>
+                </div>
+                <div className="dropdown-menu">
                   <Link prefetch href="/examples/layout">
                     <a href="/examples/layout" className="dropdown-item">Layout</a>
                   </Link>
                   <Link prefetch href="/examples/styling">
-                    <a href="/examples" className="dropdown-item">Styling</a>
+                    <a href="/examples/styling" className="dropdown-item">Styling</a>
                   </Link>
                   <Link prefetch href="/examples/async">
                     <a href="/examples/async" className="dropdown-item">Async Data</a>
@@ -84,12 +81,11 @@ export default class extends React.Component {
                   <Link prefetch href="/examples/authentication">
                     <a href="/examples/authentication" className="dropdown-item">Authentication</a>
                   </Link>
-                </DropdownMenu>
-              </UncontrolledDropdown>
+                </div>
+              </div>
             </Nav>
             <UserMenu session={this.props.session} toggleModal={this.toggleModal}/>
-          </Collapse>
-        </div>
+          </div>
         </Navbar>
         <MainBody navmenu={this.props.navmenu} fluid={this.props.fluid} container={this.props.container}>
           {this.props.children}
@@ -161,12 +157,46 @@ export class MainBody extends React.Component {
 }
 
 export class UserMenu extends React.Component {
+  constructor(props) {
+    super(props)
+    this.handleSignoutSubmit = this.handleSignoutSubmit.bind(this)
+  }
+
+   async handleSignoutSubmit(event) {
+     event.preventDefault()
+     await Session.signout()
+     Router.push('/')
+   }
+   
   render() {
     if (this.props.session && this.props.session.user) {
       const session = this.props.session
       return (
-        <Nav className="ml-auto"  navbar>
-           <Link href="/account"><NavLink href="/account" className="nav-item"><span className="icon ion-md-contact mr-1"></span> {session.user.name || session.user.email}</NavLink></Link>
+        <Nav className="ml-auto" navbar>
+          {/*<!-- Uses .nojs-dropdown CSS to for a dropdown that works without client side JavaScript ->*/}
+          <div tabIndex="2" className="dropdown nojs-dropdown">
+            <div className="nav-item">
+              <span className="dropdown-toggle d-none d-sm-block">
+                <span className="icon ion-md-contact" style={{fontSize: '1.6em'}}></span>
+              </span>
+              <span className="dropdown-toggle d-block d-sm-none">
+                <span className="icon ion-md-contact mr-2"></span>
+                {session.user.name || session.user.email}
+              </span>
+            </div>
+            <div className="dropdown-menu">
+              <Link prefetch href="/account">
+                <a href="/account" className="dropdown-item">Your Account</a>
+              </Link>
+              <div className="dropdown-divider d-none d-sm-block"/>
+              <div className="dropdown-item p-0">
+                <Form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSignoutSubmit}>
+                  <input name="_csrf" type="hidden" value={this.props.session.csrfToken}/>
+                  <Button type="submit" block className="pl-4 rounded-0 text-left dropdown-item"><span className="icon ion-md-log-out mr-1"></span> Sign out</Button>
+                </Form>
+              </div>
+            </div>
+          </div>
         </Nav>
       )
     } else {

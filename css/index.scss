@@ -6,6 +6,8 @@ $ionicons-font-family: "Ionicons" !default;
 $ionicons-version: "3.0.0-alpha.3" !default;
 @import "../node_modules/ionicons/dist/scss/ionicons";
 
+@import "nojs-menus.scss";
+
 body {
   font-size: 1.2em;
 }
@@ -46,7 +48,8 @@ pre {
 }
 
 /**
- * This is a fix for Reactstrap 5.0.0-alpha.4 not displaying menus correctly.
+ * This is a fix for Reactstrap 5.0.0-alpha.4 not displaying menus in the 
+ * navbar correcrtly on mobile devices.
  **/
 .navbar .dropdown {
   display: block;
@@ -59,23 +62,5 @@ pre {
     transform: none !important;
     padding: 0 0 10px 0;
     border: none;
-  }
-}
-
-/**
- * CSS for dropdown menus that don't require JavaScript
- **/
-.nojs-dropdown-content {
-  width: 100%;
-}
-.nojs-dropdown-toggle {
-  display: none;
-}
-@media (max-width: 767px) {
-  .nojs-dropdown-content {
-     display: none;
-  }
-  .nojs-dropdown-toggle:checked + .nojs-dropdown-content {
-    display: block;
   }
 }

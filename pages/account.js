@@ -43,7 +43,6 @@ export default class extends Page {
     }
     this.handleChange = this.handleChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
-    this.handleSignoutSubmit = this.handleSignoutSubmit.bind(this)
   }
 
   async componentDidMount() {
@@ -136,13 +135,7 @@ export default class extends Page {
       }
     })
   }
-
-  async handleSignoutSubmit(event) {
-    event.preventDefault()
-    await Session.signout()
-    Router.push('/')
-  }
-
+  
   render() {
     if (this.state.isSignedIn === true) {
       const alert = (this.state.alertText === null) ? <div/> : <div className={`alert ${this.state.alertStyle}`} role="alert">{this.state.alertText}</div>
@@ -191,18 +184,6 @@ export default class extends Page {
                 linkedWithTwitter={this.state.linkedWithTwitter}
                 gotProfile={this.state.gotProfile}
                 />
-            </Col>
-          </Row>
-          <Row className="mb-5">
-            <Col>
-              <h2>Sign out</h2>
-              <p>
-                If you sign out from this computer, you can sign in again at any time.
-              </p>
-              <Form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSignoutSubmit}>
-                <input name="_csrf" type="hidden" value={this.state.session.csrfToken}/>
-                <Button type="submit" color="outline-secondary"><span className="icon ion-md-log-out mr-1"></span> Sign Out</Button>
-              </Form>
             </Col>
           </Row>
           <Row>
