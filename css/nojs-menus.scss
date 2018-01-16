@@ -85,8 +85,7 @@
   }
 }
 .nojs-navbar-check:checked ~ .nojs-navbar {
-  max-height: 100vh;
-  overflow: auto;
+  max-height: 1000px;
 }
 @media (max-width: 767px) {
   .nojs-navbar {

@@ -176,10 +176,10 @@ export class UserMenu extends React.Component {
           {/*<!-- Uses .nojs-dropdown CSS to for a dropdown that works without client side JavaScript ->*/}
           <div tabIndex="2" className="dropdown nojs-dropdown">
             <div className="nav-item">
-              <span className="dropdown-toggle nav-link d-none d-sm-block">
+              <span className="dropdown-toggle nav-link d-none d-md-block">
                 <span className="icon ion-md-contact" style={{fontSize: '2em', position: 'absolute', top: -5, left: -25}}></span>
               </span>
-              <span className="dropdown-toggle nav-link d-block d-sm-none">
+              <span className="dropdown-toggle nav-link d-block d-md-none">
                 <span className="icon ion-md-contact mr-2"></span>
                 {session.user.name || session.user.email}
               </span>
@@ -188,7 +188,7 @@ export class UserMenu extends React.Component {
               <Link prefetch href="/account">
                 <a href="/account" className="dropdown-item">Your Account</a>
               </Link>
-              <div className="dropdown-divider d-none d-sm-block"/>
+              <div className="dropdown-divider d-none d-md-block"/>
               <div className="dropdown-item p-0">
                 <Form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSignoutSubmit}>
                   <input name="_csrf" type="hidden" value={this.props.session.csrfToken}/>
