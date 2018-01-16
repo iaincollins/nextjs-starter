@@ -9,11 +9,12 @@ export default class extends Page {
     return (
       <Layout {...this.props} navmenu={false} container={false}>
         <Jumbotron className="text-light rounded-0" style={{
-          backgroundColor: 'rgba(41,137,216,1)',
-          background: 'linear-gradient(to bottom, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%)'
+          backgroundColor: 'rgba(73,155,234,1)',
+          background: 'radial-gradient(ellipse at center, rgba(73,155,234,1) 0%, rgba(32,124,229,1) 100%);',
+          textShadow: '0 2px 3px rgba(0,0,0,0.5), 0 -1px 1px rgba(255,255,255,0.5)'
           }}>
           <Container className="mt-5 mb-5">
-            <h1 className="display-2 mb-5" style={{fontWeight: 300}}>
+            <h1 className="display-2 mb-3" style={{fontWeight: 300}}>
               <span style={{fontWeight: 600}}>
                 <span className="mr-3">▲</span>
                 <br className="v-block d-sm-none"/>
@@ -45,10 +46,10 @@ export default class extends Page {
           </Container>
         </Jumbotron>
         <Container>
-          <p className="text-muted">
+          <p className="text-muted small">
             * This project is not associated with Next.js or Zeit.
           </p>
-          <h2 className="text-center display-4 mt-5 mb-2">Included</h2>
+          <h2 className="text-center display-4 mt-5 mb-2">Features</h2>
           <Row className="pb-5">
             <Col xs="12" sm="4" className="pt-5">
               <h3 className="text-center mb-4">Sessions / Security</h3>
@@ -74,7 +75,7 @@ export default class extends Page {
                 <ListGroupItem><a className="text-dark" href="https://getbootstrap.com">Bootstrap 4.0</a></ListGroupItem>
                 <ListGroupItem><a className="text-dark" href="http://reactstrap.github.io/">Reactstrap</a></ListGroupItem>
                 <ListGroupItem><a className="text-dark" href="https://ionicframework.com/docs/ionicons/">Ionicons</a></ListGroupItem>
-                <ListGroupItem><a className="text-dark" href="http://sass-lang.com/">SASS for CSS</a></ListGroupItem>
+                <ListGroupItem><a className="text-dark" href="http://sass-lang.com/">SASS</a></ListGroupItem>
               </ListGroup>
             </Col>
           </Row>
@@ -84,8 +85,10 @@ export default class extends Page {
             websites with React easy. 
           </p>
           <p>
-            This project shows you how to extend a Next.js
-            site with more complex behaviour.
+            This project integrates several concepts to show how you can use them together in a project.
+          </p>
+          <p>
+            It also serves as useful template for creating new projects.
           </p>
           <pre>
 {`git clone https://github.com/iaincollins/nextjs-starter.git
@@ -93,7 +96,7 @@ npm install
 npm run dev`}
           </pre>
           <p>
-            The simplest way to deploy it to the cloud is with with 'now', which is from Zeit, the creators of Next.js framework.
+            The simplest way to deploy projects to the cloud is with with 'now', which is from Zeit, the creators of Next.js framework.
           </p>
             <pre>
 {`npm install -g now
