@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import SyntaxHighlighter from 'react-syntax-highlighter/prism'
 import { atomDark as SyntaxHighlighterTheme } from 'react-syntax-highlighter/styles/prism'
-import { Card, Button, CardImg, CardTitle, CardText, CardColumns, CardSubtitle, CardBlock } from 'reactstrap'
+import { Button } from 'reactstrap'
 import Page from '../../components/page'
 import Layout from '../../components/layout'
  

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
-import { Container, Row, Col, Jumbotron, ListGroup, ListGroupItem } from 'reactstrap'
+import { Container, Row, Col, Button, Jumbotron, ListGroup, ListGroupItem } from 'reactstrap'
 import Page from '../components/page'
 import Layout from '../components/layout'
 
@@ -11,7 +11,6 @@ export default class extends Page {
         <Jumbotron className="text-light rounded-0" style={{
           backgroundColor: 'rgba(73,155,234,1)',
           background: 'radial-gradient(ellipse at center, rgba(73,155,234,1) 0%, rgba(32,124,229,1) 100%);',
-          textShadow: '0 2px 3px rgba(0,0,0,0.5), 0 -1px 1px rgba(255,255,255,0.5)'
           }}>
           <Container className="mt-5 mb-5">
             <h1 className="display-2 mb-3" style={{fontWeight: 300}}>
@@ -22,12 +21,16 @@ export default class extends Page {
               </span>
               <br className="v-block d-lg-none"/> Starter Project
             </h1>
-            <p className="lead">
+            <p className="lead mb-5">
               A reference and template for React projects
+            </p>
+            <p className="text-right">
+              <a href="https://github.com/iaincollins/nextjs-starter" className="btn btn-outline-light btn-lg"><span className="icon ion-logo-github mr-2"/> Download from GitHub</a>
             </p>
             <style jsx>{`
               .display-2  {
                 font-size: 4em;
+                text-shadow: 0 4px 10px rgba(0,0,0,0.3), 0 -2px 5px rgba(255,255,255,0.3);
               }
               .lead {
                 font-size: 2em;
@@ -85,10 +88,10 @@ export default class extends Page {
             websites with React easy. 
           </p>
           <p>
-            This project integrates several concepts to show how you can use them together in a project.
+            This project integrates several concepts to show how you can use them together in a Next.js project.
           </p>
           <p>
-            It also serves as useful template for creating new projects.
+            It also serves as template for creating new projects.
           </p>
           <pre>
 {`git clone https://github.com/iaincollins/nextjs-starter.git

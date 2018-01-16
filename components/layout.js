@@ -93,7 +93,7 @@ export default class extends React.Component {
         <Container fluid={this.props.fluid}>
           <hr className="mt-3"/>
           <p className="text-muted small">
-            <Link href="https://github.com/iaincollins/nextjs-starter"><a className="text-muted font-weight-bold">{Package.name} {Package.version}</a></Link>
+            <Link href="https://github.com/iaincollins/nextjs-starter"><a className="text-muted font-weight-bold"><span className="icon ion-logo-github"/> {Package.name} {Package.version}</a></Link>
             <span> built with </span>
             <Link href="https://github.com/zeit/next.js"><a className="text-muted font-weight-bold">Next.js {Package.dependencies.next.replace('^', '')}</a></Link>
             <span> &amp; </span>
