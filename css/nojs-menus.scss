@@ -84,7 +84,10 @@
     transition: transform 0.5s ease-in-out;
   }
 }
-
+.nojs-navbar-check:checked ~ .nojs-navbar {
+  max-height: 100vh;
+  overflow: auto;
+}
 @media (max-width: 767px) {
   .nojs-navbar {
     display: block;
@@ -93,12 +96,6 @@
     overflow: hidden;
     transition: max-height 0.5s ease-in-out !important;
   }
-  
-  .nojs-navbar-check:checked ~ .nojs-navbar {
-    max-height: 100vh;
-    overflow: auto;
-  }
-
   .nojs-navbar-label {
     $width: 28px;
   

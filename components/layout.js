@@ -58,7 +58,7 @@ export default class extends React.Component {
             </NavbarBrand>
           </Link>
           <input className="nojs-navbar-check" id="nojs-navbar-check" type="checkbox" aria-label="Menu"/>
-          <label tabIndex="1" htmlFor="nojs-navbar-check" className="nojs-navbar-label" />
+          <label tabIndex="1" htmlFor="nojs-navbar-check" className="nojs-navbar-label mt-2" />
           <div className="nojs-navbar">
             <Nav navbar>
               <div tabIndex="1" className="dropdown nojs-dropdown">
@@ -99,7 +99,7 @@ export default class extends React.Component {
             <span> &amp; </span>
             <Link href="https://github.com/facebook/react"><a className="text-muted font-weight-bold">React {Package.dependencies.react.replace('^', '')}</a></Link>
             .
-            <span className="ml-2">&copy; {Package.author}, {new Date().getYear() + 1900}.</span>
+            <span className="ml-2">&copy; {new Date().getYear() + 1900}.</span>
           </p>
         </Container>
         <SigninModal modal={this.state.modal} toggleModal={this.toggleModal} session={this.props.session}/>
@@ -176,10 +176,10 @@ export class UserMenu extends React.Component {
           {/*<!-- Uses .nojs-dropdown CSS to for a dropdown that works without client side JavaScript ->*/}
           <div tabIndex="2" className="dropdown nojs-dropdown">
             <div className="nav-item">
-              <span className="dropdown-toggle d-none d-sm-block">
-                <span className="icon ion-md-contact" style={{fontSize: '1.6em'}}></span>
+              <span className="dropdown-toggle nav-link d-none d-sm-block">
+                <span className="icon ion-md-contact" style={{fontSize: '2em', position: 'absolute', top: -5, left: -25}}></span>
               </span>
-              <span className="dropdown-toggle d-block d-sm-none">
+              <span className="dropdown-toggle nav-link d-block d-sm-none">
                 <span className="icon ion-md-contact mr-2"></span>
                 {session.user.name || session.user.email}
               </span>
