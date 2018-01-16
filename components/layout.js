@@ -4,7 +4,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { Container, Row, Col, Nav, NavItem, Button, Form, NavLink, Collapse,
          Navbar, NavbarToggler, NavbarBrand, Modal, ModalHeader, ModalBody,
-         ModalFooter } from 'reactstrap'
+         ModalFooter, ListGroup, ListGroupItem } from 'reactstrap'
 import Signin from './signin'
 import Session from './session'
 import Cookies from './cookies'
@@ -66,20 +66,20 @@ export default class extends React.Component {
                   <span className="dropdown-toggle nav-link">Examples</span>
                 </div>
                 <div className="dropdown-menu">
-                  <Link prefetch href="/examples/layout">
-                    <a href="/examples/layout" className="dropdown-item">Layout</a>
-                  </Link>
-                  <Link prefetch href="/examples/styling">
-                    <a href="/examples/styling" className="dropdown-item">Styling</a>
+                  <Link prefetch href="/examples/authentication">
+                    <a href="/examples/authentication" className="dropdown-item">Auth</a>
                   </Link>
                   <Link prefetch href="/examples/async">
                     <a href="/examples/async" className="dropdown-item">Async Data</a>
                   </Link>
+                  <Link prefetch href="/examples/layout">
+                    <a href="/examples/layout" className="dropdown-item">Layout</a>
+                  </Link>
                   <Link prefetch href="/examples/routing">
                     <a href="/examples/routing" className="dropdown-item">Routing</a>
                   </Link>
-                  <Link prefetch href="/examples/authentication">
-                    <a href="/examples/authentication" className="dropdown-item">Authentication</a>
+                  <Link prefetch href="/examples/styling">
+                    <a href="/examples/styling" className="dropdown-item">Styling</a>
                   </Link>
                 </div>
               </div>
@@ -126,28 +126,28 @@ export class MainBody extends React.Component {
       return (
         <Container fluid={this.props.fluid} style={{marginTop: '1em'}}>
           <Row>
-            <Col md="10" xs="12">
+            <Col xs="12" md="9" lg="10">
               {this.props.children}
             </Col>
-            <Col md="2" xs="12" style={{paddingTop: '1em'}}>
+            <Col xs="12" md="3" lg="2" style={{paddingTop: '1em'}}>
               <h5 className="text-muted text-uppercase">Examples</h5>
-              <Nav vertical>
-                <NavItem>
-                  <Link prefetch href="/examples/layout"><NavLink href="/examples/layout" className="pl-0">Layout</NavLink></Link>
-                </NavItem>
-                <NavItem>
-                  <Link prefetch href="/examples/styling"><NavLink href="/examples/styling" className="pl-0">Styling</NavLink></Link>
-                </NavItem>
-                <NavItem>
-                  <Link prefetch href="/examples/async"><NavLink href="/examples/async" className="pl-0">Async Data</NavLink></Link>
-                </NavItem>
-                <NavItem>
-                  <Link prefetch href="/examples/routing/?id=example" as="/custom-route/example"><NavLink href="/custom-route/example" className="pl-0">Routing</NavLink></Link>
-                </NavItem>
-                <NavItem>
-                  <Link prefetch href="/examples/authentication"><NavLink href="/examples/authentication" className="pl-0">Authentication</NavLink></Link>
-                </NavItem>
-              </Nav>
+              <ListGroup>
+                <ListGroupItem>
+                  <Link prefetch href="/examples/authentication"><a href="/examples/authentication" className="d-block">Auth</a></Link>
+                </ListGroupItem>
+                <ListGroupItem>
+                    <Link prefetch href="/examples/async"><a href="/examples/async" className="d-block">Async</a></Link>
+                </ListGroupItem>
+                <ListGroupItem>
+                  <Link prefetch href="/examples/layout"><a href="/examples/layout" className="d-block">Layout</a></Link>
+                </ListGroupItem>
+                <ListGroupItem>
+                  <Link prefetch href="/examples/routing/?id=example" as="/custom-route/example"><a href="/custom-route/example" className="d-block">Routing</a></Link>
+                </ListGroupItem>
+                <ListGroupItem>
+                    <Link prefetch href="/examples/styling"><a href="/examples/styling" className="d-block">Styling</a></Link>
+                </ListGroupItem>
+              </ListGroup>
             </Col>
           </Row>
         </Container>

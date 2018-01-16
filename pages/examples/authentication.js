@@ -20,22 +20,27 @@ export default class extends Page {
           The approach to authentication taken in this project involves some
           complexity as it combines support for email and oAuth based sign in
           with both client and server side rendering and security features
-          including HTTP Only cookies (a form of protection against XSS and session
-          hijacking) and CSRF tokens.
+          including HTTP Only cookies and Cross Site Request Forgery (CSRF)
+          tokens, which provide protection against Cross Site Scripting (XSS) and
+          session hijacking.
         </p>
         <p>
-          It is possible to support signing in more easily in React by simplifying
-          the security model - for example, by storing session tokens in cookies
-          that can be read directly from JavaScript - although this is not 
-          preferable from a security perspective.
+          It is possible to simplify the session handling by having a simpler
+          security model - for example, by storing session tokens in cookies
+          that can be read directly from JavaScript - although this removes
+          some protection against Cross Site Scripting (XSS) exploits.
         </p>
         <p>
           It is difficult to reduce the complexity on the server significantly,
+          even when using authentication libraries like Passport,
           especially if you want to support signing in with than one service.
         </p>
         <p>
-          It is also difficult to decouple the same logic from a specific database.
-          This project assumes a MongoDB store for user accounts.
+          It can also be difficult to decouple the sign in and session logic
+          from a specific database. This project assumes a MongoDB store for
+          user accounts, but if you don't configure a database it will will
+          store them in an in-memory database (meaning the data will not be
+          persisted when the application stops).
         </p>
         <h2>Page Component</h2>
         <p>
@@ -99,9 +104,11 @@ export default class extends React.Component {
           are stored in a MongoDB (or an in-memory database if no DB is configured).
         </p>
         <p>
-          User accounts are more tightly integrated into
-          the sign-in system in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/routes/auth.js">routes/auth.js</a> and <a href="https://github.com/iaincollins/nextjs-starter/blob/master/routes/passport-strategies.js">routes/passport-strategies.js</a> so
-          changing the type of datastore used for user account sign in is more
+          User accounts are integrated into
+          the sign-in system in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/routes/auth.js">auth.js</a> and <a href="https://github.com/iaincollins/nextjs-starter/blob/master/routes/passport-strategies.js">passport-strategies.js</a>.
+        </p>
+        <p>
+          Changing the type of datastore used for user account sign in is more
           complicated than changing the session store.
         </p>
         <h2>Configuration</h2>
@@ -131,6 +138,7 @@ EMAIL_PASSWORD=`}
         <p>
           For tips on configuring authentication see <a href="https://github.com/iaincollins/nextjs-starter/blob/master/AUTHENTICATION.md">AUTHENTICATION.md</a>
         </p>
+        <h3>Adding more services</h3>
         <p>
           You can add new oAuth services by adding new providers to <a href="https://github.com/iaincollins/nextjs-starter/blob/master/routes/passport-strategies.js">routes/passport-strategies.js</a>,
           following the examples given for Facebook, Google and Twitter. oAuth providers all have their own idiosyncrasies.

@@ -9,7 +9,7 @@ export default class extends Page {
   render() {
     return (
       <Layout {...this.props}>
-        <h1 className="display-2">Custom Routing</h1>
+        <h1 className="display-2">Routing</h1>
         <p>
           With Next.js routing is taken care of for you by default, but the routing behaviour can be customised.
         </p>
