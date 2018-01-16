@@ -7,7 +7,7 @@ export default class extends Page {
     return (
       <Layout session={this.props.session} navmenu={false}>
         <div className="text-center pt-5 pb-5">
-          <h1 className="display-4">Unable to sign in</h1>
+          <h1 className="display-4 mb-5">Unable to sign in</h1>
           <p className="lead">The link you tried to use to sign in was not valid.</p>
           <p className="lead"><Link href="/auth/signin"><a>Request a new sign in link.</a></Link></p>
         </div>
