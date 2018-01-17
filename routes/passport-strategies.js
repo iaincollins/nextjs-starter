@@ -4,6 +4,7 @@
 'use strict'
 
 const passport = require('passport')
+const MongoObjectId = require('mongodb').ObjectId
 
 exports.configure = ({
     expressApp = null, // Express Server
@@ -26,19 +27,23 @@ exports.configure = ({
   })
 
   passport.deserializeUser((id, next) => {
-    userdb.findOne({[userDbKey]: id}, (err, user) => {
+    userdb.findOne({[userDbKey]: ObjectId(id)}, (err, user) => {
       // Pass error back (if there was one) and invalidate session if user
       // could not be fetched by returning 'false'. This prevents an exception
       // in edge cases like an account being deleted while logged in.
       if (err || !user)
         return next(err, false)
         
-      // Note: We don't save all user profile fields with the session,
-      // just ones we need.
+      // A user object returned to the user when they are logged in.
+      // Contains properties for display in the UI (e.g. name, email, avatar…)
+      // Note: This should not include fields you wish to keep private as
+      // the user object returned here will be exported to the client.
       next(err, {
         id: user[userDbKey],
         name: user.name,
-        email: user.email
+        email: user.email,
+        emailVerified: user.emailVerified,
+        admin: user.admin || false
       })
     })
   })
@@ -153,7 +158,7 @@ exports.configure = ({
                         
             // If the oAuth account is not linked to another account, link it and exit
             if (!user) {
-             return userdb.findOne({[userDbKey]: req.user.id}, (err, user) => {
+             return userdb.findOne({[userDbKey]: ObjectId(req.user.id)}, (err, user) => {
                 if (err) {
                   return next(err)
                 }
@@ -246,17 +251,26 @@ exports.configure = ({
               }
 
               // If account does not exist, create one for them and sign the user in
-              return userdb.insert({
+              user = {
                 name: profile.name,
                 email: profile.email,
                 [providerName]: {
                   id: profile.id,
                   refreshToken: refreshToken
                 }
-              }, (err, user) => {
+              }
+              return userdb.insert(user, (err, response) => {
                 if (err) {
                   return next(err)
                 }
+
+                // The MongoDB driver inserts the the ID on the object, but if
+                // running a work-a-like, like the NeDB in-memory db, then
+                // we need to add the ID on from the response.
+                if (response[userDbKey]) {
+                  user[userDbKey] = response[userDbKey]
+                }
+                
                 return next(null, user)
               })
             })
@@ -289,7 +303,7 @@ exports.configure = ({
         return next(new Error('Not signed in'))
       }
       // Lookup user
-      userdb.findOne({[userDbKey]: req.user.id}, (err, user) => {
+      userdb.findOne({[userDbKey]: ObjectId(req.user.id)}, (err, user) => {
         if (err) {
           return next(err)
         }
@@ -317,4 +331,14 @@ exports.configure = ({
   })
 
   return passport
+}
+
+function ObjectId(id) {
+  if (process.env.USER_DB_CONNECTION_STRING) {
+    return new MongoObjectId(id)
+  } else {
+    // If no database configured, assume NeDB DB being used, which uses
+    // different ID format which doesn't match Mongo ObjectId's
+    return id
+  }
 }

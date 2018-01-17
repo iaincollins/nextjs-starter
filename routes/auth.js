@@ -116,10 +116,7 @@ exports.configure = ({
 
     // Add user object to session if logged in
     if (req.user) {
-      session.user = {
-        name: req.user.name,
-        email: req.user.email
-      }
+      session.user = req.user
       
       // If logged in, export the API access token details to the client
       // Note: This token is valid for the duration of this session only.
