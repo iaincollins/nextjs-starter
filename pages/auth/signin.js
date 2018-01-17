@@ -2,7 +2,7 @@ import Router from 'next/router'
 import { Row, Col } from 'reactstrap'
 import Page from '../../components/page'
 import Layout from '../../components/layout'
-import Session from '../../components/session'
+import Session from '../../models/session'
 import Signin from '../../components/signin'
 import Cookies from '../../components/cookies'
 

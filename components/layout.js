@@ -6,7 +6,7 @@ import { Container, Row, Col, Nav, NavItem, Button, Form, NavLink, Collapse,
          Navbar, NavbarToggler, NavbarBrand, Modal, ModalHeader, ModalBody,
          ModalFooter, ListGroup, ListGroupItem } from 'reactstrap'
 import Signin from './signin'
-import Session from './session'
+import Session from '../models/session'
 import Cookies from './cookies'
 import Package from '../package'
 import Styles from '../css/index.scss'
@@ -186,8 +186,9 @@ export class UserMenu extends React.Component {
             </div>
             <div className="dropdown-menu">
               <Link prefetch href="/account">
-                <a href="/account" className="dropdown-item">Your Account</a>
+                <a href="/account" className="dropdown-item"><span className="icon ion-md-person mr-1"></span> Your Account</a>
               </Link>
+              <AdminMenuItem {...this.props}/>
               <div className="dropdown-divider d-none d-md-block"/>
               <div className="dropdown-item p-0">
                 <Form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSignoutSubmit}>
@@ -212,6 +213,22 @@ export class UserMenu extends React.Component {
           </NavItem>
         </Nav>
       )
+    }
+  }
+}
+
+export class AdminMenuItem extends React.Component {
+  render() {
+    if (this.props.session.user && this.props.session.user.admin === true) {
+      return (
+        <React.Fragment>
+          <Link prefetch href="/admin">
+            <a href="/admin" className="dropdown-item"><span className="icon ion-md-settings mr-1"></span> Admin</a>
+          </Link>
+        </React.Fragment>
+      )
+    } else {
+      return(<div/>)
     }
   }
 }

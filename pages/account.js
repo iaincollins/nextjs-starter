@@ -5,7 +5,7 @@ import fetch from 'unfetch'
 import { Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap'
 import Page from '../components/page'
 import Layout from '../components/layout'
-import Session from '../components/session'
+import Session from '../models/session'
 import Cookies from '../components/cookies'
 
 /**

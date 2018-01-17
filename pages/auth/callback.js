@@ -4,7 +4,8 @@ import { Row, Col } from 'reactstrap'
 import Page from '../../components/page'
 import Layout from '../../components/layout'
 import Cookies from '../../components/cookies'
-import Session from '../../components/session'
+import Session from '../../models/session'
+import Loader from '../../components/loader'
 import Signin from '../../components/signin'
 
 export default class extends Page {
@@ -74,47 +75,10 @@ export default class extends Page {
           a:active {
            text-decoration: none;
           }
-          
-          .circle-loader {
-            position: absolute;
-            top: 50%;
-            width: 200%;
-            z-index: 100;
-            text-align: center;
-            transform: translate(-50%, -50%);
-          }
-
-          .circle-loader .circle {
-            margin-left: 50%;
-            fill: transparent;
-            stroke: rgba(0,0,0,0.1);
-            stroke-width: 4px;
-            animation: dash 2s ease infinite, rotate 2s linear infinite;
-          }
-
-          @keyframes dash {
-            0% {
-              stroke-dasharray: 1,95;
-              stroke-dashoffset: 0;
-            }
-            50% {
-              stroke-dasharray: 85,95;
-              stroke-dashoffset: -25;
-            }
-            100% {
-              stroke-dasharray: 85,95;
-              stroke-dashoffset: -93;
-            }
-          }
-
-          @keyframes rotate {
-            0% {transform: rotate(0deg); }
-            100% {transform: rotate(360deg); }
-          }
         `}</style>
         <meta httpEquiv="refresh" content={'1;url='+this.props.redirectTo} />
-        <a href={this.props.redirectTo}  className="circle-loader">
-          <svg className="circle" width="60" height="60" version="1.1" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="15"/></svg>
+        <a href={this.props.redirectTo}>
+          <Loader fullscreen={true}/>
         </a>
       </React.Fragment>
     )

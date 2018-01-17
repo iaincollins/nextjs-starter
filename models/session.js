@@ -74,7 +74,7 @@ export default class {
       if (response.ok) {
         return response
       } else {
-        return Promise.reject(Error('HTTP error when tryinng to get session'))
+        return Promise.reject(Error('HTTP error when trying to get session'))
       }
     })
     .then(response => response.json())

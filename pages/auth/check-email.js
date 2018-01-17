@@ -1,7 +1,7 @@
 import React from 'react'
 import Page from '../../components/page'
 import Layout from '../../components/layout'
-import Session from '../../components/session'
+import Session from '../../models/session'
 
 export default class extends Page {
   

@@ -6,11 +6,9 @@ $ionicons-font-family: "Ionicons" !default;
 $ionicons-version: "3.0.0-alpha.3" !default;
 @import "../node_modules/ionicons/dist/scss/ionicons";
 
-@import "nojs-menus.scss";
+@import "../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min";
 
-body {
-  font-size: 1.2em;
-}
+@import "nojs-menus.scss";
 
 .lead {
   font-size: 1.4em;
@@ -63,4 +61,18 @@ pre {
     padding: 0 0 10px 0;
     border: none;
   }
+}
+
+/**
+ * Fix for Reactstrap
+ **/
+.react-bs-table-sizePerPage-dropdown .dropdown-item a {
+  display: block;
+  color: #000;
+  text-decoration: none;
+}
+
+.react-bs-table-sizePerPage-dropdown button {
+  background: #fff;
+  color: #000;
 }

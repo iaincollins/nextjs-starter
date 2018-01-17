@@ -10,9 +10,10 @@ export default class extends Page {
       <Layout {...this.props} navmenu={false} container={false}>
         <Jumbotron className="text-light rounded-0" style={{
           backgroundColor: 'rgba(73,155,234,1)',
-          background: 'radial-gradient(ellipse at center, rgba(73,155,234,1) 0%, rgba(32,124,229,1) 100%);',
+          background: 'radial-gradient(ellipse at center, rgba(73,155,234,1) 0%, rgba(32,124,229,1) 100%)',
+          boxShadow: 'inset 0 0 100px rgba(0,0,0,0.1)'
           }}>
-          <Container className="mt-5 mb-5">
+          <Container className="mt-2 mb-2">
             <h1 className="display-2 mb-3" style={{fontWeight: 300}}>
               <span style={{fontWeight: 600}}>
                 <span className="mr-3">▲</span>
@@ -29,11 +30,11 @@ export default class extends Page {
             </p>
             <style jsx>{`
               .display-2  {
-                font-size: 4em;
-                text-shadow: 0 4px 10px rgba(0,0,0,0.3), 0 -2px 5px rgba(255,255,255,0.3);
+                text-shadow: 0 5px 10px rgba(0,0,0,0.3);
+                color: rgba(255,255,255,0.9);
               }
               .lead {
-                font-size: 2em;
+                font-size: 3em;
                 opacity: 0.7;
               }
               @media (max-width: 767px) {

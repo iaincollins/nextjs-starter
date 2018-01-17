@@ -35,7 +35,7 @@ export default class extends Page {
         </p>
         <SyntaxHighlighter style={SyntaxHighlighterTheme} language="javascript">
 {`import React from 'react'
-  import Session from './session'
+  import Session from '../models/session'
 
   export default class extends React.Component {
     // Expose session to all pages

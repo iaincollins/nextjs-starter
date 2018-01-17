@@ -1,7 +1,7 @@
 import React from 'react'
 import Router from 'next/router'
 import { Row, Col, Form, Input, Label, Button } from 'reactstrap'
-import Session from './session'
+import Session from '../models/session'
 
 export default class extends React.Component {
   constructor(props) {

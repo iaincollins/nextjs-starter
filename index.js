@@ -3,13 +3,16 @@
 const express = require('express')
 const session = require('express-session')
 const next = require('next')
-const auth = require('./routes/auth')
 const smtpTransport = require('nodemailer-smtp-transport')
 const directTransport = require('nodemailer-direct-transport')
 const MongoClient = require('mongodb').MongoClient
 const MongoStore = require('connect-mongo')(session)
 const NeDB = require('nedb') // Use MongoDB work-a-like if no user db configured
 const cookieParser = require('cookie-parser')
+const routes = {
+  admin:  require('./routes/admin'),
+  auth:   require('./routes/auth')
+}
 
 // Load environment variables from .env file if present
 require('dotenv').load()
@@ -107,7 +110,7 @@ nextApp.prepare()
 })
 .then(() => {
   // Once DB connections are available, can configure authentication routes
-  auth.configure({
+  routes.auth.configure({
     nextApp: nextApp,
     expressApp: expressApp,
     userdb: userdb,
@@ -117,6 +120,12 @@ nextApp.prepare()
     mailserver: mailserver,
     fromEmail: process.env.EMAIL_ADDRESS || null,
     serverUrl: process.env.SERVER_URL || null
+  })
+  
+  // Add admin routes
+  routes.admin.configure({
+    expressApp: expressApp,
+    userdb: userdb
   })
   
   // Serve fonts from ionicon npm module
