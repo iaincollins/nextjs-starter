@@ -4,8 +4,8 @@
  * In addition to standard options to pass to Passport a getUserFromProfile()
  * method should be defined to allow us to use the same logic in 
  * passport-strategies.js for all providers (the oAuth standard doesn't
- * specify what format they should be in and different providers use different
- * names for fields like email address and name).
+ * specify what format profile info should be returned in and providers
+ * use different names for properties like email, avatar and name).
  **/
 
 require('dotenv').load()
