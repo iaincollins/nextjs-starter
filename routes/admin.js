@@ -1,7 +1,7 @@
 /**
  * Defines an endpoint that returns a list of users. You must be signed in and
  * have "admin": true set in your profile to be able to call the /admin/users
- * end point.
+ * end point (you will need to configure persistant Mongo database to do that).
  **/
 'use strict'
 

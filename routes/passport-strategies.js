@@ -5,6 +5,7 @@
 
 const passport = require('passport')
 const MongoObjectId = require('mongodb').ObjectId
+const providers = require('../passport.config').providers
 
 exports.configure = ({
     expressApp = null, // Express Server
@@ -47,83 +48,6 @@ exports.configure = ({
       })
     })
   })
-
-  let providers = []
-
-  // IMPORTANT! If you add a provider, be sure to add a property to the user
-  // model with the name of the provider or you won't be able to log in!
-
-  if (process.env.FACEBOOK_ID && process.env.FACEBOOK_SECRET) {
-    providers.push({
-      providerName: 'facebook',
-      providerOptions: {
-        scope: ['email', 'public_profile']
-      },
-      Strategy: require('passport-facebook').Strategy,
-      strategyOptions: {
-        clientID: process.env.FACEBOOK_ID,
-        clientSecret: process.env.FACEBOOK_SECRET,
-        profileFields: ['id', 'displayName', 'email', 'link']
-      },
-      getUserFromProfile(profile) {
-        return {
-          id: profile.id,
-          name: profile.displayName,
-          email: profile._json.email
-        }
-      }
-    })
-  }
-
-  if (process.env.GOOGLE_ID && process.env.GOOGLE_SECRET) {
-    providers.push({
-      providerName: 'google',
-      providerOptions: {
-        scope: ['profile', 'email']
-      },
-      Strategy: require('passport-google-oauth').OAuth2Strategy,
-      strategyOptions: {
-        clientID: process.env.GOOGLE_ID,
-        clientSecret: process.env.GOOGLE_SECRET
-      },
-      getUserFromProfile(profile) {
-        return {
-          id: profile.id,
-          name: profile.displayName,
-          email: profile.emails[0].value
-        }
-      }
-    })
-  }
-
-  // Note: Twitter doesn't expose emails by default so we create a placeholder
-  // later if we don't get an email address.
-  //
-  // To have your Twitter oAuth return emails go to apps.twitter.com and add 
-  // links to your Terms and Conditions and Privacy Policy under the "Settings" 
-  // tab, then check the "Request email addresses" from users box under the 
-  // "Permissions" tab. 
-  if (process.env.TWITTER_KEY && process.env.TWITTER_SECRET) {
-    providers.push({
-      providerName: 'twitter',
-      providerOptions: {
-        scope: []
-      },
-      Strategy: require('passport-twitter').Strategy,
-      strategyOptions: {
-        consumerKey: process.env.TWITTER_KEY,
-        consumerSecret: process.env.TWITTER_SECRET,
-        userProfileURL: 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true'
-      },
-      getUserFromProfile(profile) {
-        return {
-          id: profile.id,
-          name: profile.displayName,
-          email: (profile.emails && profile.emails[0].value) ? profile.emails[0].value : ''
-        }
-      }
-    })
-  }
 
   // Define a Passport strategy for provider
   providers.forEach(({providerName, Strategy, strategyOptions, getUserFromProfile}) => {

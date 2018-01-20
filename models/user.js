@@ -1,3 +1,6 @@
+/**
+ * A simple client-side only model used to list users in the Admin view.
+ **/
 import fetch from 'isomorphic-fetch'
 
 export default class {

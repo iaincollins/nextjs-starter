@@ -8,7 +8,7 @@ You can pass them on the command line or put them in `.env` file which will be l
 
 If you want to add new oAuth providers (such as GitHub), you will need to:
 
-* Add the oauth provider configuration in /routes/auth-passport.js
+* Add the oauth provider configuration in passport.config.js
 * Add a field to your User model (in 'index.js') with the name of the provider
 * Configure the service to point to your website (as in the examples below)
 * Specify the environment variables at run time

@@ -140,7 +140,7 @@ EMAIL_PASSWORD=`}
         </p>
         <h3>Adding more services</h3>
         <p>
-          You can add new oAuth services by adding new providers to <a href="https://github.com/iaincollins/nextjs-starter/blob/master/routes/passport-strategies.js">routes/passport-strategies.js</a>,
+          You can add new oAuth services by adding new providers to <a href="https://github.com/iaincollins/nextjs-starter/blob/master/passport.config.js">passport.config.js</a>,
           following the examples given for Facebook, Google and Twitter. oAuth providers all have their own idiosyncrasies.
         </p>
       </Layout>
