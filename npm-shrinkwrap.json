@@ -1,6 +1,6 @@
 {
   "name": "nextjs-starter",
-  "version": "4.5.0",
+  "version": "4.5.3",
   "dependencies": {
     "@semantic-release/commit-analyzer": {
       "version": "3.0.7",
@@ -4490,9 +4490,9 @@
       }
     },
     "next-auth": {
-      "version": "1.1.1",
-      "from": "next-auth@1.1.1",
-      "resolved": "https://registry.npmjs.org/next-auth/-/next-auth-1.1.1.tgz"
+      "version": "1.1.5",
+      "from": "next-auth@1.1.5",
+      "resolved": "https://registry.npmjs.org/next-auth/-/next-auth-1.1.5.tgz"
     },
     "next-auth-client": {
       "version": "1.1.1",
