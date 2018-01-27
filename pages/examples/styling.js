@@ -70,7 +70,7 @@ export default class extends Page {
         </p>
         <h2>Scoped CSS</h2>
         <p>
-          Styles defined with JSX in a component only impact elements in the component, meaning any CSS/SCSS rules will not impact how components on the same page appear.
+          Styles defined with JSX in a component only impact elements that in the component in which the styles are defined, meaning any CSS/SCSS rules will not impact how other components on the same page appear.
         </p>
         <p>
           They can also reference JavaScript variables.
@@ -99,7 +99,7 @@ export default class extends Page {
         </p>
         <SyntaxHighlighter style={SyntaxHighlighterTheme} language={"jsx"}>
 {`<style jsx global>{\`
-  .div {
+  div {
     border: 2px solid blue;
   }
 \`}</style>`}
@@ -112,7 +112,7 @@ export default class extends Page {
 {`expressApp.use('/fonts/ionicons', express.static('./node_modules/ionicons/dist/fonts'))`}
         </SyntaxHighlighter>
         <p>
-          You can also import fonts into your projects by copying them into the /static/ directory.
+          You can also import fonts into your projects by copying them into the /static directory and serve them from there.
         </p>
      </Layout>
     )

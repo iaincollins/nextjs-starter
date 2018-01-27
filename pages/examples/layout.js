@@ -11,10 +11,11 @@ export default class extends Page {
         <p>
          This project uses both a custom Page class (extended from <strong>React.Component</strong>) and layout component.
         </p>
+        <h2 className="mt-2">Example Page</h2>
         <SyntaxHighlighter style={SyntaxHighlighterTheme} language="javascript">
 {`import React from 'react'
-import Page from 'components/page'
-import Layout from 'components/layout'
+import Page from '../components/page'
+import Layout from '../components/layout'
 
 export default class extends Page {
   render() {
@@ -27,7 +28,7 @@ export default class extends Page {
   }
 }`}
         </SyntaxHighlighter>
-        <h2 className="mt-5">Page Component</h2>
+        <h2 className="mt-3">Page Component</h2>
         <p>
           Most Pages in this project extend from the Page component 
           in <a href="https://github.com/iaincollins/nextjs-starter/blob/master/components/page.js">components/page.js</a>,
@@ -35,21 +36,20 @@ export default class extends Page {
         </p>
         <SyntaxHighlighter style={SyntaxHighlighterTheme} language="javascript">
 {`import React from 'react'
-  import Session from '../models/session'
+import { NextAuth } from 'next-auth-client'
 
-  export default class extends React.Component {
-    // Expose session to all pages
-    static async getInitialProps({req}) {
-      return {
-        session: await Session.getSession({req: req})
-      }
+export default class extends React.Component {
+  static async getInitialProps({req}) {
+    return {
+      session: await NextAuth.init({req}) // Populate 'this.props.session'
     }
+  }
 }`}
         </SyntaxHighlighter>
         <p>
           The Page component contains logic in its <strong>getInitialProps()</strong> method
           to populate <strong>this.props.session</strong> with
-          the current session object. Extending pages from the Page component
+          the current session info. Extending pages from the Page class
           saves having to add the same logic to every page.
         </p>
         <p>
@@ -65,7 +65,7 @@ export default class extends Page {
           wraps content with common HTML such as the navbar and footer.
         </p>
         <p>
-          Page props - including session object - is passed from the page to
+          Page props - including the session object - is passed from the page to
           layout component so the navbar and other elements can be rendered
           correctly, reflecting the current session state (i.e. depending on if
           the user is logged in or not).
