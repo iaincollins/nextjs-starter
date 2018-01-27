@@ -1,6 +1,6 @@
 {
   "name": "nextjs-starter",
-  "version": "4.5.3",
+  "version": "4.5.5",
   "description": "A starter Next.js project with email and oAuth authentication",
   "author": "Iain Collins <me@iaincollins.com>",
   "license": "ISC",
@@ -76,5 +76,9 @@
     "ignores": [
       "next.config.js"
     ]
+  },
+  "now": {
+    "name": "nextjs-starter",
+    "alias": "nextjs-starter.now.sh"
   }
 }
