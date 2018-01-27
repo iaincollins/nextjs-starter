@@ -26,12 +26,13 @@ export default class extends React.Component {
     super(props)
     this.state = {
       navOpen: false,
-      modal: false
+      modal: false,
+      providers: null
     }
     this.toggleModal = this.toggleModal.bind(this)
   }
   
-  toggleModal(e) {
+  async toggleModal(e) {
     if (e) e.preventDefault()
 
     // Save current URL so user is redirected back here after signing in
@@ -41,6 +42,7 @@ export default class extends React.Component {
     }
 
     this.setState({
+      providers: this.state.providers || await NextAuth.providers(),
       modal: !this.state.modal
     })
   }
@@ -106,7 +108,7 @@ export default class extends React.Component {
             <span className="ml-2">&copy; {new Date().getYear() + 1900}.</span>
           </p>
         </Container>
-        <SigninModal modal={this.state.modal} toggleModal={this.toggleModal} session={this.props.session} providers={this.props.providers}/>
+        <SigninModal modal={this.state.modal} toggleModal={this.toggleModal} session={this.props.session} providers={this.state.providers}/>
       </React.Fragment>
     )
   }
@@ -244,6 +246,8 @@ export class AdminMenuItem extends React.Component {
 
 export class SigninModal extends React.Component {
   render() {
+    if (this.props.providers === null) return null
+    
     return (
       <Modal isOpen={this.props.modal} toggle={this.props.toggleModal} style={{maxWidth: 700}}>
         <ModalHeader>Sign up / Sign in</ModalHeader>

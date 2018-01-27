@@ -3,22 +3,11 @@ import Layout from '../components/layout'
 import { NextAuth } from 'next-auth-client'
 
 export default class extends React.Component {
-  // Expose session to all pages
+  
   static async getInitialProps({req}) {
-    // Export this.props.session to all pages
-    const session = await NextAuth.init({req})
-    
-    // If the user is not already signed in, get currently configured providers.
-    // This project uses them in the sign in dialog, which is embedded on all
-    // pages when browsing the site but not signed in.
-    //
-    // NB: As an improvement, this could alternatively be called on modal load.
-    const providers = (!session.user) ? await NextAuth.providers({req}) : {}
-    
     return {
-      session: session,
-      providers: providers,
-      lang: 'en' // Sets a lang property for accessibility
+      session: await NextAuth.init({req}),// Add this.props.session to all pages
+      lang: 'en'// Add a lang property for accessibility
     }
   }
   

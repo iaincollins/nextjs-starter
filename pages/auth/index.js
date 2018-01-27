@@ -12,11 +12,12 @@ import SignIn from '../../components/signin'
 export default class extends Page {
   
   static async getInitialProps({req, res, query}) {
-    const session = await NextAuth.init({force: true, req: req})
-    const providers = await NextAuth.providers({req})
-
+    let props = await super.getInitialProps({req})
+    props.session = await NextAuth.init({force: true, req: req})
+    props.providers = await NextAuth.providers({req})
+    
     // If signed in already, redirect to account management page.
-    if (session.user) {
+    if (props.session.user) {
       if (req) {
         res.redirect('/account')
       } else {
@@ -30,11 +31,7 @@ export default class extends Page {
       cookies.set('redirect_url', query.redirect, { path: '/' })
     }
     
-    return {
-      session: session,
-      providers: providers,
-      providers: await NextAuth.providers({req})
-    }
+    return props
   }
   
   render() {
