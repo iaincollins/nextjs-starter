@@ -12,7 +12,7 @@ export default class extends Page {
     
     // If signed in already, instead of displaying message send to callback page
     // which should redirect them to whatever page it normally sends clients to
-    if (session.user) {
+    if (props.session.user) {
       if (req) {
         res.redirect('/auth/callback')
       } else {
