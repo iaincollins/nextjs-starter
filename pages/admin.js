@@ -13,6 +13,7 @@ import Loader from '../components/loader'
 import User from '../models/user'
  
 export default class extends Page {
+  
   constructor(props) {
     super(props)
     

@@ -1,14 +1,17 @@
 import React from 'react'
 import Router from 'next/router'
 import { Row, Col, Form, Input, Label, Button } from 'reactstrap'
-import Session from '../models/session'
+import Cookies from 'universal-cookie'
+import { NextAuth } from 'next-auth-client'
 
 export default class extends React.Component {
+  
   constructor(props) {
     super(props)
     this.state = {
       email: '',
-      session: this.props.session
+      session: this.props.session,
+      providers: this.props.providers
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleEmailChange = this.handleEmailChange.bind(this)
@@ -17,20 +20,25 @@ export default class extends React.Component {
   
   handleEmailChange(event) {
     this.setState({
-      email: event.target.value.trim(),
-      session: this.state.session
+      email: event.target.value.trim()
     })
   }
 
   handleSubmit(event) {
     event.preventDefault()
-    Session.signin(this.state.email)
+    
+    if (!this.state.email) return
+
+    // Save current URL so user is redirected back here after signing in
+    const cookies = new Cookies()
+    cookies.set('redirect_url', window.location.pathname, { path: '/' })
+
+    NextAuth.signin(this.state.email)
     .then(() => {
-      Router.push('/auth/check-email')
+      Router.push(`/auth/check-email?email=${this.state.email}`)
     })
     .catch(err => {
-      // @FIXME Handle error
-      console.log(err)
+      Router.push(`/auth/error?action=signin&type=email&email=${this.state.email}`)
     })
   }
   
@@ -40,12 +48,10 @@ export default class extends React.Component {
     } else {
       return (
         <React.Fragment>
-          <p className="text-center" style={{marginTop: 10, marginBottom: 30}}>If you don't have an account, one will be created when you sign in.</p>
+          <p className="text-center" style={{marginTop: 10, marginBottom: 30}}>{`If you don't have an account, one will be created when you sign in.`}</p>
           <Row>
             <Col xs={12} md={6}>
-              <p><a className="btn btn-outline-dark btn-block btn-facebook" href="/auth/oauth/facebook">Sign in with Facebook</a></p>
-              <p><a className="btn btn-outline-dark btn-block btn-google" href="/auth/oauth/google">Sign in with Google</a></p>
-              <p><a className="btn btn-outline-dark btn-block btn-twitter" href="/auth/oauth/twitter">Sign in with Twitter</a></p>
+              <SignInButtons providers={this.props.providers}/>
             </Col>
             <Col xs={12} md={6}>
               <Form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
@@ -63,5 +69,25 @@ export default class extends React.Component {
         </React.Fragment>
       )
     }
+  }
+}
+
+export class SignInButtons extends React.Component {
+  render() {
+    return (
+      <React.Fragment>
+        {
+          Object.keys(this.props.providers).map((provider, i) => {
+            return (
+              <p key={i}>
+                <a className="btn btn-block btn-outline-secondary" href={this.props.providers[provider].signin}>
+                  Sign in with {provider}
+                </a>
+              </p>
+              )              
+          })
+        }
+      </React.Fragment>
+    )
   }
 }

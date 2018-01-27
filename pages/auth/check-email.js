@@ -1,13 +1,13 @@
 import React from 'react'
+import Router from 'next/router'
 import Page from '../../components/page'
 import Layout from '../../components/layout'
-import Session from '../../models/session'
+import { NextAuth } from 'next-auth-client'
 
 export default class extends Page {
-  
-  static async getInitialProps({req, res}) {
-    // Get latest session (forceing cache busting when rending on client)
-    const session = await Session.getSession({force: true, req: req})
+
+  static async getInitialProps({req, res, query}) {
+    const session = await NextAuth.init({force: true, req: req})
     
     // If signed in already, instead of displaying message send to callback page
     // which should redirect them to whatever page it normally sends clients to
@@ -20,7 +20,9 @@ export default class extends Page {
     }
       
     return {
-      session: session
+      session: session,
+      providers: await NextAuth.providers({req}),      
+      email: query.email
     }
   }
   
@@ -29,7 +31,9 @@ export default class extends Page {
       <Layout {...this.props} navmenu={false}>
         <div className="text-center pt-5 pb-5">
           <h1 className="display-4">Check your email</h1>
-          <p className="lead">Check your email for a sign in link.</p>
+          <p className="lead">
+            A sign in link has been sent to <span className="font-weight-bold">{this.props.email}</span>
+          </p>
         </div>
       </Layout>
     )

@@ -6,8 +6,8 @@ import { Container, Row, Col, Nav, NavItem, Button, Form, NavLink, Collapse,
          Navbar, NavbarToggler, NavbarBrand, Modal, ModalHeader, ModalBody,
          ModalFooter, ListGroup, ListGroupItem } from 'reactstrap'
 import Signin from './signin'
-import Session from '../models/session'
-import Cookies from './cookies'
+import { NextAuth } from 'next-auth-client'
+import Cookies from 'universal-cookie'
 import Package from '../package'
 import Styles from '../css/index.scss'
 
@@ -16,6 +16,7 @@ export default class extends React.Component {
   static propTypes() {
     return {
       session: React.PropTypes.object.isRequired,
+      providers: React.PropTypes.object.isRequired,
       children: React.PropTypes.object.isRequired,
       fluid: React.PropTypes.boolean
     }
@@ -33,8 +34,11 @@ export default class extends React.Component {
   toggleModal(e) {
     if (e) e.preventDefault()
 
-    if (this.state.modal !== true)
-      Cookies.save('redirect_url', window.location.pathname)
+    // Save current URL so user is redirected back here after signing in
+    if (this.state.modal !== true) {
+      const cookies = new Cookies()
+      cookies.set('redirect_url', window.location.pathname, { path: '/' })
+    }
 
     this.setState({
       modal: !this.state.modal
@@ -102,7 +106,7 @@ export default class extends React.Component {
             <span className="ml-2">&copy; {new Date().getYear() + 1900}.</span>
           </p>
         </Container>
-        <SigninModal modal={this.state.modal} toggleModal={this.toggleModal} session={this.props.session}/>
+        <SigninModal modal={this.state.modal} toggleModal={this.toggleModal} session={this.props.session} providers={this.props.providers}/>
       </React.Fragment>
     )
   }
@@ -164,7 +168,12 @@ export class UserMenu extends React.Component {
 
    async handleSignoutSubmit(event) {
      event.preventDefault()
-     await Session.signout()
+     
+     // Save current URL so user is redirected back here after signing out
+     const cookies = new Cookies()
+     cookies.set('redirect_url', window.location.pathname, { path: '/' })
+
+     await NextAuth.signout()
      Router.push('/')
    }
    
@@ -209,7 +218,7 @@ export class UserMenu extends React.Component {
               * so that users without JavaScript are also redirected to the page
               * they were on before they signed in.
               **/}
-            <a href="/auth/signin?redirect=/" className="btn btn-outline-primary" onClick={this.props.toggleModal}><span className="icon ion-md-log-in mr-1"></span> Sign up / Sign in</a>
+            <a href="/auth?redirect=/" className="btn btn-outline-primary" onClick={this.props.toggleModal}><span className="icon ion-md-log-in mr-1"></span> Sign up / Sign in</a>
           </NavItem>
         </Nav>
       )
@@ -239,7 +248,7 @@ export class SigninModal extends React.Component {
       <Modal isOpen={this.props.modal} toggle={this.props.toggleModal} style={{maxWidth: 700}}>
         <ModalHeader>Sign up / Sign in</ModalHeader>
         <ModalBody style={{padding: '1em 2em'}}>
-          <Signin session={this.props.session}/>
+          <Signin session={this.props.session} providers={this.props.providers}/>
         </ModalBody>
       </Modal>
     )

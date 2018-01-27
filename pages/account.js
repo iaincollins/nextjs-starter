@@ -1,25 +1,19 @@
 import React from 'react'
 import Router from 'next/router'
 import Link from 'next/link'
-import fetch from 'unfetch'
+import fetch from 'isomorphic-fetch'
 import { Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap'
+import { NextAuth } from 'next-auth-client'
 import Page from '../components/page'
 import Layout from '../components/layout'
-import Session from '../models/session'
-import Cookies from '../components/cookies'
-
-/**
- * This modules uses 'unfetch', which works like fetch, except - unlike
- * isomorphic-fetch - it sends cookies so can be used with session based
- * authentication to make ssecure requests using HTTP only cookies.
- **/ 
+import Cookies from 'universal-cookie'
 
 export default class extends Page {
 
-  static async getInitialProps({req, query}) {
-    return {
-      session: await Session.getSession({force: true, req: req})
-    }
+  static async getInitialProps({req}) {
+    let props = await super.getInitialProps({req})
+    props.linkedAccounts = await NextAuth.linked({req})
+    return props
   }
 
   constructor(props) {
@@ -30,12 +24,8 @@ export default class extends Page {
       name: '',
       email: '',
       emailVerified: false,
-      linkedWithFacebook: false,
-      linkedWithGoogle: false,
-      linkedWithTwitter: false,
       alertText: null,
-      alertStyle: null,
-      gotProfile: false
+      alertStyle: null
     }
     if (props.session.user) {
       this.state.name = props.session.user.name
@@ -46,7 +36,7 @@ export default class extends Page {
   }
 
   async componentDidMount() {
-    const session = await Session.getSession({force: true})
+    const session = await NextAuth.init({force: true})
     this.setState({
       session: session,
       isSignedIn: (session.user) ? true : false
@@ -54,7 +44,8 @@ export default class extends Page {
 
     // If the user bounces off to link/unlink their account we want them to
     // land back here after signing in with the other service / unlinking.
-    Cookies.save('redirect_url', '/account')
+    const cookies = new Cookies()
+    cookies.set('redirect_url', window.location.pathname, { path: '/' })
     
     this.getProfile()
   }
@@ -69,11 +60,7 @@ export default class extends Page {
       this.setState({
         name: user.name,
         email: user.email,
-        emailVerified: user.emailVerified,
-        linkedWithFacebook: user.linkedWithFacebook,
-        linkedWithGoogle: user.linkedWithGoogle,
-        linkedWithTwitter: user.linkedWithTwitter,
-        gotProfile: true
+        emailVerified: user.emailVerified
       })
     })
   }
@@ -94,7 +81,7 @@ export default class extends Page {
     })
     
     const formData = {
-      _csrf: await Session.getCsrfToken(),
+      _csrf: await NextAuth.csrfToken(),
       name: this.state.name || '',
       email: this.state.email || ''
     }
@@ -122,13 +109,13 @@ export default class extends Page {
           alertStyle: 'alert-success',
         })
         // Force update session so that changes to name or email are reflected
-        // immediately in the navbar (as we pass our session to it)
+        // immediately in the navbar (as we pass our session to it).
         this.setState({
-          session: await Session.getSession({force: true}),
+          session: await NextAuth.init({force: true}), // Update session data
         })
       } else {
         this.setState({
-          session: await Session.getSession({force: true}),
+          session: await NextAuth.init({force: true}), // Update session data
           alertText: 'Failed to save changes to your profile',
           alertStyle: 'alert-danger',
         })
@@ -141,7 +128,7 @@ export default class extends Page {
       const alert = (this.state.alertText === null) ? <div/> : <div className={`alert ${this.state.alertStyle}`} role="alert">{this.state.alertText}</div>
       
       return (
-        <Layout session={this.state.session} navmenu={false}>
+        <Layout {...this.props} navmenu={false}>
           <Row className="mb-1">
             <Col xs="12">
               <h1 className="display-2">Your Account</h1>
@@ -177,13 +164,10 @@ export default class extends Page {
               </Form>
             </Col>
             <Col xs="12" md="4" lg="3">
-              <LinkedAccounts
-                session={this.props.session}
-                linkedWithFacebook={this.state.linkedWithFacebook}
-                linkedWithGoogle={this.state.linkedWithGoogle}
-                linkedWithTwitter={this.state.linkedWithTwitter}
-                gotProfile={this.state.gotProfile}
-                />
+            <LinkAccounts
+              session={this.props.session}
+              linkedAccounts={this.props.linkedAccounts}
+              />
             </Col>
           </Row>
           <Row>
@@ -203,11 +187,11 @@ export default class extends Page {
       )
     } else {
       return (
-        <Layout session={this.props.session} navmenu={false}>
+        <Layout {...this.props} navmenu={false}>
           <Row>
             <Col xs="12" className="text-center pt-5 pb-5">
               <p className="lead">
-                <Link href="/auth/signin"><a>Sign in to manage your profile.</a></Link>
+                <Link href="/auth"><a>Sign in to manage your profile.</a></Link>
               </p>
             </Col>
           </Row>
@@ -217,24 +201,17 @@ export default class extends Page {
   }
 }
 
-export class LinkedAccounts extends React.Component {
+export class LinkAccounts extends React.Component {
   render() {
-    if (typeof window === 'undefined' || this.props.gotProfile !== true) {
-      /** 
-       * Don't display if rendering server side or if we haven't fetch the 
-       * profile yet. Note: This requires JavaScript in the browser to be
-       * enabled, but most oAuth providers only work with JavaScript enabled!
-       */
-      return null
-    } else {
-      return (
-        <React.Fragment>
-          <LinkAccount provider="Facebook" session={this.props.session} linked={this.props.linkedWithFacebook}/>
-          <LinkAccount provider="Google" session={this.props.session} linked={this.props.linkedWithGoogle}/>
-          <LinkAccount provider="Twitter" session={this.props.session} linked={this.props.linkedWithTwitter}/>
-        </React.Fragment>
-      )
-    }
+    return (
+      <React.Fragment>
+        {
+          Object.keys(this.props.linkedAccounts).map((provider, i) => {
+            return <LinkAccount key={i} provider={provider} session={this.props.session} linked={this.props.linkedAccounts[provider]}/>
+          })
+        }
+      </React.Fragment>
+    )
   }
 }
 
@@ -242,26 +219,23 @@ export class LinkAccount extends React.Component {
   render() {
     if (this.props.linked === true) {
       return (
-        <Form action={`/auth/oauth/${this.props.provider.toLowerCase()}/unlink`} method="post">
-          <Input name="_csrf" type="hidden" value={this.props.session.csrfToken}/>
+        <form method="post" action={`/auth/oauth/${this.props.provider.toLowerCase()}/unlink`}>
+          <input name="_csrf" type="hidden" value={this.props.session.csrfToken}/>
           <p>
-            <Button block color="secondary" outline type="submit">
+            <button className="btn btn-block btn-outline-danger" type="submit">
               Unlink from {this.props.provider}
-            </Button>
+            </button>
           </p>
-        </Form>
+        </form>
       )
-    } else if (this.props.linked === false) {
+    } else {
       return (
         <p>
-          <a className="btn btn-block btn-outline-dark" href={`/auth/oauth/${this.props.provider.toLowerCase()}`}>
-            <span className="icon ion-md-link mr-1"></span> Link with {this.props.provider}
+          <a className="btn btn-block btn-outline-primary" href={`/auth/oauth/${this.props.provider.toLowerCase()}`}>
+            Link with {this.props.provider}
           </a>
         </p>
       )
-    } else {
-      // Still fetching data
-      return (<p/>)
     }
   }
 }

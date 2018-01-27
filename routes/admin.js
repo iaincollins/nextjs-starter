@@ -2,24 +2,31 @@
  * Defines an endpoint that returns a list of users. You must be signed in and
  * have "admin": true set in your profile to be able to call the /admin/users
  * end point (you will need to configure persistant Mongo database to do that).
+ *
+ * Note: These routes only work if you have actually configured a MONGO_URI!
+ * They do not work if you are using the fallback in-memory database.
  **/
 'use strict'
 
-exports.configure = ({
-     // Express Server
-    expressApp = null,
-    // MongoDB connection to the user database
-    userdb = null
-  } = {}) => {
+const MongoClient = require('mongodb').MongoClient
+
+let usersCollection
+if (process.env.MONGO_URI) { 
+  // Connect to MongoDB Database and return user connection
+  MongoClient.connect(process.env.MONGO_URI, (err, mongoClient) => {
+    if (err) return reject(err)
+    const dbName = process.env.MONGO_URI.split('/').pop().split('?').shift()
+    const db = mongoClient.db(dbName)
+    usersCollection = db.collection('users')
+  })
+}
+
+module.exports = (expressApp) => {
 
   if (expressApp === null) {
     throw new Error('expressApp option must be an express server instance')
   }
 
-  if (userdb === null) {
-    throw new Error('userdb option must be provided')
-  }
- 
   expressApp.get('/admin/users', (req, res) => {
     // Check user is logged in and has admin access
     if (!req.user || !req.user.admin || req.user.admin !== true)
@@ -49,7 +56,7 @@ exports.configure = ({
 
     let result
     return new Promise(function(resolve, reject) {
-      result = userdb
+      result = usersCollection
       .find()
       .skip(skip)
       .sort(sort)
