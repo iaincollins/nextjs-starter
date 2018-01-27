@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import Link from 'next/link'
 import Router from 'next/router'
 import Cookies from 'universal-cookie'
@@ -40,6 +41,11 @@ export default class extends React.Component {
     // Provide a link for clients without JavaScript as a fallback.
     return (
       <React.Fragment>
+        <Head>
+          <meta charSet="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1"/>
+          <script src="https://cdn.polyfill.io/v2/polyfill.min.js"/>
+        </Head>
         <style jsx global>{`
           body{ 
             background-color: #fff;
@@ -86,7 +92,6 @@ export default class extends React.Component {
             <circle cx="30" cy="30" r="15"/>
           </svg>
         </a>
-        <script src="https://cdn.polyfill.io/v2/polyfill.min.js"/>
       </React.Fragment>
     )
   }
