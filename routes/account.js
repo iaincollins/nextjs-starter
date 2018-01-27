@@ -62,7 +62,7 @@ module.exports = (expressApp, functions) => {
   // Expose a route to allow users to delete their profile.
   expressApp.post('/account/delete', (req, res) => {
     if (req.user) {
-      functions.remove(id)
+      functions.remove(req.user.id)
       .then(() => {
         // Destroy local session after deleting account
         req.logout()
