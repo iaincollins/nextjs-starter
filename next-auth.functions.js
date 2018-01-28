@@ -15,6 +15,7 @@
  *   } = {}) => {},
  *   update: (user) => {},
  *   insert: (user) => {},
+ *   remove: (id) => {},
  *   serialize: (user) => {},
  *   deserialize: (id) => {}
  * }
