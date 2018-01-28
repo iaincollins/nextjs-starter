@@ -19,14 +19,16 @@ export default class extends Page {
         <p>
           NextAuth adds Cross Site Request Forgery (CSRF) tokens and HTTP Only cookies,
           supports univeral rendering and does not require client side JavaScript.
+        </p>
+        <p>          
           It adds session support without using client side accessible session tokens,
           providing protection against Cross Site Scripting (XSS) and session hijacking,
           while leveraging localStorage where available to cache non-critical session state
           for optimal performance in Single Page Apps.
         </p>
         <p>
-          The NextAuthClient library for NextAuth is designed to work with
-          React pages powered by Next.js.
+          The <a href="https://www.npmjs.com/package/next-auth">NextAuthClient</a> for
+          NextAuth is designed for React pages powered by Next.js.
         </p>
         <p className="text-muted font-italic">
           * The code for NextAuth was from this project but now

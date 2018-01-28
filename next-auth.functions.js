@@ -28,6 +28,11 @@
  * Environment variables for this example:
  *
  * MONGO_URI=mongodb://localhost:27017/my-database
+ * EMAIL_FROM=username@gmail.com
+ * EMAIL_SERVER=smtp.gmail.com
+ * EMAIL_PORT=465
+ * EMAIL_USERNAME=username@gmail.com
+ * EMAIL_PASSWORD=p4ssw0rd
  *
  * If you wish, you can put these in a `.env` to seperate your environment 
  * specific configuration from your code.
