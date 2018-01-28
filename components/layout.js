@@ -18,7 +18,9 @@ export default class extends React.Component {
       session: React.PropTypes.object.isRequired,
       providers: React.PropTypes.object.isRequired,
       children: React.PropTypes.object.isRequired,
-      fluid: React.PropTypes.boolean
+      fluid: React.PropTypes.boolean,
+      navmenu: React.PropTypes.boolean,
+      signinBtn: React.PropTypes.boolean
     }
   }
   
@@ -90,7 +92,7 @@ export default class extends React.Component {
                 </div>
               </div>
             </Nav>
-            <UserMenu session={this.props.session} toggleModal={this.toggleModal}/>
+            <UserMenu session={this.props.session} toggleModal={this.toggleModal} signinBtn={this.props.signinBtn}/>
           </div>
         </Navbar>
         <MainBody navmenu={this.props.navmenu} fluid={this.props.fluid} container={this.props.container}>
@@ -181,6 +183,7 @@ export class UserMenu extends React.Component {
    
   render() {
     if (this.props.session && this.props.session.user) {
+      // If signed in display user dropdown menu
       const session = this.props.session
       return (
         <Nav className="ml-auto" navbar>
@@ -211,7 +214,11 @@ export class UserMenu extends React.Component {
           </div>
         </Nav>
       )
+     } if (this.props.signinBtn === false) {
+       // If not signed in, don't display sign in button if disabled
+      return null
     } else {
+      // If not signed in, display sign in button
       return (
         <Nav className="ml-auto" navbar>
           <NavItem>

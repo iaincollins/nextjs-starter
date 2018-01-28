@@ -27,7 +27,7 @@ export default class extends Page {
   
   render() {
     return (
-      <Layout {...this.props} navmenu={false}>
+      <Layout {...this.props} navmenu={false} signinBtn={false}>
         <div className="text-center pt-5 pb-5">
           <h1 className="display-4">Check your email</h1>
           <p className="lead">
