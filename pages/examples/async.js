@@ -64,12 +64,9 @@ export default class extends Page {
           possible, but in a way that still works in browsers that do not
           support JavaScript.
         </p>
-        <p>
-          This page calls <a href="https://jsonplaceholder.typicode.com/">jsonplaceholder.typicode.com</a> using <a href="https://github.com/matthew-andrews/isomorphic-fetch">isomorphic-fetch</a>.
-        </p>
         <Row>
           <Col xs="12" md="6">
-            <h2>Server Side</h2>
+            <h3>Server Side Rendering</h3>
             <p>
               When rendering on the server, this page will not be rendered until it
               has fetched the remote data. This ensures web crawlers and browsers that
@@ -77,7 +74,7 @@ export default class extends Page {
             </p>
           </Col>
           <Col xs="12" md="6">
-            <h2>Client Side</h2>
+            <h3>Client Side Rendering</h3>
             <p>
               When the page is rendered by browser that supports JavaScript it will
               load the page immediately, without data, and have the client fetch and
@@ -85,6 +82,9 @@ export default class extends Page {
             </p>
           </Col>
         </Row>
+        <p>
+          This page calls <a href="https://jsonplaceholder.typicode.com/">jsonplaceholder.typicode.com</a> using <a href="https://github.com/matthew-andrews/isomorphic-fetch">isomorphic-fetch</a>.
+        </p>
         <hr/>
         <h2 className="display-4">Data from API</h2>
         <RenderPosts posts={this.state.posts} error={this.state.error}/>
@@ -98,7 +98,7 @@ export class RenderPosts extends React.Component {
   render() {
     if (this.props.error) {
       // Display error if posts have fialed to load
-      return <p><strong>Error loading posts:</strong> {this.props.error}</p>
+      return <p><span className="font-weight-bold">Error loading posts:</span> {this.props.error}</p>
     } else if (!this.props.posts) {
       // Display place holder if posts are still loading (and no error)
       return <p><i>Loading content…</i></p>
@@ -108,7 +108,7 @@ export class RenderPosts extends React.Component {
         {
           this.props.posts.map((post, i) => (
             <div key={i}>
-              <strong>{post.title}</strong>
+              <span className="font-weight-bold">{post.title}</span>
               <p><i>{post.body}</i></p>
             </div>
           ))

@@ -148,7 +148,7 @@ export class MainBody extends React.Component {
                   <Link prefetch href="/examples/layout"><a href="/examples/layout" className="d-block">Layout</a></Link>
                 </ListGroupItem>
                 <ListGroupItem>
-                  <Link prefetch href="/examples/routing/?id=example" as="/custom-route/example"><a href="/custom-route/example" className="d-block">Routing</a></Link>
+                  <Link prefetch href="/examples/routing"><a href="/examples/routing" className="d-block">Routing</a></Link>
                 </ListGroupItem>
                 <ListGroupItem>
                     <Link prefetch href="/examples/styling"><a href="/examples/styling" className="d-block">Styling</a></Link>

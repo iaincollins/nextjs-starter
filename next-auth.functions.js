@@ -106,7 +106,7 @@ module.exports = () => {
       },
       update: (user) => {
         return new Promise((resolve, reject) => {
-          usersCollection.update({_id: user._id}, user, {}, (err) => {
+          usersCollection.update({_id: MongoObjectId(user._id)}, user, {}, (err) => {
             if (err) return reject(err)
             return resolve(user)
           })
@@ -114,7 +114,7 @@ module.exports = () => {
       },
       remove: (id) => {
         return new Promise((resolve, reject) => {
-          usersCollection.remove({_id: id}, (err) => {
+          usersCollection.remove({_id: MongoObjectId(id)}, (err) => {
             if (err) return reject(err)
             return resolve(true)
           })

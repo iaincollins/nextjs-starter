@@ -106,13 +106,19 @@ export default class extends Page {
         </SyntaxHighlighter>
         <h2>Fonts</h2>
         <p>
-          The <a href="https://ionicframework.com/docs/ionicons/">Ionicon</a> icon font assets are served directly from NPM using a route defined in Express.
+          The <a href="https://ionicframework.com/docs/ionicons/">Ionicon</a> icon font assets are served directly from NPM using a custom route defined in Express.
         </p>
         <SyntaxHighlighter style={SyntaxHighlighterTheme} language={"javascript"}>
 {`expressApp.use('/fonts/ionicons', express.static('./node_modules/ionicons/dist/fonts'))`}
         </SyntaxHighlighter>
         <p>
-          You can also import fonts into your projects by copying them into the /static directory and serve them from there.
+          Note: This is a simple way to include assets like fonts, but you should take care when
+          using this approach, as it serves content from your site directly
+          from an NPM module. You should not use this approach with modules
+          you don't trust.
+        </p>
+        <p>
+          Alternatively, you also import assets into your project by copying them into the <a href="/static/example.html">/static</a> directory and serving them from there.
         </p>
      </Layout>
     )

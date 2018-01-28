@@ -68,9 +68,9 @@ export default class extends Page {
               <h3 className="text-center mb-4">Authentication</h3>
               <ListGroup>
                 <ListGroupItem><a className="text-dark" href="http://www.passportjs.org">Passport</a></ListGroupItem>
-                <ListGroupItem><a className="text-dark" href="http://www.mongodb.om">MongoDB</a></ListGroupItem>
-                <ListGroupItem><Link href="/examples/authentication"><a className="text-dark">Email Sign in</a></Link></ListGroupItem>
-                <ListGroupItem><Link href="/examples/authentication"><a className="text-dark">Facebook, Google, Twitter</a></Link></ListGroupItem>
+                <ListGroupItem><Link href="/examples/authentication"><a className="text-dark">Email Sign In</a></Link></ListGroupItem>
+                <ListGroupItem><Link href="/examples/authentication"><a className="text-dark">oAuth (Facebook, Google, Twitter…)</a></Link></ListGroupItem>
+                <ListGroupItem><a className="text-dark" href="https://www.npmjs.com/package/next-auth">NextAuth</a></ListGroupItem>
               </ListGroup>
             </Col>
             <Col xs="12" sm="4" className="pt-5">

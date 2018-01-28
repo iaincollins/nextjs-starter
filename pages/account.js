@@ -190,8 +190,8 @@ export default class extends Page {
         <Layout {...this.props} navmenu={false}>
           <Row>
             <Col xs="12" className="text-center pt-5 pb-5">
-              <p className="lead">
-                <Link href="/auth"><a>Sign in to manage your profile.</a></Link>
+              <p className="lead m-0">
+                <Link href="/auth"><a>Sign in to manage your profile</a></Link>
               </p>
             </Col>
           </Row>

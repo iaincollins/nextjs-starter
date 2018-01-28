@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Router from 'next/router'
 import Cookies from 'universal-cookie'
 import { NextAuth } from 'next-auth-client'
+import Loader from '../../components/loader'
 
 export default class extends React.Component {
 
@@ -31,10 +32,11 @@ export default class extends React.Component {
   }
 
   async componentDidMount() {
-    // Get latest session data after rendering on client then redirect.
+    // Get latest session data after rendering on client *then* redirect.
     // The ensures client state is always updated after signing in or out.
+    // (That's why we use a callback page)
     const session = await NextAuth.init({force: true})
-    Router.push(this.props.redirectTo)
+    Router.push(this.props.redirectTo || '/')
   }
 
   render() {
@@ -46,51 +48,8 @@ export default class extends React.Component {
           <meta name="viewport" content="width=device-width, initial-scale=1"/>
           <script src="https://cdn.polyfill.io/v2/polyfill.min.js"/>
         </Head>
-        <style jsx global>{`
-          body{ 
-            background-color: #fff;
-          }
-          .circle-loader {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 50%;
-            z-index: 100;
-            text-align: center;
-            transform: translate(-50%, -50%);
-          }
-
-          .circle-loader .circle {
-            fill: transparent;
-            stroke: rgba(0,0,0,0.2);
-            stroke-width: 4px;
-            animation: dash 2s ease infinite, rotate 2s linear infinite;
-          }
-
-          @keyframes dash {
-            0% {
-              stroke-dasharray: 1,95;
-              stroke-dashoffset: 0;
-            }
-            50% {
-              stroke-dasharray: 85,95;
-              stroke-dashoffset: -25;
-            }
-            100% {
-              stroke-dasharray: 85,95;
-              stroke-dashoffset: -93;
-            }
-          }
-
-          @keyframes rotate {
-            0% {transform: rotate(0deg); }
-            100% {transform: rotate(360deg); }
-          }
-        `}</style>
-        <a href={this.props.redirectTo} className="circle-loader">
-          <svg className="circle" width="60" height="60" version="1.1" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="30" cy="30" r="15"/>
-          </svg>
+        <a href={this.props.redirectTo}>
+          <Loader fullscreen={true}/>
         </a>
       </React.Fragment>
     )

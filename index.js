@@ -63,16 +63,9 @@ nextApp
   expressApp.use('/fonts/ionicons', express.static('./node_modules/ionicons/dist/fonts'))
   
   // A simple example of custom routing
-  //
   // Send requests for '/custom-route/{anything}' to 'pages/examples/routing.js'
-  expressApp.get('/custom-route/:id', (req, res) => {
-    return nextApp.render(req, res, '/examples/routing')
-  })
-  //
-  // Requests to just '/custom-route' will redirect to '/custom-route/example' 
-  // (which will trigger the route handling above)
-  expressApp.get('/custom-route', (req, res) => {
-    return res.redirect('/custom-route/example')
+  expressApp.get('/custom-route/:slug', (req, res) => {
+    return nextApp.render(req, res, '/examples/routing', req.params)
   })
   
   // Default catch-all handler to allow Next.js to handle all other routes
