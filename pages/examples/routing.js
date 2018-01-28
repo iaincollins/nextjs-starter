@@ -9,7 +9,7 @@ export default class extends Page {
   
   static async getInitialProps({req, query}) {
     let props = await super.getInitialProps({req})
-    props.slug = query.slug
+    props.slug = query.id
     return props
   }
   
@@ -33,20 +33,24 @@ export default class extends Page {
           The default route for this page is <Link href="/examples/routing"><a>/examples/routing</a></Link>.
         </p>
         <p>
-          These routes load the same page, but have different URLs:
+          These routes also load this page, but have different URLs:
         </p>
         <ul>
-          <li><Link href="/examples/routing/?id=example-one" as="/custom-route/example-one"><a>/custom-route/example-one</a></Link></li>
-          <li><Link href="/examples/routing/?id=example-two" as="/custom-route/example-two"><a>/custom-route/example-two</a></Link></li>
+          <li><Link href="/examples/routing?id=example-one" as="/custom-route/example-one"><a>/custom-route/example-one</a></Link></li>
+          <li><Link href="/examples/routing?id=example-two" as="/custom-route/example-two"><a>/custom-route/example-two</a></Link></li>
         </ul>
         <p>
           Path: <span className="font-weight-bold">{this.props.url.asPath}</span>
         </p>
         <p>
-          Slug: <span className="font-weight-bold">{ (this.props.slug) ? this.props.slug : <span className="text-muted">N/A</span> }</span>
+          Slug: { (this.props.slug) ? <span className="font-weight-bold">{this.props.slug}</span> : <span className="text-muted">N/A</span> }
         </p>
         <p>
-          This behaviour can be used to load different content on a page based on the current route.
+          You can access the current path using <span className="font-weight-bold">this.props.url.asPath</span>,
+          and you can read the current slug in <span className="font-weight-bold">query</span> in <span className="font-weight-bold">getInitialProps()</span>.
+        </p>
+        <p>
+          This behaviour can be combined with the <Link href="/examples/async"><a>Async</a></Link> example to load different content on a page based on the current route.
         </p>
         <h2>Configuring Routes</h2>
         <p>
