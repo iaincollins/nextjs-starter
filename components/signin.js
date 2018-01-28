@@ -78,6 +78,8 @@ export class SignInButtons extends React.Component {
       <React.Fragment>
         {
           Object.keys(this.props.providers).map((provider, i) => {
+            if (!this.props.providers[provider].signin) return null
+
             return (
               <p key={i}>
                 <a className="btn btn-block btn-outline-secondary" href={this.props.providers[provider].signin}>
