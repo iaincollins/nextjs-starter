@@ -5,7 +5,7 @@ This is a starter project for React that uses Next.js.
 
 It includes the following features:
 
-* Email and Facebook, Twitter and Google+ (using Express and Passport).
+* Authentication via Email, Facebook, Twitter and Google+ (using Express and Passport).
 * Basic account management (update details, link/unlink accounts, delete account).
 * Session support with secure HTTP Only cookies.
 * CSRF Tokens.
