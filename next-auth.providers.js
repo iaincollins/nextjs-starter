@@ -73,8 +73,8 @@ module.exports = () => {
 
   /**
    * Note: Twitter doesn't expose emails by default.
-   * If we don't get one, Passport-stategies.js will create a placeholder.
-   *
+   * If we don't get one NextAuth will create a placeholder in the form
+   * `{provider}-{account-id}@localhost.localdomain`
    *
    * To have your Twitter oAuth return emails go to apps.twitter.com and add 
    * links to your Terms and Conditions and Privacy Policy under the "Settings" 

@@ -1,6 +1,8 @@
 /**
- * A simple client-side only model used to list users in the Admin view.
- **/
+ * A simple client-side only model used to list users in the Admin view, which
+ * is acessible if logged in on a profile that has { "admin": true } set on it.
+ * It is not used for anything else.
+ */
 import fetch from 'isomorphic-fetch'
 
 export default class {
