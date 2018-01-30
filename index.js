@@ -1,10 +1,10 @@
 'use strict'
 
-const express = require('express')
-const session = require('express-session')
 const next = require('next')
 const nextAuth = require('next-auth')
 const nextAuthConfig = require('./next-auth.config')
+const expressStatic = require('express').static
+
 const routes = {
   admin:  require('./routes/admin'),
   account:  require('./routes/account')  
@@ -31,8 +31,6 @@ process.on('unhandledRejection', (reason, p) => {
 process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 process.env.PORT = process.env.PORT || 80
 
-const expressApp = express()
-
 // Initialize Next.js
 const nextApp = next({
   dir: '.',
@@ -47,20 +45,22 @@ nextApp
   return nextAuthConfig()
 })
 .then(nextAuthOptions => {
-
-  nextAuthOptions.expressApp = expressApp
-  
   // Pass Next.js App instance and NextAuth options to NextAuth
-  nextAuth(nextApp, nextAuthOptions)  
+  return nextAuth(nextApp, nextAuthOptions)  
+})
+.then(nextAuthOptions => {
+
+  // Get instance of Express from NextAuth
+  const expressApp = nextAuthOptions.express
 
   // Add admin routes
   routes.admin(expressApp)
   
-  // Add account management route
+  // Add account management route - reuses functions defined for NextAuth
   routes.account(expressApp, nextAuthOptions.functions)
   
   // Serve fonts from ionicon npm module
-  expressApp.use('/fonts/ionicons', express.static('./node_modules/ionicons/dist/fonts'))
+  expressApp.use('/fonts/ionicons', expressStatic('./node_modules/ionicons/dist/fonts'))
   
   // A simple example of custom routing
   // Send requests for '/custom-route/{anything}' to 'pages/examples/routing.js'

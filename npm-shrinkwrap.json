@@ -1,6 +1,6 @@
 {
   "name": "nextjs-starter",
-  "version": "4.5.3",
+  "version": "4.5.10",
   "dependencies": {
     "@semantic-release/commit-analyzer": {
       "version": "3.0.7",
@@ -4562,7 +4562,7 @@
     },
     "nodemailer-direct-transport": {
       "version": "3.3.2",
-      "from": "nodemailer-direct-transport@>=3.3.2 <4.0.0",
+      "from": "https://registry.npmjs.org/nodemailer-direct-transport/-/nodemailer-direct-transport-3.3.2.tgz",
       "resolved": "https://registry.npmjs.org/nodemailer-direct-transport/-/nodemailer-direct-transport-3.3.2.tgz"
     },
     "nodemailer-fetch": {
