@@ -46,7 +46,7 @@ nextApp
 })
 .then(nextAuthOptions => {
   // Pass Next.js App instance and NextAuth options to NextAuth
-  return nextAuth(nextApp, nextAuthOptions)  
+  return nextAuth(nextApp, nextAuthOptions)
 })
 .then(nextAuthOptions => {
 
