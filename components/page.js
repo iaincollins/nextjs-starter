@@ -1,6 +1,6 @@
 import React from 'react'
 import Layout from '../components/layout'
-import { NextAuth } from 'next-auth-client'
+import { NextAuth } from 'next-auth/client'
 
 export default class extends React.Component {
   

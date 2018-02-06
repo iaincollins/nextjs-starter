@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Router from 'next/router'
 import Cookies from 'universal-cookie'
-import { NextAuth } from 'next-auth-client'
+import { NextAuth } from 'next-auth/client'
 import Loader from '../../components/loader'
 
 export default class extends React.Component {

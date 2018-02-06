@@ -111,7 +111,7 @@ EMAIL_PASSWORD=`}
         </p>
         <SyntaxHighlighter style={SyntaxHighlighterTheme} language="javascript">
 {`import React from 'react'
-import { NextAuth } from 'next-auth-client'
+import { NextAuth } from 'next-auth/client'
 
 export default class extends React.Component {
   static async getInitialProps({req}) {
