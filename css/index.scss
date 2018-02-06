@@ -1,13 +1,10 @@
 @charset "UTF-8";
-@import "../node_modules/bootstrap/scss/bootstrap.scss";
-
 $ionicons-font-path: "/fonts/ionicons" !default;
 $ionicons-font-family: "Ionicons" !default;
 $ionicons-version: "3.0.0-alpha.3" !default;
 @import "../node_modules/ionicons/dist/scss/ionicons";
-
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
 @import "../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min";
-
 @import "nojs-menus.scss";
 
 .lead {
