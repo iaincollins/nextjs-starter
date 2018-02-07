@@ -3,11 +3,10 @@
 const next = require('next')
 const nextAuth = require('next-auth')
 const nextAuthConfig = require('./next-auth.config')
-const expressStatic = require('express').static
 
 const routes = {
   admin:  require('./routes/admin'),
-  account:  require('./routes/account')  
+  account:  require('./routes/account')
 }
 
 // Load environment variables from .env file if present
@@ -46,12 +45,15 @@ nextApp
 })
 .then(nextAuthOptions => {
   // Pass Next.js App instance and NextAuth options to NextAuth
+  // Note We do not pass a port in nextAuthOptions, because we want to add some
+  // additional routes before Express starts (if you do pass a port, NextAuth
+  // tells NextApp to handle default routing and starts Express automatically).
   return nextAuth(nextApp, nextAuthOptions)
 })
 .then(nextAuthOptions => {
-
-  // Get instance of Express from NextAuth
-  const expressApp = nextAuthOptions.express
+  // Get Express and instance of Express from NextAuth
+  const express = nextAuthOptions.express
+  const expressApp = nextAuthOptions.expressApp
 
   // Add admin routes
   routes.admin(expressApp)
@@ -60,7 +62,7 @@ nextApp
   routes.account(expressApp, nextAuthOptions.functions)
   
   // Serve fonts from ionicon npm module
-  expressApp.use('/fonts/ionicons', expressStatic('./node_modules/ionicons/dist/fonts'))
+  expressApp.use('/fonts/ionicons', express.static('./node_modules/ionicons/dist/fonts'))
   
   // A simple example of custom routing
   // Send requests for '/custom-route/{anything}' to 'pages/examples/routing.js'

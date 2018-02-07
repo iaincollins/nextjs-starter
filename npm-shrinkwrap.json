@@ -1,6 +1,6 @@
 {
   "name": "nextjs-starter",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "dependencies": {
     "@zeit/check-updates": {
       "version": "1.1.0",
@@ -1853,11 +1853,6 @@
       "version": "0.3.1",
       "from": "cookie@0.3.1",
       "resolved": "https://registry.npmjs.org/cookie/-/cookie-0.3.1.tgz"
-    },
-    "cookie-parser": {
-      "version": "1.4.3",
-      "from": "cookie-parser@>=1.4.3 <2.0.0",
-      "resolved": "https://registry.npmjs.org/cookie-parser/-/cookie-parser-1.4.3.tgz"
     },
     "cookie-signature": {
       "version": "1.0.6",
@@ -4856,9 +4851,9 @@
       }
     },
     "next-auth": {
-      "version": "1.5.1",
+      "version": "1.7.1",
       "from": "next-auth@latest",
-      "resolved": "https://registry.npmjs.org/next-auth/-/next-auth-1.5.1.tgz"
+      "resolved": "https://registry.npmjs.org/next-auth/-/next-auth-1.7.1.tgz"
     },
     "node-fetch": {
       "version": "1.7.3",
