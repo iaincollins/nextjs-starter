@@ -14,7 +14,7 @@ let usersCollection
 if (process.env.MONGO_URI) { 
   // Connect to MongoDB Database and return user connection
   MongoClient.connect(process.env.MONGO_URI, (err, mongoClient) => {
-    if (err) return reject(err)
+    if (err) throw new Error(err)
     const dbName = process.env.MONGO_URI.split('/').pop().split('?').shift()
     const db = mongoClient.db(dbName)
     usersCollection = db.collection('users')
