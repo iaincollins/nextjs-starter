@@ -42,6 +42,19 @@ pre {
   }
 }
 
+.icon-spin {
+  display: inline-block;
+  animation: spin 1s infinite linear;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
 /**
  * This is a fix for Reactstrap 5.0.0-alpha.4 not displaying menus in the 
  * navbar correcrtly on mobile devices.
@@ -73,3 +86,4 @@ pre {
   background: #fff;
   color: #000;
 }
+

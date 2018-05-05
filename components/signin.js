@@ -11,7 +11,8 @@ export default class extends React.Component {
     this.state = {
       email: '',
       session: this.props.session,
-      providers: this.props.providers
+      providers: this.props.providers,
+      submitting: false
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleEmailChange = this.handleEmailChange.bind(this)
@@ -29,6 +30,10 @@ export default class extends React.Component {
     
     if (!this.state.email) return
 
+    this.setState({
+      submitting: true
+    })
+    
     // Save current URL so user is redirected back here after signing in
     const cookies = new Cookies()
     cookies.set('redirect_url', window.location.pathname, { path: '/' })
@@ -58,10 +63,13 @@ export default class extends React.Component {
                 <Input name="_csrf" type="hidden" value={this.state.session.csrfToken}/>
                 <p>
                   <Label htmlFor="email">Email address</Label><br/>
-                  <Input name="email" type="text" placeholder="j.smith@example.com" id="email" className="form-control" value={this.state.email} onChange={this.handleEmailChange}/>
+                  <Input name="email" disabled={this.state.submitting} type="text" placeholder="j.smith@example.com" id="email" className="form-control" value={this.state.email} onChange={this.handleEmailChange}/>
                 </p>
                 <p className="text-right">
-                  <Button id="submitButton" outline color="dark" type="submit">Sign in with email</Button>
+                  <Button id="submitButton" disabled={this.state.submitting} outline color="dark" type="submit">
+                    {this.state.submitting === true && <span className="icon icon-spin ion-md-refresh mr-2"/>}
+                    Sign in with email
+                  </Button>
                 </p>
               </Form>
             </Col>

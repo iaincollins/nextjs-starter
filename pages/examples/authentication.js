@@ -20,8 +20,8 @@ export default class extends Page {
           NextAuth adds Cross Site Request Forgery (CSRF) tokens and HTTP Only cookies,
           supports univeral rendering and does not require client side JavaScript.
         </p>
-        <p>          
-          It adds session support without using client side accessible session tokens,
+        <p>
+          NextAuth adds session support without using client side accessible session tokens,
           providing protection against Cross Site Scripting (XSS) and session hijacking,
           while leveraging localStorage where available to cache non-critical session state
           for optimal performance in Single Page Apps.
@@ -30,8 +30,13 @@ export default class extends Page {
           The <a href="https://www.npmjs.com/package/next-auth">NextAuthClient</a> for
           NextAuth is designed for React pages powered by Next.js.
         </p>
+        <p>
+          The example callback page from NextAuth has been extended in this
+          project to automatically return the user to the last page they were
+          on after they have signed in.
+        </p>
         <p className="text-muted font-italic">
-          * The code for NextAuth was from this project but now
+          The code for NextAuth was from this project but now
           exists as module to make it easier to use in other projects.
         </p>
         <h2>Configuration</h2>
@@ -140,7 +145,10 @@ export default class extends React.Component {
           state every time a page is loaded.
         </p>
         <p>
-           This can be disabled by setting <span className="font-weight-bold">sessionRevalidateAge</span> to 0 in <span className="font-weight-bold">next-auth.functions.js</span> (the default value is 60 seconds).
+          Combined with &lt;Link&gt; preloading, this allows pages to rendered extremely
+          quickly client side, even when signed in. The caching of session
+          data can be be disabled by setting <span className="font-weight-bold">sessionRevalidateAge</span> to 0 in <span className="font-weight-bold">next-auth.functions.js</span>.
+          By default session data is cached for 60 seconds before it revalidates.
         </p>
       </Layout>
     )
