@@ -55,8 +55,7 @@
     "dev": "NODE_ENV=development PORT=3000 node index.js",
     "build": "next build",
     "start": "node index.js",
-    "postinstall": "next build",
-    "deploy": "now -E .env.production && now alias"
+    "postinstall": "next build"
   },
   "engines": {
     "node": "8.11.x"
