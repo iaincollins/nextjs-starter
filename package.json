@@ -1,6 +1,6 @@
 {
   "name": "nextjs-starter",
-  "version": "5.5.0",
+  "version": "6.0.0",
   "description": "A starter Next.js project with email and oAuth authentication",
   "author": "Iain Collins <me@iaincollins.com>",
   "license": "ISC",
@@ -18,7 +18,7 @@
     "jquery": "^3.2.1",
     "mongodb": "^3.0.2",
     "nedb": "^1.8.0",
-    "next": "^5.0.0",
+    "next": "^6.0.0",
     "next-auth": "^1.8.0",
     "node-sass": "^4.7.2",
     "nodemailer": "^4.0.1",
@@ -35,18 +35,17 @@
     "react-dom": "^16.2.0",
     "react-syntax-highlighter": "^7.0.0",
     "react-transition-group": "^2.2.1",
-    "reactstrap": "^5.0.0-alpha.4",
-    "sass-loader": "^6.0.6",
+    "reactstrap": "^6.0.1",
+    "sass-loader": "^7.0.1",
     "universal-cookie": "^2.1.2"
   },
   "devDependencies": {
     "eslint": "^4.5.0",
-    "eslint-config-xo": "^0.18.2",
-    "eslint-config-xo-react": "^0.13.0",
-    "eslint-config-xo-space": "^0.16.0",
+    "eslint-config-xo": "^0.22.1",
+    "eslint-config-xo-react": "^0.16.0",
+    "eslint-config-xo-space": "^0.18.0",
     "eslint-plugin-react": "^7.3.0",
-    "ionicons": "^3.0.0",
-    "xo": "^0.18.2"
+    "xo": "^0.21.0"
   },
   "optionalDependencies": {
     "fsevents": "*"
