@@ -6,8 +6,9 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { Container } from 'reactstrap'
 import Styles from '../css/index.scss'
+import { withRouter } from 'next/router'
 
-export default class Error extends React.Component {
+class ErrorPage extends React.Component {
 
   static propTypes() {
     return {
@@ -33,7 +34,7 @@ export default class Error extends React.Component {
             </Head>
             <Container className="pt-5 text-center">
               <h1 className="display-4">Page Not Found</h1>
-              <p>The page <strong>{ this.props.url.pathname }</strong> does not exist.</p>
+              <p>The page <strong>{ this.props.router.pathname }</strong> does not exist.</p>
               <p><Link href="/"><a>Home</a></Link></p>
             </Container>
           </div>
@@ -62,7 +63,7 @@ export default class Error extends React.Component {
               <h1 className="display-4">HTTP { this.props.errorCode } Error</h1>
               <p>
                 An <strong>HTTP { this.props.errorCode }</strong> error occurred while
-                trying to access <strong>{ this.props.url.pathname }</strong>
+                trying to access <strong>{ this.props.router.pathname }</strong>
               </p>
             </Container>
           </div>
@@ -73,3 +74,5 @@ export default class Error extends React.Component {
   }
 
 }
+
+export default withRouter(ErrorPage)

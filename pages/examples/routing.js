@@ -4,7 +4,7 @@ import { atomDark as SyntaxHighlighterTheme } from 'react-syntax-highlighter/sty
 import { Button } from 'reactstrap'
 import Page from '../../components/page'
 import Layout from '../../components/layout'
- 
+
 export default class extends Page {
   
   static async getInitialProps({req, query}) {
@@ -40,14 +40,10 @@ export default class extends Page {
           <li><Link href="/examples/routing?id=example-two" as="/custom-route/example-two"><a>/custom-route/example-two</a></Link></li>
         </ul>
         <p>
-          Path: <span className="font-weight-bold">{this.props.url.asPath}</span>
+          Slug: { (this.props.slug) ? <span className="font-weight-bold">{this.props.slug}</span> : <span className="text-muted">None (default)</span> }
         </p>
         <p>
-          Slug: { (this.props.slug) ? <span className="font-weight-bold">{this.props.slug}</span> : <span className="text-muted">N/A</span> }
-        </p>
-        <p>
-          You can access the current path using <span className="font-weight-bold">this.props.url.asPath</span>,
-          and you can read the current slug in <span className="font-weight-bold">query</span> in <span className="font-weight-bold">getInitialProps()</span>.
+          The value for the 'slug' is populated in <span className="font-weight-bold">getInitialProps()</span>.
         </p>
         <p>
           This behaviour can be combined with the <Link href="/examples/async"><a>Async</a></Link> example to load different content on a page based on the current route.
