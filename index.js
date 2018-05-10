@@ -62,6 +62,8 @@ nextApp
   // A simple example of custom routing
   // Send requests for '/custom-route/{anything}' to 'pages/examples/routing.js'
   expressApp.get('/custom-route/:id', (req, res) => {
+    // Note: To make capturing a slug easier when rendering both client
+    // and server side, name it ':id'
     return nextApp.render(req, res, '/examples/routing', req.params)
   })
   

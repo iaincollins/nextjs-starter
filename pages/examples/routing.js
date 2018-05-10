@@ -21,8 +21,12 @@ export default class extends Page {
           Next.js handles routing automatically and is easy to extend.
         </p>
         <p>
-          By default a request for <span className="font-weight-bold">/about</span> is automatically handled by the page
-          at <a href="https://github.com/iaincollins/nextjs-starter/blob/master/pages/about.js">pages/about.js</a>.
+          With Next.js, a request for the URL <span className="font-weight-bold">/example</span> would be automatically
+          handled by the page at <span className="font-weight-bold">./pages/example.js</span>.
+        </p>
+        <p>
+          You don't need to set up routing manually, just create files and folders inside
+          the <span className="font-weight-bold">./pages/</span> directory.
         </p>
         <p>
           This project uses Next.js together with Express to extend and override
@@ -55,7 +59,7 @@ export default class extends Page {
           be handled by the template <a href="https://github.com/iaincollins/nextjs-starter/blob/master/pages/examples/routing.js">pages/examples/routing.js</a>, which is this page.
         </p>
         <SyntaxHighlighter style={SyntaxHighlighterTheme} language="javascript">
-{`express.get('/custom-route/:slug', (req, res) => {
+{`express.get('/custom-route/:id', (req, res) => {
   return app.render(req, res, '/examples/routing', req.params)
 })`}</SyntaxHighlighter>
         <p>
