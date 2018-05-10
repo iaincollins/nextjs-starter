@@ -1,6 +1,6 @@
 {
   "name": "nextjs-starter",
-  "version": "6.0.1",
+  "version": "6.0.2",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -14716,51 +14716,6 @@
       "integrity": "sha1-GrKLVW4Zg2Oowab35vogE3/mrtk=",
       "requires": {
         "remove-trailing-separator": "^1.0.1"
-      }
-    },
-    "now-logs": {
-      "version": "0.0.7",
-      "resolved": "https://registry.npmjs.org/now-logs/-/now-logs-0.0.7.tgz",
-      "integrity": "sha1-Zle3S+pGcejSE0OeuR6p78nS3lY=",
-      "requires": {
-        "intercept-stdout": "^0.1.2",
-        "socket.io-client": "^1.7.2",
-        "yargs": "^6.5.0"
-      },
-      "dependencies": {
-        "camelcase": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/camelcase/-/camelcase-3.0.0.tgz",
-          "integrity": "sha1-MvxLn82vhF/N9+c7uXysImHwqwo="
-        },
-        "yargs": {
-          "version": "6.6.0",
-          "resolved": "https://registry.npmjs.org/yargs/-/yargs-6.6.0.tgz",
-          "integrity": "sha1-eC7CHvQDNF+DCoCMo9UTr1YGUgg=",
-          "requires": {
-            "camelcase": "^3.0.0",
-            "cliui": "^3.2.0",
-            "decamelize": "^1.1.1",
-            "get-caller-file": "^1.0.1",
-            "os-locale": "^1.4.0",
-            "read-pkg-up": "^1.0.1",
-            "require-directory": "^2.1.1",
-            "require-main-filename": "^1.0.1",
-            "set-blocking": "^2.0.0",
-            "string-width": "^1.0.2",
-            "which-module": "^1.0.0",
-            "y18n": "^3.2.1",
-            "yargs-parser": "^4.2.0"
-          }
-        },
-        "yargs-parser": {
-          "version": "4.2.1",
-          "resolved": "https://registry.npmjs.org/yargs-parser/-/yargs-parser-4.2.1.tgz",
-          "integrity": "sha1-KczqwNxPA8bIe0qfIX3RjJ90hxw=",
-          "requires": {
-            "camelcase": "^3.0.0"
-          }
-        }
       }
     },
     "npm-run-path": {

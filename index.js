@@ -12,11 +12,6 @@ const routes = {
 // Load environment variables from .env file if present
 require('dotenv').load()
 
-// now-logs allows remote debugging if deploying to now.sh
-if (process.env.LOGS_SECRET) {
-  require('now-logs')(process.env.LOGS_SECRET)
-}
-
 process.on('uncaughtException', function(err) {
   console.error('Uncaught Exception: ', err)
 })
