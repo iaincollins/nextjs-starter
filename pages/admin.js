@@ -3,8 +3,8 @@
  * page you need to use MongoDB and set '"admin": true' on your account.
  **/
 import Link from 'next/link'
-import SyntaxHighlighter from 'react-syntax-highlighter/prism'
-import { atomDark as SyntaxHighlighterTheme } from 'react-syntax-highlighter/styles/prism'
+import SyntaxHighlighter from 'react-syntax-highlighter'
+import SyntaxHighlighterTheme from 'react-syntax-highlighter/styles/prism/atom-dark';
 import { Col, Row } from 'reactstrap'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
 import Page from '../components/page'

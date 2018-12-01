@@ -1,5 +1,5 @@
-import SyntaxHighlighter from 'react-syntax-highlighter/prism'
-import { atomDark as SyntaxHighlighterTheme } from 'react-syntax-highlighter/styles/prism'
+import SyntaxHighlighter from 'react-syntax-highlighter'
+import SyntaxHighlighterTheme from 'react-syntax-highlighter/styles/prism/atom-dark';
 import Page from '../../components/page'
 import Layout from '../../components/layout'
 
