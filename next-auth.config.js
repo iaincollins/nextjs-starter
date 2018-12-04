@@ -55,7 +55,7 @@ module.exports = () => {
         // The expiry time for a session is reset every time a user revisits 
         // the site or revalidates their session token. This is the maximum 
         // idle time value.
-        sessionMaxAge: 60000 * 60 * 24 * 1,
+        sessionMaxAge: 60000 * 60 * 24 * 7,
         // Session Revalidation in X ms (optional, default is 60 seconds).
         // Specifies how often a Single Page App should revalidate a session.
         // Does not impact the session life on the server, but causes clients 
@@ -64,7 +64,6 @@ module.exports = () => {
         // state correctly.
         // If set to 0 will revalidate a session before rendering every page.
         sessionRevalidateAge: 60000,
-        sessionResave: true,
         // Canonical URL of the server (optiona, but recommended).
         // e.g. 'http://localhost:3000' or 'https://www.example.com' 
         // Used in callbak URLs and email sign in links. It will be auto 

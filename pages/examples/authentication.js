@@ -135,7 +135,7 @@ export default class extends React.Component {
           from Express Session by parsing the <span className="font-weight-bold">req</span> object.
         </p>
         <p>
-          If a user is signed in <span className="font-weight-bold">this.session.user</span> will contain 
+          If a user is signed in <span className="font-weight-bold">this.props.session.user</span> will contain 
           a user object. If they are not logged in, it will not be set.
         </p>
         <p>
