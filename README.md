@@ -83,7 +83,9 @@ By default, this will point any aliases you have set in `now.json` to your site.
 
 You can configure `now` to use aliases with custom domains using the `now domain` and `now dns` commands.
 
-## More options
+----
+
+## Further reading
 
 ### Database hosting
 
