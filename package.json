@@ -1,6 +1,6 @@
 {
   "name": "nextjs-starter",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "A starter Next.js project with email and oAuth authentication",
   "author": "Iain Collins <me@iaincollins.com>",
   "license": "ISC",
@@ -52,9 +52,5 @@
   },
   "engines": {
     "node": "8.11.x"
-  },
-  "now": {
-    "name": "nextjs-starter",
-    "alias": "nextjs-starter.now.sh"
   }
 }
