@@ -7,11 +7,11 @@ export default class extends React.Component {
   static async getInitialProps({req}) {
     return {
       session: await NextAuth.init({req}),// Add this.props.session to all pages
-      lang: 'en'// Add a lang property for accessibility
+      lang: 'en' // Add a lang property to all pages for accessibility
     }
   }
   
-  adminAcccessOnly() {
+  adminAccessOnly() {
     return (
       <Layout {...this.props} navmenu={false}>
         <div className="text-center pt-5 pb-5">

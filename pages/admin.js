@@ -13,7 +13,6 @@ import Loader from '../components/loader'
 import User from '../models/user'
  
 export default class extends Page {
-  
   constructor(props) {
     super(props)
     
@@ -59,7 +58,7 @@ export default class extends Page {
   
   render() {
     if (!this.props.session.user || this.props.session.user.admin !== true)
-      return super.adminAcccessOnly()
+      return super.adminAccessOnly()
 
     const data = (this.state.data && this.state.data.users) ? this.state.data.users : []
     const totalSize = (this.state.data && this.state.data.total) ? this.state.data.total : 0
@@ -77,7 +76,6 @@ export default class extends Page {
       </Layout>
     )
   }
-
 }
 
 export class Table extends React.Component {
