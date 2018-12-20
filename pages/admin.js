@@ -4,22 +4,22 @@
  **/
 import Link from 'next/link'
 import SyntaxHighlighter from 'react-syntax-highlighter'
-import SyntaxHighlighterTheme from 'react-syntax-highlighter/styles/prism/atom-dark';
+import { atomDark as SyntaxHighlighterTheme } from 'react-syntax-highlighter/dist/styles/prism';
 import { Col, Row } from 'reactstrap'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
 import Page from '../components/page'
 import Layout from '../components/layout'
 import Loader from '../components/loader'
 import User from '../models/user'
- 
+
 export default class extends Page {
   constructor(props) {
     super(props)
-    
+
     this.state = {
       data: null
     }
-    
+
     this.options = {
       onPageChange: this.onPageChange.bind(this),
       onSizePerPageList: this.sizePerPageListChange.bind(this),
@@ -31,7 +31,7 @@ export default class extends Page {
       sizePerPageList: [ 10, 50, 100 ]
     }
   }
-  
+
   async componentDidMount() {
     await this.updateData()
   }
@@ -41,12 +41,12 @@ export default class extends Page {
     this.options.sizePerPage = sizePerPage
     await this.updateData()
   }
-  
+
   async sizePerPageListChange(sizePerPage) {
     this.options.sizePerPage = sizePerPage
     await this.updateData()
   }
-  
+
   async updateData() {
     this.setState({
       data: await User.list({
@@ -55,14 +55,14 @@ export default class extends Page {
         })
     })
   }
-  
+
   render() {
     if (!this.props.session.user || this.props.session.user.admin !== true)
       return super.adminAccessOnly()
 
     const data = (this.state.data && this.state.data.users) ? this.state.data.users : []
     const totalSize = (this.state.data && this.state.data.total) ? this.state.data.total : 0
-      
+
     return (
       <Layout {...this.props} navmenu={false}>
         <h1 className="display-4">Administration</h1>

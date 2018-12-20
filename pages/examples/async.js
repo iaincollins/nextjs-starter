@@ -1,6 +1,6 @@
 /* global window */
 import React from 'react'
-import { Row, Col, Nav, NavItem, NavLink } from 'reactstrap'
+import { Row, Col } from 'reactstrap'
 import Page from '../../components/page'
 import Layout from '../../components/layout'
 import AsyncData from '../../components/async-data'
@@ -37,8 +37,8 @@ export default class extends Page {
   // This allows us to render the page on the client without delaying rendering,
   // then load the data fetched via an async call in when we have it.
   async componentDidMount() {
-    // Only render posts client side if they are not populate (if the page was 
-    // rendered on the server, the state will be inherited from the server 
+    // Only render posts client side if they are not populate (if the page was
+    // rendered on the server, the state will be inherited from the server
     // render by the client)
     if (this.state.posts === null) {
       try {
@@ -97,7 +97,7 @@ export default class extends Page {
 export class RenderPosts extends React.Component {
   render() {
     if (this.props.error) {
-      // Display error if posts have fialed to load
+      // Display error if posts have failed to load
       return <p><span className="font-weight-bold">Error loading posts:</span> {this.props.error}</p>
     } else if (!this.props.posts) {
       // Display place holder if posts are still loading (and no error)

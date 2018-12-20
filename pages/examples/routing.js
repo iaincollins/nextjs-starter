@@ -1,18 +1,17 @@
 import Link from 'next/link'
 import SyntaxHighlighter from 'react-syntax-highlighter'
-import SyntaxHighlighterTheme from 'react-syntax-highlighter/styles/prism/atom-dark';
-import { Button } from 'reactstrap'
+import { atomDark as SyntaxHighlighterTheme } from 'react-syntax-highlighter/dist/styles/prism';
 import Page from '../../components/page'
 import Layout from '../../components/layout'
 
 export default class extends Page {
-  
+
   static async getInitialProps({req, query}) {
     let props = await super.getInitialProps({req})
     props.slug = query.id
     return props
   }
-  
+
   render() {
     return (
       <Layout {...this.props}>
