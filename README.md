@@ -1,3 +1,23 @@
+## 🚨 This project is now archived
+
+[**This project is now archived and is no longer maintained.**](https://github.com/iaincollins/nextjs-starter/issues/122)
+
+I'm happy so many people found this project useful, but it's now out of date and many of the features of this starter project are now redundant as Next.js has evolved considerably over the last few years and now has native support for features such as CSS and SASS and for API routes without requiring a custom server.
+
+For that reason I'm retiring this project and putting it into archive mode.
+
+Thank you to everyone who contributed to this project over the last 3 years!
+
+#### Where to look for examples
+
+* You can find up to date examples of how to use Next.js at https://github.com/vercel/next.js
+
+* For an example of how to add authentication to Next.js project, check out NextAuth.js at https://next-auth.js.org
+
+  There is a NextAuth.js example project with live demo at http://next-auth-example.now.sh
+
+---
+
 # Next.js Starter Project
 
 This is a starter project for React that uses Next.js.
